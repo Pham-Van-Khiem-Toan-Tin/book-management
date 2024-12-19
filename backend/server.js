@@ -8,7 +8,7 @@ const helmet = require("helmet");
 const fileUpLoad = require("express-fileupload");
 const session = require("express-session")
 
-const passportSetup = require("./passport");
+const passportSetup = require("./config/passport");
 const passport = require("passport");
 const authRoute = require("./routers/auth.router");
 require("dotenv").config();
@@ -27,25 +27,25 @@ app.use(
   session({
     secret: 'khiem',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { secure: false, maxAge: 24*60*60*100 }
   })
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function (request, response, next) {
-  if (request.session && !request.session.regenerate) {
-    request.session.regenerate = (cb) => {
-      cb();
-    };
-  }
-  if (request.session && !request.session.save) {
-    request.session.save = (cb) => {
-      cb();
-    };
-  }
-  next();
-});
+// app.use(function (request, response, next) {
+//   if (request.session && !request.session.regenerate) {
+//     request.session.regenerate = (cb) => {
+//       cb();
+//     };
+//   }
+//   if (request.session && !request.session.save) {
+//     request.session.save = (cb) => {
+//       cb();
+//     };
+//   }
+//   next();
+// });
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -53,6 +53,12 @@ app.use(
     credentials: true,
   })
 );
+
+const authoritiesRouter = require("./routers/authorities.router");
+
+
 // app.set("trust proxy", 1);
-app.use("/auth", authRoute)
+app.use("/auth", authRoute);
+app.use("/admin", authoritiesRouter);
+
 module.exports = app;

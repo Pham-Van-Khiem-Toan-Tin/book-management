@@ -8,6 +8,7 @@ import "./login.css";
 
 
 const Login = () => {
+    
     const loginWithGoogle = () => {
         window.open(`${import.meta.env.VITE_REACT_APP_API_URL}/auth/google`, "_self");
     }

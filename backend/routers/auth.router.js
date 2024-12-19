@@ -3,6 +3,8 @@ const passport = require("passport");
 require("dotenv").config();
 
 router.get("/login/success", (req, res) => {
+    console.log(req.user);
+    
   if (req.user) {
     res.status(200).json({
       error: false,
@@ -42,6 +44,8 @@ router.get("/logout", (req, res) => {
   res.redirect(process.env.GOOGLE_CLIENT_URL);
 });
 router.get("/facebook", passport.authenticate("facebook", ["public_profile"]));
-router.get("/google", passport.authenticate("google", ["profile"]));
+router.get("/google", passport.authenticate("google", 
+    {scope: ["profile", "email"]})
+);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const cloudinary = require("cloudinary");
 const connect = require("./config/db.config")
 const app = require("./server");
+const roleModel = require("./models/role.model");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 8888;
