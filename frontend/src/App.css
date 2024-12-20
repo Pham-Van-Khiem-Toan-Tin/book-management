@@ -1,12 +1,12 @@
 .app {}
 
-.app .left {
+.app > .left {
     border-right: 1px solid #f2f5f6;
     max-width: 340px;
     flex: none;
 }
 
-.app .right {
+.app > .right {
     flex: 1;
     height: 100vh;
     display: flex;
@@ -14,7 +14,7 @@
 
 }
 
-.app .right .outlet-container {
+.app > .right .outlet-container {
     flex: 1;
     overflow: hidden;
     overflow-y: auto;

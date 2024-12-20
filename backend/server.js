@@ -28,7 +28,7 @@ app.use(
     secret: 'khiem',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 24*60*60*100 }
+    cookie: { secure: false, maxAge: 5*60*100 }
   })
 );
 app.use(passport.initialize());
