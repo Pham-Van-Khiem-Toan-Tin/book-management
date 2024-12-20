@@ -69,6 +69,48 @@ body.modal-open {
   opacity: 1;
 }
 
+table thead tr > * {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+table thead tr th,
+table tbody tr th {
+  font-size: 0.9rem;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: #fff !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(even) > * {
+  --bs-table-color-type: #000;
+  --bs-table-bg-type: var(--bs-table-striped-bg);
+}
+
+.box-search {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.box-search input,
+.box-search button, .box-search a {
+  height: 46px;
+}
+.box-search button {
+  padding-inline: 1.5rem;
+}
+
+.box-handle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.box-handle button, .box-handle a {
+  padding-inline: 1.5rem;
+  height: 46px;
+  line-height: 46px;
+  text-decoration: none;
+}
+
 button,
 input,
 select {
@@ -168,6 +210,7 @@ label {
   align-items: center;
   justify-content: center;
   flex-wrap: nowrap;
+  text-decoration: none;
 }
 .btn-icon .icon {
   display: flex;

@@ -1,0 +1,21 @@
+.app {}
+
+.app .left {
+    border-right: 1px solid #f2f5f6;
+    max-width: 340px;
+    flex: none;
+}
+
+.app .right {
+    flex: 1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.app .right .outlet-container {
+    flex: 1;
+    overflow: hidden;
+    overflow-y: auto;
+}

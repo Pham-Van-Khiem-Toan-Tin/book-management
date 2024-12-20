@@ -1,14 +1,30 @@
 import { useEffect } from "react"
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks"
+import { loginSuccess } from "../../apis/actions/auth.action";
+import Loading from "../../common/loading/Loading";
+import { Navigate } from "react-router";
+import { toast } from "react-toastify";
+import { resetError } from "../../apis/slices/auth/token.slice";
 
 const LoginSuccess = () => {
+  const {loading, message} = useAppSelector((state) => state.token);
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    
+    dispatch(loginSuccess());
+  }, [dispatch]);
+  useEffect(() => {
+    if(message) {
+      toast.error(message)
+      dispatch(resetError());
+    }
+  }, [dispatch, message])
   
-  }, [])
-  
+  if (loading) {
+    return <Loading />
+  }
   return (
-    <div>LoginSuccess</div>
+    <Navigate to="/" replace />
   )
 }
 
-export default LoginSuccess
+export default LoginSuccess;

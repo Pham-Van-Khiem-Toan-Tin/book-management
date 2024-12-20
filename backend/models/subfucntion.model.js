@@ -27,6 +27,6 @@ const subFunctionSchema = new mongoose.Schema(
     {timestamps: true}
 );
 
-const subFunctionModel = mongoose.model("subFunctions", subFunctionSchema);
+const subFunctionModel = mongoose.model("subfunctions", subFunctionSchema);
 
 module.exports = subFunctionModel;

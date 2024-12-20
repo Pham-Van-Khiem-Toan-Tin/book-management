@@ -1,29 +1,47 @@
 
-import { Outlet } from 'react-router'
+import { Outlet, useLocation } from 'react-router'
 import './App.css'
 import Sidebar from './layout/sidebar/Sidebar'
 import Header from './layout/header/Header'
-import { useEffect } from 'react'
-import axios from 'axios'
+import { Bounce, ToastContainer } from 'react-toastify';
+import { useEffect } from 'react';
+import { useAppDispatch } from './hooks/reduxhooks';
+import { baseProfile } from './apis/actions/auth.action';
 
 function App() {
-  useEffect( () => {
-    axios.get("http://localhost:8000/auth/login/success", {withCredentials: true}).then((response) => {
-      console.log(response.data);
-    });
-    
-  
-    
-  }, [])
+  const location = useLocation();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("act");
+    if(accessToken) {
+      dispatch(baseProfile());
+    }
+  }, [location.pathname, dispatch])
   
 
   return (
     <>
-      <Sidebar />
-      <Header />
-      <div className='outlet-container'>
-        <Outlet />
+      <div className='app d-flex w-100 g-0'>
+        <div className='left'>
+          <Sidebar />
+        </div>
+        <div className='right'>
+          <Header />
+          <div className='outlet-container mt-0 p-4'>
+            <Outlet />
+          </div>
+        </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={500}
+        hideProgressBar
+        newestOnTop
+        rtl={false}
+        draggable
+        transition={Bounce}
+      />
     </>
   )
 }

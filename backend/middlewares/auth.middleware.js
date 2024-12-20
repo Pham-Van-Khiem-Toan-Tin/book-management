@@ -11,7 +11,7 @@ module.exports.isAuthenticated = async (req, res, next) => {
     try {
         const decodeData = await jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
         req.user = decodeData.sub;
-        req.role = decodeData.roles;
+        req.roles = decodeData.roles;
         next();
     } catch (error) {
         if (error?.name == "TokenExpiredError") {
@@ -22,10 +22,11 @@ module.exports.isAuthenticated = async (req, res, next) => {
     }
 }
 
-module.exports.isAuthorization = (...roles)  => {
+module.exports.isAuthorization = (role)  => {
     return (req, res, next) => {
-        if (!role.includes(req.role)) {
+        if (!req.roles.includes(role)) {
             return next(new BusinessException(403, "No access to resources"));
         }
+        next();
     }
 }

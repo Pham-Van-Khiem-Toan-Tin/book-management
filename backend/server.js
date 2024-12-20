@@ -55,10 +55,12 @@ app.use(
 );
 
 const authoritiesRouter = require("./routers/authorities.router");
-
+const categoryRouter = require("./routers/category.router");
 
 // app.set("trust proxy", 1);
 app.use("/auth", authRoute);
 app.use("/admin", authoritiesRouter);
+app.use("/admin/categories", categoryRouter);
+
 
 module.exports = app;

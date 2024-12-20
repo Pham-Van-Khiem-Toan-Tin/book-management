@@ -1,0 +1,80 @@
+.header-management {
+    border-bottom: 1px solid #f2f5f6;
+    position: relative;
+    .header-container {
+      height: 48px;
+      .btn-group {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        .btn-icon {
+          font-size: 1.4rem;
+          padding: 0.2rem;
+          background-color: transparent;
+          &:hover {
+            background-color: var(--primary);
+            color: #ffffff;
+          }
+          &:not(.btn-dropdown) {
+            width: 36px;
+            height: 36px;
+            position: relative;
+            span {
+              transform: translate(-55%, -30%) !important;
+              font-size: 0.8rem;
+            }
+          }
+          &.btn-dropdown {
+            padding: 0.3rem;
+            .icon {
+              transition: transform 0.5s ease;
+            }
+            &.btn-icon-rotate {
+              background-color: var(--primary);
+              color: #ffffff;
+              .icon {
+                transform: rotate(-180deg);
+              }
+            }
+            &:hover {
+              .icon {
+                transform: rotate(-180deg);
+              }
+            }
+            gap: 1rem;
+            .avatar {
+              .avatar-img {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+              }
+            }
+          }
+        }
+        .szh-menu-container {
+          
+          .szh-menu {
+            max-height: calc(100vh - 65px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            .szh-menu__item {
+              .icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2rem;
+              }
+            }
+            .szh-menu__item--hover {
+              background-color: var(--primary);
+              color: #ffffff;
+            }
+          }
+        }
+      }
+    }
+  }
+  .tooltip {
+    --bs-tooltip-bg: #000000;
+    --bs-tooltip-color: var(--bs-white);
+  }

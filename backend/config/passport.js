@@ -1,7 +1,6 @@
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
 
-const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const userModel = require("../models/user.model");
 require("dotenv").config();
@@ -31,16 +30,35 @@ passport.use(
             role: "READER",
           });
         }
-        const accessToken = jwt.sign(
-          {
-            sub: user._id.toString(),
-            name: user.name,
-            email: user?.email,
+        user = await user.populate({
+          path: "role",
+          select: "_id functions",
+          populate: {
+            path: "functions",
+            select: "_id subFunctions",
+            populate: {
+              path: "subFunctions",
+              select: "_id authorities",
+              match: {
+                authorities: user.role,
+              },
+            },
           },
-          process.env.ACCESS_TOKEN_SECRET,
-          { expiresIn: "1h" }
-        );
-        done(null, { user, token: accessToken });
+        });
+        const authorities = [user.role._id];
+        const functions = user.role.functions;
+        functions.forEach((functionItem) => {
+          authorities.push(functionItem._id);
+          functionItem.subFunctions.forEach((subFunction) => {
+            authorities.push(subFunction._id);
+          });
+        });
+        done(null, {
+          _id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+          roles: authorities,
+        });
       } catch (error) {
         done(error, null);
       }

@@ -8,6 +8,8 @@ import Dashboard from './pages/dashboard/Dashboard.tsx';
 import LoginSuccess from './pages/login/LoginSuccess.tsx';
 import { Provider } from 'react-redux';
 import { store } from './apis/store.ts';
+import CategoryList from './pages/category/list/CategoryList.tsx';
+import CategoryCreate from './pages/category/create/CategoryCreate.tsx';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,14 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <Dashboard />
+      },
+      {
+        path: "categories/all",
+        element: <CategoryList />
+      },
+      {
+        path: "categories/create",
+        element: <CategoryCreate />
       }
     ]
   },
