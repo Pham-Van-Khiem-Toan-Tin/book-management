@@ -5,6 +5,9 @@ import App from './App.tsx'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
 import Login from './pages/login/Login.tsx'
 import Dashboard from './pages/dashboard/Dashboard.tsx';
+import LoginSuccess from './pages/login/LoginSuccess.tsx';
+import { Provider } from 'react-redux';
+import { store } from './apis/store.ts';
 
 const router = createBrowserRouter([
   {
@@ -24,9 +27,15 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />
+  },
+  {
+    path: "/login-success",
+    element: <LoginSuccess />
   }
 ])
 
 createRoot(document.getElementById('root')!).render(
-  <RouterProvider router={router} />
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
 )
