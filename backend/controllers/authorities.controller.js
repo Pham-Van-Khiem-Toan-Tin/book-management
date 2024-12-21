@@ -1,5 +1,5 @@
 const catchAsyncError = require("../middlewares/catchAsyncError.middleware");
-const BusinessException = require("../middlewares/error.middleware");
+const BusinessException = require("../utils/error.util");
 const functionModel = require("../models/function.model");
 const roleModel = require("../models/role.model");
 const subFunctionModel = require("../models/subfucntion.model");

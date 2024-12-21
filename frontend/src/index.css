@@ -47,6 +47,8 @@ body.modal-open {
 .Toastify__toast-container .Toastify__toast {
   min-height: 148px;
   color: #ffffff;
+  margin-top: 24px;
+  align-items: flex-start;
 }
 .Toastify__toast-container .Toastify__toast.Toastify__toast--error {
   background-color: var(--danger);
@@ -57,32 +59,36 @@ body.modal-open {
 .Toastify__toast-container .Toastify__toast.Toastify__toast--success {
   background-color: var(--primary);
 }
-.Toastify__toast-container .Toastify__toast .Toastify__toast-body {
-  margin-top: 24px;
-  align-items: flex-start;
-}
-.Toastify__toast-container .Toastify__toast .Toastify__toast-body .Toastify__toast-icon {
-  display: none;
+.Toastify__toast-container .Toastify__toast .Toastify__toast-icon {
+  display: none !important;
 }
 .Toastify__toast-container .Toastify__toast .Toastify__close-button {
   color: #ffffff;
   opacity: 1;
 }
 
-table thead tr > * {
-  background-color: rgba(0, 0, 0, 0.05);
+table {
+  min-width: 820px;
+}
+table thead tr th {
+  background-color: rgba(0, 0, 0, 0.05) !important;
 }
 table thead tr th,
 table tbody tr th {
   font-size: 0.9rem;
 }
+table thead tr td,
+table tbody tr td {
+  color: #626263 !important;
+}
 
 .table-striped > tbody > tr:nth-of-type(odd) > * {
-  background-color: #fff !important;
+  --bs-table-color-type: #626263;
+  --bs-table-bg-type: transparent !important;
 }
 
 .table-striped > tbody > tr:nth-of-type(even) > * {
-  --bs-table-color-type: #000;
+  --bs-table-color-type: #626263;
   --bs-table-bg-type: var(--bs-table-striped-bg);
 }
 
@@ -92,7 +98,8 @@ table tbody tr th {
   gap: 1rem;
 }
 .box-search input,
-.box-search button, .box-search a {
+.box-search button,
+.box-search a {
   height: 46px;
 }
 .box-search button {
@@ -104,21 +111,41 @@ table tbody tr th {
   align-items: center;
   justify-content: space-between;
 }
-.box-handle button, .box-handle a {
+.box-handle button,
+.box-handle a {
   padding-inline: 1.5rem;
   height: 46px;
   line-height: 46px;
   text-decoration: none;
 }
 
+.box-input {
+  display: flex;
+  flex-direction: column;
+  max-width: 350px;
+  margin-bottom: 0.7rem;
+}
+.box-input label {
+  color: var(--gray-4);
+  font-weight: 400;
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+
 button,
 input,
-select {
+select,
+textarea {
   border: none;
   outline: none;
 }
 
-input {
+textarea {
+  min-height: 150px;
+}
+
+input,
+textarea {
   background-color: var(--white);
   outline: none;
   border: 1px solid #ececec;
@@ -126,18 +153,21 @@ input {
   padding: 0.2rem 0;
   padding: 0.6rem 1rem;
 }
-input:focus {
+input:focus,
+textarea:focus {
   outline: 1px solid var(--primary);
 }
-input::-moz-placeholder {
+input::-moz-placeholder, textarea::-moz-placeholder {
   color: #a6a6a6;
   font-weight: 300;
 }
-input::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: #a6a6a6;
   font-weight: 300;
 }
-input.search {
+input.search,
+textarea.search {
   padding-left: 1rem;
 }
 

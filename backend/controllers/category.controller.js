@@ -1,9 +1,11 @@
 const catchAsyncError = require("../middlewares/catchAsyncError.middleware");
-const BusinessException = require("../middlewares/error.middleware");
+const BusinessException = require("../utils/error.util");
 const categoryModel = require("../models/categories.model");
 
 module.exports.search = catchAsyncError(async (req, res, next) => {
-  let list = await categoryModel.find({}).select("_id name parent_id created_at").populate("parent_id", "name");
+  const {keyword} = req.query;
+  const regexKeyword = new RegExp(keyword, 'i');
+  let list = await categoryModel.find({name: { $regex: regexKeyword }}).select("_id name parent_id createdAt").populate("parent_id", "name");
   if (!list) list = [];
   res.status(200).json({
     categories: list,
@@ -35,7 +37,7 @@ module.exports.addCategory = catchAsyncError(async (req, res, next) => {
   });
   res.status(200).json({
     success: true,
-    message: "category added successfully!",
+    message: "Category added successfully!",
   });
 });
 

@@ -6,20 +6,24 @@ import { CATEGORY_ENDPOINT } from "../endpoints/category.endpoint";
 export interface Category {
     _id: string,
     name: string,
-    parent: null | {
+    parent_id: null | {
         name: string
     },
-    created_at: Date
+    createdAt: string
 }
 type AllCategory = {
     categories: Array<Category>
 }
-export const allCategory = createAsyncThunk<AllCategory, void>(
+interface CategoryResponse {
+  success: boolean,
+  message: string
+}
+export const allCategory = createAsyncThunk<AllCategory, string | null>(
   "category/all",
-  async (_, { rejectWithValue }) => {
+  async (keyword, { rejectWithValue }) => {
     try {
       const authApi = useAuthAxios();
-      const response = await authApi.get(CATEGORY_ENDPOINT.ALL);
+      const response = await authApi.get(`${CATEGORY_ENDPOINT.ALL}${keyword ? "?keyword=" + keyword : ""}`);      
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
@@ -29,3 +33,23 @@ export const allCategory = createAsyncThunk<AllCategory, void>(
     }
   }
 );
+interface CategoryForm {
+  name: string,
+  parentId: string | null,
+  description: string
+}
+export const createCategory = createAsyncThunk<CategoryResponse, CategoryForm>(
+  "category/create",
+  async (form, {rejectWithValue}) => {
+    try {
+      const authApi = useAuthAxios();
+      const response = await authApi.post(CATEGORY_ENDPOINT.CREATE, form);
+      return response.data
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        return rejectWithValue(error.response.data);
+      }
+      return rejectWithValue("Error fetching user data");
+    }
+  }
+)

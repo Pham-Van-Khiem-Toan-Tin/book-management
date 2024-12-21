@@ -3,7 +3,6 @@ import { AUTH_ENDPOINT } from "../apis/endpoints/auth.endpoint";
 
 const useAuthAxios = () => {
   const token: string | null = localStorage.getItem("act");
-  console.log("chay vao day 1");
 
   const authApi = axios.create({
     timeout: 5000,
@@ -26,7 +25,6 @@ const useAuthAxios = () => {
       const originalRequest = error.config;
       if (error.response.status == 498 && !originalRequest._retry) {
         originalRequest._retry = true;
-        console.log("chay vao day 2");
 
         try {
           const renewTokenResponse = await axios.get(
@@ -55,7 +53,6 @@ const useAuthAxios = () => {
       return Promise.reject(error as AxiosError);
     }
   );
-  console.log("chay vao day 3");
 
   return authApi;
 };

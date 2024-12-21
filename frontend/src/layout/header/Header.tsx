@@ -64,7 +64,7 @@ const Header = () => {
             <div className="avatar">
               {loading ? 
                 <div className='placeholder avatar-img'></div> :
-                <img className='avatar-img' src={avatar ?? AvatarDefault} alt="" />
+                <img className='avatar-img' loading='lazy' src={avatar ?? AvatarDefault} alt="" />
               }
             </div>
             <div className="icon">

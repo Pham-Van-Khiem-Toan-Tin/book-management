@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const catchAsyncError = require("../middlewares/catchAsyncError.middleware");
-const BusinessException = require("../middlewares/error.middleware");
+const BusinessException = require("../utils/error.util");
 const userModel = require("../models/user.model");
 
 module.exports.renewToken = catchAsyncError(async (req, res, next) => {

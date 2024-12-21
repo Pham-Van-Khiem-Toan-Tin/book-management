@@ -61,12 +61,10 @@ body {
     &.Toastify__toast--success {
       background-color: var(--primary);
     }
-    .Toastify__toast-body {
-      margin-top: 24px;
-      align-items: flex-start;
-      .Toastify__toast-icon {
-        display: none;
-      }
+    margin-top: 24px;
+    align-items: flex-start;
+    .Toastify__toast-icon {
+      display: none !important;
     }
     .Toastify__close-button {
       color: #ffffff;
@@ -74,10 +72,16 @@ body {
     }
   }
 }
+.table-responsive {
+  
+}
 table {
+  min-width: 820px;
   thead {
-    tr > * {
-      background-color: rgba(0, 0, 0, 0.05);
+    tr {
+      th {
+        background-color: rgba(0, 0, 0, 0.05) !important;
+      }
     }
   }
   thead,
@@ -86,14 +90,18 @@ table {
       th {
         font-size: 0.9rem;
       }
+      td {
+        color: #626263 !important;
+      }
     }
   }
 }
 .table-striped > tbody > tr:nth-of-type(odd) > * {
-  background-color: #fff !important;
+  --bs-table-color-type: #626263;
+  --bs-table-bg-type: transparent !important;
 }
 .table-striped > tbody > tr:nth-of-type(even) > * {
-  --bs-table-color-type: #000;
+  --bs-table-color-type: #626263;
   --bs-table-bg-type: var(--bs-table-striped-bg);
 }
 .box-search {
@@ -101,7 +109,8 @@ table {
   align-items: center;
   gap: 1rem;
   input,
-  button, a {
+  button,
+  a {
     height: 46px;
   }
   button {
@@ -112,20 +121,38 @@ table {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  button, a {
+  button,
+  a {
     padding-inline: 1.5rem;
     height: 46px;
     line-height: 46px;
     text-decoration: none;
   }
 }
+.box-input {
+  display: flex;
+  flex-direction: column;
+  max-width: 350px;
+  margin-bottom: 0.7rem;
+  label {
+    color: var(--gray-4);
+    font-weight: 400;
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
+  }
+}
 button,
 input,
-select {
+select,
+textarea {
   border: none;
   outline: none;
 }
-input {
+textarea {
+  min-height: 150px;
+}
+input,
+textarea {
   background-color: var(--white);
   outline: none;
   border: 1px solid #ececec;

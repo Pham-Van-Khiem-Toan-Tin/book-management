@@ -33,12 +33,9 @@ export const baseProfile = createAsyncThunk<BaseProfileResponse, void>(
     try {
       const authApi = useAuthAxios();
       const response = await authApi.get(AUTH_ENDPOINT.PROFILE_BASE);
-      console.log(response);
       
       return response.data as BaseProfileResponse;
-    } catch (error) {
-      console.log(error);
-      
+    } catch (error) {      
       if (error instanceof AxiosError && error.response) {
         return rejectWithValue(error.response.data);
       }

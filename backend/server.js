@@ -53,14 +53,15 @@ app.use(
     credentials: true,
   })
 );
-
 const authoritiesRouter = require("./routers/authorities.router");
 const categoryRouter = require("./routers/category.router");
+const errorHandler = require("./middlewares/error.middleware");
 
 // app.set("trust proxy", 1);
 app.use("/auth", authRoute);
 app.use("/admin", authoritiesRouter);
 app.use("/admin/categories", categoryRouter);
 
+app.use(errorHandler)
 
 module.exports = app;
