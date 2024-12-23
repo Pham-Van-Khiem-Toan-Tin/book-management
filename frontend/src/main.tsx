@@ -10,6 +10,8 @@ import { Provider } from 'react-redux';
 import { store } from './apis/store.ts';
 import CategoryList from './pages/category/list/CategoryList.tsx';
 import CategoryCreate from './pages/category/create/CategoryCreate.tsx';
+import CategoryDetail from './pages/category/detail/CategoryDetail.tsx';
+import CategoryEdit from './pages/category/edit/CategoryEdit.tsx';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
       {
         path: "categories/create",
         element: <CategoryCreate />
+      },
+      {
+        path: "categories/view/:id",
+        element: <CategoryDetail />
+      },
+      {
+        path: "categories/edit/:id",
+        element: <CategoryEdit />
       }
     ]
   },

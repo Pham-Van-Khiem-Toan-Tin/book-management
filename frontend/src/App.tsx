@@ -13,12 +13,13 @@ function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    
     const accessToken = localStorage.getItem("act");
-    if(accessToken) {
+    if (accessToken) {
       dispatch(baseProfile());
     }
   }, [location.pathname, dispatch])
-  
+
 
   return (
     <>

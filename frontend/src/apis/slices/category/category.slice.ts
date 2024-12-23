@@ -1,20 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allCategory, Category, createCategory } from "../../actions/category.action";
-
+import { allCategory, Category, categoryDetail, createCategory, deleteCategory, editCategory } from "../../actions/category.action";
 
 interface CategoryState {
     success: boolean,
     message: string | null,
     loading: boolean,
     error: boolean,
+    category: Category | null,
     categories: Array<Category>
+    pagination: {
+        total: number,
+        page: number,
+        limit: number,
+        totalPages: number,
+    }
 }
 const initialState: CategoryState = {
     success: false as boolean,
     message: null,
     loading: false as boolean,
+    category: null,
     categories: [],
-    error: false as boolean
+    error: false as boolean,
+    pagination: {
+        total: 0,
+        page: 1,
+        limit: 10,
+        totalPages: 0,
+    }
 };
 
 const categorySlice = createSlice({
@@ -37,6 +50,7 @@ const categorySlice = createSlice({
         builder.addCase(allCategory.fulfilled, (state, action) => {
             state.loading = false;
             state.categories = action.payload.categories;
+            state.pagination = action.payload.pagination;
         });
         builder.addCase(allCategory.rejected, (state, action) => {
             state.loading = false;
@@ -55,7 +69,44 @@ const categorySlice = createSlice({
             state.error = true;
             state.message = action.payload as string;
         });
-        
+        builder.addCase(categoryDetail.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(categoryDetail.fulfilled, (state, action) => {
+            state.loading = false;
+            state.category = action.payload.category;
+        });
+        builder.addCase(categoryDetail.rejected, (state, action) => {
+            state.loading = false;
+            state.error = true;
+            state.message = action.payload as string;
+        });
+        builder.addCase(editCategory.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(editCategory.fulfilled, (state, action) => {
+            state.loading = false;
+            state.success = action.payload.success;
+            state.message = action.payload.message;
+        });
+        builder.addCase(editCategory.rejected, (state, action) => {
+            state.loading = false;
+            state.error = true;
+            state.message = action.payload as string;
+        });
+        builder.addCase(deleteCategory.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(deleteCategory.fulfilled, (state, action) => {
+            state.loading = false;
+            state.success = action.payload.success;
+            state.message = action.payload.message;
+        });
+        builder.addCase(deleteCategory.rejected, (state, action) => {
+            state.loading = false;
+            state.error = true;
+            state.message = action.payload as string;
+        });
     }
 });
 

@@ -72,37 +72,62 @@ body {
     }
   }
 }
-.table-responsive {
-  
-}
-table {
-  min-width: 820px;
-  thead {
-    tr {
-      th {
-        background-color: rgba(0, 0, 0, 0.05) !important;
+.table-container {
+  .table-caption {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #191919;
+    span {
+      color: var(--hard-primary);
+    }
+  }
+  .table-responsive-container {
+    min-width: 800px !important;
+    max-height: 440px !important;
+    overflow-y: auto !important;
+    scrollbar-width: thin;
+    table {
+      min-width: 800px;
+      thead {
+        tr {
+          th {
+            background-color: rgba(0, 0, 0, 0.05) !important;
+          }
+        }
+      }
+      thead,
+      tbody {
+        tr {
+          th {
+            font-size: 0.9rem;
+          }
+          td {
+            color: #626263 !important;
+            .btn-group {
+              a {
+                color: inherit;
+              }
+            }
+          }
+        }
       }
     }
   }
-  thead,
-  tbody {
-    tr {
-      th {
-        font-size: 0.9rem;
-      }
-      td {
-        color: #626263 !important;
-      }
+  .display-record {
+    font-size: 0.8rem;
+    font-weight: 500;
+    .select-record {
+      display: inline-block;
     }
   }
-}
-.table-striped > tbody > tr:nth-of-type(odd) > * {
-  --bs-table-color-type: #626263;
-  --bs-table-bg-type: transparent !important;
-}
-.table-striped > tbody > tr:nth-of-type(even) > * {
-  --bs-table-color-type: #626263;
-  --bs-table-bg-type: var(--bs-table-striped-bg);
+  .table-striped > tbody > tr:nth-of-type(odd) > * {
+    --bs-table-color-type: #626263;
+    --bs-table-bg-type: transparent !important;
+  }
+  .table-striped > tbody > tr:nth-of-type(even) > * {
+    --bs-table-color-type: #626263;
+    --bs-table-bg-type: var(--bs-table-striped-bg);
+  }
 }
 .box-search {
   display: flex;
@@ -139,6 +164,17 @@ table {
     font-weight: 400;
     font-size: 0.8rem;
     margin-bottom: 0.4rem;
+  }
+  .span-input {
+    display: inline-block;
+    width: 100%;
+    border-radius: 0.375rem;
+    border: 1px solid #ececec;
+    background-color: var(--white);
+    padding: 0.2rem 0;
+    padding: 0.6rem 1rem;
+    height: 46px;
+    opacity: 0.6;
   }
 }
 button,

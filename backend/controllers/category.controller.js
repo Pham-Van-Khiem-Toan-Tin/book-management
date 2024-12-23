@@ -3,19 +3,33 @@ const BusinessException = require("../utils/error.util");
 const categoryModel = require("../models/categories.model");
 
 module.exports.search = catchAsyncError(async (req, res, next) => {
-  const {keyword} = req.query;
-  const regexKeyword = new RegExp(keyword, 'i');
-  let list = await categoryModel.find({name: { $regex: regexKeyword }}).select("_id name parent_id createdAt").populate("parent_id", "name");
+  const { keyword, page = 1, limit = 10 } = req.query;
+  const regexKeyword = new RegExp(keyword, "i");
+  const skip = (page - 1) * limit;
+  let list = await categoryModel
+    .find({ name: { $regex: regexKeyword } })
+    .select("_id name parent_id createdAt")
+    .populate("parent_id", "name")
+    .skip(skip)
+    .limit(parseInt(limit));
+  const total = await categoryModel.countDocuments({
+    name: { $regex: regexKeyword },
+  });
   if (!list) list = [];
   res.status(200).json({
     categories: list,
+    pagination: {
+      total,
+      page: parseInt(page),
+      limit: parseInt(limit),
+      totalPages: Math.ceil(total/limit)
+    }
   });
 });
 module.exports.viewCategory = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  if (!id)
-    throw new BusinessException(500, "Invalid data");
-  let category = await categoryModel.findById(id);
+  if (!id) throw new BusinessException(500, "Invalid data");
+  let category = await categoryModel.findById(id).select("_id name description parent_id createdAt").populate("parent_id", "name");
   if (!category) throw new BusinessException(500, "Category does not exist!");
   res.status(200).json({
     category: category,

@@ -1,0 +1,51 @@
+.modal-body img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.modal-body h1 {
+  font-weight: 700;
+}
+.modal-body span {
+  color: #999999;
+}
+.modal-body span .text-highlight {
+  color: #FF8A00;
+}
+.modal-body .modal-subscribe {
+  border: 1px solid #dee8de;
+  height: 48px;
+  display: flex;
+  align-items: center;
+}
+.modal-body .modal-subscribe input[type=text] {
+  border: none;
+  outline: none;
+  margin: 0.5rem 1rem;
+  min-width: 250px;
+  font-size: 0.9rem;
+  color: #002603;
+}
+.modal-body .modal-subscribe input[type=text]::-moz-placeholder {
+  color: #7F7F7F;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+.modal-body .modal-subscribe input[type=text]::placeholder {
+  color: #7F7F7F;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+.modal-body .modal-subscribe button {
+  background-color: var(--primary);
+  height: inherit;
+  padding-inline: 1.2rem;
+}
+.modal-body .modal-subscribe button:hover {
+  background-color: var(--gray-green-7);
+}
+.modal-body label {
+  font-size: 0.8rem;
+  font-weight: 300;
+}/*# sourceMappingURL=modal.css.map */

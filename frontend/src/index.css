@@ -67,27 +67,50 @@ body.modal-open {
   opacity: 1;
 }
 
-table {
-  min-width: 820px;
+.table-container .table-caption {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #191919;
 }
-table thead tr th {
+.table-container .table-caption span {
+  color: var(--hard-primary);
+}
+.table-container .table-responsive-container {
+  min-width: 800px !important;
+  max-height: 440px !important;
+  overflow-y: auto !important;
+  scrollbar-width: thin;
+}
+.table-container .table-responsive-container table {
+  min-width: 800px;
+}
+.table-container .table-responsive-container table thead tr th {
   background-color: rgba(0, 0, 0, 0.05) !important;
 }
-table thead tr th,
-table tbody tr th {
+.table-container .table-responsive-container table thead tr th,
+.table-container .table-responsive-container table tbody tr th {
   font-size: 0.9rem;
 }
-table thead tr td,
-table tbody tr td {
+.table-container .table-responsive-container table thead tr td,
+.table-container .table-responsive-container table tbody tr td {
   color: #626263 !important;
 }
-
-.table-striped > tbody > tr:nth-of-type(odd) > * {
+.table-container .table-responsive-container table thead tr td .btn-group a,
+.table-container .table-responsive-container table tbody tr td .btn-group a {
+  color: inherit;
+}
+.table-container .display-record {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.table-container .display-record .select-record {
+  display: inline-block;
+}
+.table-container .table-striped > tbody > tr:nth-of-type(odd) > * {
   --bs-table-color-type: #626263;
   --bs-table-bg-type: transparent !important;
 }
-
-.table-striped > tbody > tr:nth-of-type(even) > * {
+.table-container .table-striped > tbody > tr:nth-of-type(even) > * {
   --bs-table-color-type: #626263;
   --bs-table-bg-type: var(--bs-table-striped-bg);
 }
@@ -130,6 +153,17 @@ table tbody tr td {
   font-weight: 400;
   font-size: 0.8rem;
   margin-bottom: 0.4rem;
+}
+.box-input .span-input {
+  display: inline-block;
+  width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid #ececec;
+  background-color: var(--white);
+  padding: 0.2rem 0;
+  padding: 0.6rem 1rem;
+  height: 46px;
+  opacity: 0.6;
 }
 
 button,

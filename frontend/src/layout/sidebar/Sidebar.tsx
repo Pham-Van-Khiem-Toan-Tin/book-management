@@ -1,15 +1,15 @@
 import "./sidebar.css";
-import { RiArchiveStackLine, RiAwardLine, RiCoupon2Line, RiDashboardLine, RiDropboxLine, RiListCheck2, RiUserAddLine } from "react-icons/ri";
+import { RiArchive2Line, RiArchiveDrawerLine, RiArchiveStackLine, RiAwardLine, RiBookMarkedLine, RiDashboardLine, RiListCheck2, RiUserAddLine } from "react-icons/ri";
 import { GoDotFill } from "react-icons/go";
 import Logo from "../../assets/images/login/Logo.png";
 import { useEffect } from 'react';
 import { Collapse } from 'bootstrap';
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 const Sidebar = () => {
     useEffect(() => {
         const parent = document.getElementById("sidebar-accordion") as HTMLElement;
         const collapseElementList = document.querySelectorAll('.accordion-collapse.collapse');
-        const collapseList = [...collapseElementList].map(collapseEl => new Collapse(collapseEl, {parent: parent, toggle: false}))
+        collapseElementList.forEach(collapseEl => new Collapse(collapseEl, {parent: parent, toggle: false}));
       }, [])
     return (
         <div className="sidebar">
@@ -89,6 +89,26 @@ const Sidebar = () => {
                     </div>
                     <div className="accordion-item">
                         <h2 className="accordion-header">
+                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#products" aria-expanded="false" aria-controls="products">
+                                <div className="icon">
+                                    <RiArchiveStackLine />
+                                </div>
+                                <span>Library Management</span>
+                            </button>
+                        </h2>
+                        <div id="products" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
+                            <div className="accordion-body">
+                                <Link to="/library/all" className="btn-icon">
+                                    <div className="icon">
+                                        <GoDotFill />
+                                    </div>
+                                    <span>Library List</span>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="accordion-item">
+                        <h2 className="accordion-header">
                             <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#categories" aria-expanded="false" aria-controls="categories">
                                 <div className="icon">
                                     <RiListCheck2 />
@@ -109,31 +129,11 @@ const Sidebar = () => {
                     </div>
                     <div className="accordion-item">
                         <h2 className="accordion-header">
-                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#products" aria-expanded="false" aria-controls="products">
-                                <div className="icon">
-                                    <RiArchiveStackLine />
-                                </div>
-                                <span>Product Management</span>
-                            </button>
-                        </h2>
-                        <div id="products" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
-                            <div className="accordion-body">
-                                <div className="btn-icon">
-                                    <div className="icon">
-                                        <GoDotFill />
-                                    </div>
-                                    <span>Product List</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="accordion-item">
-                        <h2 className="accordion-header">
                             <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#orders" aria-expanded="false" aria-controls="orders">
                                 <div className="icon">
-                                    <RiDropboxLine />
+                                    <RiArchiveDrawerLine />
                                 </div>
-                                <span>Order Management</span>
+                                <span>Bookshelf Management</span>
                             </button>
                         </h2>
                         <div id="orders" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
@@ -151,9 +151,9 @@ const Sidebar = () => {
                         <h2 className="accordion-header">
                             <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#coupon" aria-expanded="false" aria-controls="coupon">
                                 <div className="icon">
-                                    <RiCoupon2Line />
+                                    <RiArchive2Line />
                                 </div>
-                                <span>Coupon Management</span>
+                                <span>Shelf Management</span>
                             </button>
                         </h2>
                         <div id="coupon" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
@@ -171,7 +171,7 @@ const Sidebar = () => {
                         <h2 className="accordion-header">
                             <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#review" aria-expanded="false" aria-controls="review">
                                 <div className="icon">
-                                    <RiAwardLine />
+                                    <RiBookMarkedLine />
                                 </div>
                                 <span>Review Management</span>
                             </button>

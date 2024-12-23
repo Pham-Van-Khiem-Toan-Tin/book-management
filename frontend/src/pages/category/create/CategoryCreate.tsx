@@ -22,7 +22,7 @@ const CategoryCreate = () => {
   const { categories, success, error, message } = useAppSelector((state) => state.category);
   const navigate = useNavigate();
   useEffect(() => {
-    dispatch(allCategory());
+    dispatch(allCategory({keyword: null, view: null, page: null}));
   }, [dispatch]);
   useEffect(() => {
     if (success) {
