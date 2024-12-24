@@ -1,14 +1,14 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 
 const librarySchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: [true, "Category name is not valid"],
+            required: [true, "Library name is not valid"],
             unique: true,
-            minLength: [2, "Category name should have more than 2 characters"],
-            maxLength: [32, "Category name can not exceed 32 characters"],
+            minLength: [2, "Library name should have more than 2 characters"],
+            maxLength: [32, "Library name can not exceed 32 characters"],
         },
         description: {
             type: String,
@@ -19,7 +19,9 @@ const librarySchema = new mongoose.Schema(
             type: String,
             required: [true, "Location is not valid"]
         },
-        
+    },
+    {
+        timestamps: true
     }
 );
 

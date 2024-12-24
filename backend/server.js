@@ -8,9 +8,9 @@ const helmet = require("helmet");
 const fileUpLoad = require("express-fileupload");
 const session = require("express-session")
 
-const passportSetup = require("./config/passport");
+const passportSetup = require("./src/config/passport");
 const passport = require("passport");
-const authRoute = require("./routers/auth.router");
+const authRoute = require("./src/routers/auth.router");
 require("dotenv").config();
 
 const app = express();
@@ -53,13 +53,15 @@ app.use(
     credentials: true,
   })
 );
-const authoritiesRouter = require("./routers/authorities.router");
-const categoryRouter = require("./routers/category.router");
+const authoritiesRouter = require("./src/routers/authorities.router");
+const categoryRouter = require("./src/routers/category.router");
+const libraryRouter = require("./src/routers/library.router");
 
 // app.set("trust proxy", 1);
 app.use("/auth", authRoute);
 app.use("/admin", authoritiesRouter);
 app.use("/admin/categories", categoryRouter);
+app.use("/admin/libraries", libraryRouter);
 
 
 module.exports = app;

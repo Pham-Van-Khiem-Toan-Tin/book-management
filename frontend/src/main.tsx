@@ -12,6 +12,10 @@ import CategoryList from './pages/category/list/CategoryList.tsx';
 import CategoryCreate from './pages/category/create/CategoryCreate.tsx';
 import CategoryDetail from './pages/category/detail/CategoryDetail.tsx';
 import CategoryEdit from './pages/category/edit/CategoryEdit.tsx';
+import LibraryList from './pages/library/list/LibraryList.tsx';
+import LibraryCreate from './pages/library/create/LibraryCreate.tsx';
+import LibraryDetail from './pages/library/detail/LibraryDetail.tsx';
+import LibraryEdit from './pages/library/edit/LibraryEdit.tsx';
 
 const router = createBrowserRouter([
   {
@@ -41,6 +45,22 @@ const router = createBrowserRouter([
       {
         path: "categories/edit/:id",
         element: <CategoryEdit />
+      },
+      {
+        path: "libraries/all",
+        element: <LibraryList />
+      },
+      {
+        path: "libraries/create",
+        element: <LibraryCreate />
+      },
+      {
+        path: "libraries/view/:id",
+        element: <LibraryDetail />
+      },
+      {
+        path: "libraries/edit/:id",
+        element: <LibraryEdit />
       }
     ]
   },

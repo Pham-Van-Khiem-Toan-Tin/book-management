@@ -62,12 +62,6 @@ module.exports.editCategory = catchAsyncError(async (req, res, next) => {
     throw new BusinessException(500, "Invalid data");
   const category = await categoryModel.findById(id);
   if (!category) throw new BusinessException(500, "Category does not exist!");
-  const exists = await categoryModel.exists({ name: name });
-  if (exists)
-    throw new BusinessException(
-      500,
-      "The category of book that already exists!"
-    );
   category.name = name;
   category.parent_id = parentId;
   category.description = description;

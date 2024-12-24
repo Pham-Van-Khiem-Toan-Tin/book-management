@@ -110,7 +110,7 @@ module.exports.addSubFunctionsToFunction = catchAsyncError(
 //subFunction
 
 module.exports.addSubFunction = catchAsyncError(async (req, res, next) => {
-  const { id, name, description } = req.body;
+  const { id, name, description, authorities } = req.body;
   const existsSubFunction = await subFunctionModel.exists({ _id: id });
   if (existsSubFunction)
     throw new BusinessException(500, "The Function already exists!");
@@ -118,6 +118,7 @@ module.exports.addSubFunction = catchAsyncError(async (req, res, next) => {
     _id: id,
     name: name,
     description: description,
+    authorities: authorities
   });
   res.status(200).json({
     success: true,

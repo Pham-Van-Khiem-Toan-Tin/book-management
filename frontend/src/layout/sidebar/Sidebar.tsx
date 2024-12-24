@@ -1,5 +1,5 @@
 import "./sidebar.css";
-import { RiArchive2Line, RiArchiveDrawerLine, RiArchiveStackLine, RiAwardLine, RiBookMarkedLine, RiDashboardLine, RiListCheck2, RiUserAddLine } from "react-icons/ri";
+import { RiArchive2Line, RiArchiveDrawerLine, RiArchiveStackLine, RiBookMarkedLine, RiDashboardLine, RiListCheck2, RiUserAddLine } from "react-icons/ri";
 import { GoDotFill } from "react-icons/go";
 import Logo from "../../assets/images/login/Logo.png";
 import { useEffect } from 'react';
@@ -98,7 +98,7 @@ const Sidebar = () => {
                         </h2>
                         <div id="products" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
                             <div className="accordion-body">
-                                <Link to="/library/all" className="btn-icon">
+                                <Link to="/libraries/all" className="btn-icon">
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
@@ -142,7 +142,7 @@ const Sidebar = () => {
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Order List</span>
+                                    <span>Bookshelf List</span>
                                 </div>
                             </div>
                         </div>
@@ -162,7 +162,7 @@ const Sidebar = () => {
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Coupon List</span>
+                                    <span>Shelf List</span>
                                 </div>
                             </div>
                         </div>
@@ -173,7 +173,7 @@ const Sidebar = () => {
                                 <div className="icon">
                                     <RiBookMarkedLine />
                                 </div>
-                                <span>Review Management</span>
+                                <span>Book Management</span>
                             </button>
                         </h2>
                         <div id="review" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
@@ -182,7 +182,7 @@ const Sidebar = () => {
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Review List</span>
+                                    <span>Book List</span>
                                 </div>
                             </div>
                         </div>

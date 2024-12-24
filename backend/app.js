@@ -1,7 +1,7 @@
 const cloudinary = require("cloudinary");
-const connect = require("./config/db.config")
+const connect = require("./src/config/db.config")
 const app = require("./server");
-const errorHandler = require("./middlewares/error.middleware");
+const errorHandler = require("./src/middlewares/error.middleware");
 
 require("dotenv").config();
 

@@ -130,7 +130,6 @@ const CategoryList = () => {
     console.log(searchParam.toString());
     navigate(`?${searchParam.toString()}`)
     window.location.reload();
-    // dispatch(allCategory({ keyword: searchParam.get("keyword"), view: parseInt(searchParam.get("view") ?? "10"), page: parseInt(searchParam.get("page") ?? "1") }));
   }
   const handleChangePerView = (data: SingleValue<Option>) => {
     const recordNumber = optionRecord.find((item) => item.value == data?.value) || optionRecord[0];
@@ -139,7 +138,6 @@ const CategoryList = () => {
     navigate(`?${searchParam.toString()}`)
     window.location.reload();
 
-    // dispatch(allCategory({ keyword: searchParam.get("keyword"), view: parseInt(searchParam.get("view") ?? "10"), page: parseInt(searchParam.get("page") ?? "1") }));
   }
   const handleChangePage = (pageNumber: number) => {
     if (pageNumber > 0 && pageNumber <= pagination.totalPages) {
@@ -147,7 +145,6 @@ const CategoryList = () => {
       navigate(`?${searchParam.toString()}`)
       window.location.reload();
 
-      // dispatch(allCategory({ keyword: searchParam.get("keyword"), view: parseInt(searchParam.get("view") ?? "10"), page: parseInt(searchParam.get("page") ?? "1") }));
     }
   }
   const toggleModalDelete = (item: Category) => {
@@ -234,6 +231,7 @@ const CategoryList = () => {
                       styles={selectStyle}
                       onChange={handleChangePerView}
                       value={optionRecord[index]}
+                      isDisabled={categories.length == 0}
                       options={optionRecord} />
                   </div>
                   record</span>

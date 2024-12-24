@@ -6,7 +6,7 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import { resetError } from "../../../apis/slices/category/category.slice";
 import Loading from "../../../common/loading/Loading";
-
+import "./category-detail.css";
 const CategoryDetail = () => {
     const dispatch = useAppDispatch();
     const { loading, error, category, message } = useAppSelector((state) => state.category);
@@ -38,7 +38,7 @@ const CategoryDetail = () => {
                             </div>
                             <div className="box-input">
                                 <label htmlFor="description">Description: <span className="text-danger">*</span></label>
-                                <span className="span-input">{moment(category?.createdAt).format("HH:mm:ss DD-MM-YYYY")}</span>
+                                <span className="span-area">{moment(category?.createdAt).format("HH:mm:ss DD-MM-YYYY")}</span>
                             </div>
                         </div>
                         <div className="d-flex justify-content-end gap-2">
