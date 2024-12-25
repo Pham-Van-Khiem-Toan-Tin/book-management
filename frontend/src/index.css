@@ -95,6 +95,29 @@ body.modal-open {
 .table-container .table-responsive-container table tbody tr td {
   color: #626263 !important;
 }
+.table-container .table-responsive-container table thead tr td .status-error, .table-container .table-responsive-container table thead tr td .status-active,
+.table-container .table-responsive-container table tbody tr td .status-error,
+.table-container .table-responsive-container table tbody tr td .status-active {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.table-container .table-responsive-container table thead tr td .status-error,
+.table-container .table-responsive-container table tbody tr td .status-error {
+  background-color: #f8c5c5;
+}
+.table-container .table-responsive-container table thead tr td .status-error span,
+.table-container .table-responsive-container table tbody tr td .status-error span {
+  color: #ea4b48;
+}
+.table-container .table-responsive-container table thead tr td .status-active,
+.table-container .table-responsive-container table tbody tr td .status-active {
+  background-color: #a2eea4;
+}
+.table-container .table-responsive-container table thead tr td .status-active span,
+.table-container .table-responsive-container table tbody tr td .status-active span {
+  color: var(--primary);
+  opacity: 1;
+}
 .table-container .table-responsive-container table thead tr td .btn-group a,
 .table-container .table-responsive-container table tbody tr td .btn-group a {
   color: inherit;
@@ -301,6 +324,7 @@ label {
   justify-content: center;
   flex-wrap: nowrap;
   text-decoration: none;
+  background-color: transparent;
 }
 .btn-icon .icon {
   display: flex;

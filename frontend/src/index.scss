@@ -103,6 +103,24 @@ body {
           }
           td {
             color: #626263 !important;
+            .status-error, .status-active {
+              font-size: 0.8rem;
+              font-weight: 500;
+            }
+            .status-error {
+              span {
+                color: #ea4b48;
+              }
+              background-color: #f8c5c5;
+            }
+            .status-active {
+              span {
+                color: var(--primary);
+                opacity: 1;
+              }
+              background-color: #a2eea4;
+              
+            }
             .btn-group {
               a {
                 color: inherit;
@@ -298,6 +316,7 @@ label {
   justify-content: center;
   flex-wrap: nowrap;
   text-decoration: none;
+  background-color: transparent;
   .icon {
     display: flex;
     align-items: center;

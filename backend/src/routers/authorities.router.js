@@ -1,9 +1,9 @@
-const { addRole, addFunction, addSubFunction, addFunctionsListToRole, addSubFunctionsToFunction } = require("../controllers/authorities.controller");
+const { addRole, addFunction, addSubFunction, addFunctionsListToRole, addSubFunctionsToFunction, commonAuthorities } = require("../controllers/authorities.controller");
 const { isAuthenticated, isAuthorization } = require("../middlewares/auth.middleware");
 
 const router = require("express").Router();
 
-
+router.route("/authorities/common/all").get(isAuthenticated, isAuthorization("LIST_ROLE"), commonAuthorities)
 router.route("/roles/create").post(addRole);
 router.route("/roles/edit").put(addFunctionsListToRole);
 

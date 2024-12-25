@@ -3,6 +3,7 @@ const BusinessException = require("../utils/error.util");
 const functionModel = require("../models/function.model");
 const roleModel = require("../models/role.model");
 const subFunctionModel = require("../models/subfucntion.model");
+const userModel = require("../models/user.model");
 
 //role
 
@@ -22,7 +23,21 @@ module.exports.addRole = catchAsyncError(async (req, res, next) => {
     message: "New permission added successfully!",
   });
 });
-
+module.exports.commonAuthorities = catchAsyncError(async (req, res, next) => {
+  const userId = req.user;
+  const user = await userModel
+    .findById(userId)
+    .select("role")
+    .populate("role", "_id order");
+  if (!user) throw new BusinessException(500, "User does not exist!");
+  const order = user.role.order;
+  const authorities = await roleModel
+    .find({ order: { $lte: order } })
+    .select("_id name");
+  res.status(200).json({
+    authorities: authorities,
+  });
+});
 module.exports.editRole = catchAsyncError(async (req, res, next) => {
   const { id } = req.query;
   const { name, description } = req.body;
@@ -78,7 +93,8 @@ module.exports.editFunction = catchAsyncError(async (req, res, next) => {
   const { id } = req.query;
   const { name, description } = req.body;
   const functionEdit = await functionModel.findById(id);
-  if (!functionEdit) throw new BusinessException(500, "Function does not exist!");
+  if (!functionEdit)
+    throw new BusinessException(500, "Function does not exist!");
   functionEdit.name = name;
   functionEdit.description = description;
   await functionEdit.save();
@@ -95,9 +111,11 @@ module.exports.addSubFunctionsToFunction = catchAsyncError(
     if (!Array.isArray(subfunctions))
       throw new BusinessException(500, "Invalid data.");
     const functionEdit = await functionModel.findById(id);
-    if (!functionEdit) throw new BusinessException(500, "Function does not exist!");
+    if (!functionEdit)
+      throw new BusinessException(500, "Function does not exist!");
     subfunctions.forEach((item) => {
-      if (!functionEdit.subFunctions.includes(item)) functionEdit.subFunctions.push(item);
+      if (!functionEdit.subFunctions.includes(item))
+        functionEdit.subFunctions.push(item);
     });
     await functionEdit.save();
     res.status(200).json({
@@ -118,7 +136,7 @@ module.exports.addSubFunction = catchAsyncError(async (req, res, next) => {
     _id: id,
     name: name,
     description: description,
-    authorities: authorities
+    authorities: authorities,
   });
   res.status(200).json({
     success: true,

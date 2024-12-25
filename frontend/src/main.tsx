@@ -25,6 +25,8 @@ import BookshelfCreate from './pages/bookshelf/BookshelfCreate.tsx';
 import BookshelfDetail from './pages/bookshelf/BookshelfDetail.tsx';
 import BookshelfEdit from './pages/bookshelf/BookshelfEdit.tsx';
 import UserList from './pages/user/UserList.tsx';
+import UserView from './pages/user/UserView.tsx';
+import UserEdit from './pages/user/UserEdit.tsx';
 
 const router = createBrowserRouter([
   {
@@ -42,6 +44,14 @@ const router = createBrowserRouter([
       {
         path: "users/all",
         element: <UserList />
+      },
+      {
+        path: "users/view/:id",
+        element: <UserView />
+      },
+      {
+        path: "users/edit/:id",
+        element: <UserEdit />
       },
       {
         path: "categories/all",

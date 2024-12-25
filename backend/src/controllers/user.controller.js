@@ -1,5 +1,6 @@
 const catchAsyncError = require("../middlewares/catchAsyncError.middleware");
 const userModel = require("../models/user.model");
+const BusinessException = require("../utils/error.util");
 
 module.exports.allUsers = catchAsyncError(async (req, res, next) => {
   const { keyword, page = 1, limit = 10 } = req.query;
@@ -14,7 +15,7 @@ module.exports.allUsers = catchAsyncError(async (req, res, next) => {
   const total = await userModel.countDocuments({
     name: { $regex: regexKeyword },
   });
-  
+
   if (!users) users = [];
   res.status(200).json({
     users: users,
@@ -32,7 +33,8 @@ module.exports.viewUser = catchAsyncError(async (req, res, next) => {
   if (!id) throw new BusinessException(500, "Invalid data");
   let user = await userModel
     .findById(id)
-    .select("_id name email avatar role createdAt lock");
+    .select("_id name email role createdAt lock")
+    .populate("role", "name");
   if (!user) throw new BusinessException(500, "User does not exist!");
   res.status(200).json({
     user: user,
@@ -41,18 +43,18 @@ module.exports.viewUser = catchAsyncError(async (req, res, next) => {
 
 module.exports.updateUser = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  const { name, email, role, lock } = req.body;
-  if (!id || !name || !email || !role || !lock)
+  const { name, email, roleId } = req.body;
+  if (!id || !name || !email || !roleId)
     throw new BusinessException(500, "Invalid data");
   const user = await userModel.findById(id);
   if (!user) throw new BusinessException(500, "User does not exist!");
   user.name = name;
   user.email = email;
-  user.role = role;
-  user.lock = lock;
+  user.role = roleId;
   await user.save();
   res.status(200).json({
-    user: user,
+    success: true,
+    message: "User has been updated successfully",
   });
 });
 

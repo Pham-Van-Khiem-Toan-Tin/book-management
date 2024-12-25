@@ -6,10 +6,10 @@ import { Tooltip } from "bootstrap";
 import { toast } from "react-toastify";
 import Loading from "../../common/loading/Loading";
 import moment from "moment";
-import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine, RiInformation2Line, RiKey2Line, RiLockUnlockLine, RiPencilLine } from "react-icons/ri";
+import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine, RiInformation2Line, RiKey2Line, RiLock2Line, RiPencilLine } from "react-icons/ri";
 import { selectStyle, optionRecord, Option } from "../../configs/select.config";
 import { reset, resetError } from "../../apis/slices/user/user.slice";
-import { allUser } from "../../apis/actions/user.action";
+import { allUser, lockUser } from "../../apis/actions/user.action";
 
 const UserList = () => {
     const [searchParam] = useSearchParams();
@@ -19,7 +19,7 @@ const UserList = () => {
     const [keyword, setKeyword] = useState(searchParam.get("keyword") ?? undefined);
     const index = optionRecord.findIndex((option) => option.value === (searchParam.get("view") ? parseInt(searchParam.get("view")!) : 10));
     useEffect(() => {
-        setKeyword(searchParam.get("keyword") ?? undefined);                
+        setKeyword(searchParam.get("keyword") ?? undefined);
         dispatch(allUser({ keyword: searchParam.get("keyword"), page: searchParam.get("page") ? parseInt(searchParam.get("page")!) : 1, view: searchParam.get("view") ? parseInt(searchParam.get("view")!) : 10 }));
     }, [searchParam, dispatch]);
     useEffect(() => {
@@ -38,7 +38,9 @@ const UserList = () => {
         if (success) {
             toast.success(message);
             dispatch(reset());
-            window.location.reload();
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
         }
         if (error) {
             toast.error(message);
@@ -72,7 +74,9 @@ const UserList = () => {
 
         }
     }
-
+    const handleLockUser = (id: string, status: boolean) => {
+        dispatch(lockUser({ id, status }));
+    }
     return (
         <>
             {loading ?
@@ -112,23 +116,27 @@ const UserList = () => {
                                                 <td className="align-middle">{item.name}</td>
                                                 <td className="align-middle">{item.email}</td>
                                                 <td className="align-middle">{item.role.name}</td>
-                                                <td className="align-middle"><div className="status">{item.lock ? "Lock" : "Activated"}</div></td>
+                                                <td className="align-middle"><div className={`rounded-pill py-1 px-2 d-flex align-items-center justify-content-center ${item.lock ? "status-error" : "status-active"}`}>
+                                                    <span>
+                                                        {item.lock ? "Lock" : "Activated"}
+                                                    </span>
+                                                </div></td>
                                                 <td className="align-middle">{moment(item?.createdAt).format("DD-MM-YYYY")}</td>
                                                 <td className="align-middle">
                                                     <div className="btn-group d-flex gap-2 align-items-center">
-                                                        <Link className="btn-icon" to={`/libraries/view/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="View">
+                                                        <Link className="btn-icon" to={`/users/view/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="View">
                                                             <div className="icon">
                                                                 <RiInformation2Line />
                                                             </div>
                                                         </Link>
-                                                        <Link className="btn-icon" to={`/libraries/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
+                                                        <Link className="btn-icon" to={`/users/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
                                                             <div className="icon">
                                                                 <RiPencilLine />
                                                             </div>
                                                         </Link>
-                                                        <button className="btn-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Delete">
+                                                        <button onClick={() => handleLockUser(item._id, !item.lock)} className="btn-icon" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title={item.lock ? "Unlock" : "Lock"}>
                                                             <div className="icon">
-                                                                {item.lock ? (<RiLockUnlockLine />) : (<RiKey2Line />)}
+                                                                {!item.lock ? (<RiLock2Line />) : (<RiKey2Line />)}
                                                             </div>
                                                         </button>
                                                     </div>
