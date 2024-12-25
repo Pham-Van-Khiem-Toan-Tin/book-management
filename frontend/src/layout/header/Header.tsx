@@ -20,9 +20,9 @@ const Header = () => {
     <div className='py-2 px-4 header-management'>
       <div className="header-container d-flex align-items-center justify-content-between">
 
-        <button type="button" onClick={login} className="btn btn-secondary">
-          Custom tooltip
-        </button>
+        <div>
+          <input type="text" placeholder='Search' />
+        </div>
         <div className="btn-group">
           <Menu menuButton={
             <button className="btn-icon rounded-circle">

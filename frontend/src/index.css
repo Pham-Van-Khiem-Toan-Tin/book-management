@@ -138,6 +138,19 @@ body.modal-open {
   --bs-table-bg-type: var(--bs-table-striped-bg);
 }
 
+.pagination li a, .pagination li button {
+  color: var(--hard-primary);
+}
+.pagination li a:hover, .pagination li a:active, .pagination li button:hover, .pagination li button:active {
+  color: var(--hard-primary);
+}
+.pagination li a:focus, .pagination li button:focus {
+  color: var(--hard-primary);
+  font-weight: 600;
+  box-shadow: 0 0 0 0.25rem var(--soft-primary);
+  background-color: transparent;
+}
+
 .box-search {
   display: flex;
   align-items: center;

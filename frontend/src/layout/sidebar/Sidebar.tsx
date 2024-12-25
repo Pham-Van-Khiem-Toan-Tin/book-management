@@ -1,5 +1,5 @@
 import "./sidebar.css";
-import { RiArchive2Line, RiArchiveDrawerLine, RiArchiveStackLine, RiBookMarkedLine, RiDashboardLine, RiListCheck2, RiUserAddLine } from "react-icons/ri";
+import { RiArchive2Line, RiArchiveDrawerLine, RiArchiveStackLine, RiBookMarkedLine, RiDashboardLine, RiListCheck2, RiP2pLine, RiUserAddLine } from "react-icons/ri";
 import { GoDotFill } from "react-icons/go";
 import Logo from "../../assets/images/login/Logo.png";
 import { useEffect } from 'react';
@@ -77,6 +77,26 @@ const Sidebar = () => {
                                         <GoDotFill />
                                     </div>
                                     <span>User List</span>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="accordion-item">
+                        <h2 className="accordion-header">
+                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#roles" aria-expanded="false" aria-controls="users">
+                                <div className="icon">
+                                    <RiP2pLine />
+                                </div>
+                                <span>Authority Management</span>
+                            </button>
+                        </h2>
+                        <div id="roles" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
+                            <div className="accordion-body">
+                                <Link to="/users/all" className="btn-icon">
+                                    <div className="icon">
+                                        <GoDotFill />
+                                    </div>
+                                    <span>Authorities List</span>
                                 </Link>
                             </div>
                         </div>
