@@ -37,6 +37,7 @@ interface LibraryResponse {
     message: string
 };
 interface LibraryForm {
+    _id: string,
     name: string,
     location: string,
     description: string

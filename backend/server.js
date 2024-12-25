@@ -56,12 +56,16 @@ app.use(
 const authoritiesRouter = require("./src/routers/authorities.router");
 const categoryRouter = require("./src/routers/category.router");
 const libraryRouter = require("./src/routers/library.router");
+const bookcaseRouter = require("./src/routers/bookcase.router");
+const bookshelfRouter = require("./src/routers/bookshelf.router");
 
 // app.set("trust proxy", 1);
 app.use("/auth", authRoute);
 app.use("/admin", authoritiesRouter);
 app.use("/admin/categories", categoryRouter);
 app.use("/admin/libraries", libraryRouter);
+app.use("/admin/bookcases", bookcaseRouter);
+app.use("/admin/bookshelves", bookshelfRouter);
 
 
 module.exports = app;
