@@ -13,7 +13,10 @@ export interface Bookcase {
   };
   createdAt: string;
 }
-
+export interface Library {
+  _id: string,
+  name: string
+}
 interface AllBookcase {
   bookcases: Array<Bookcase>;
   pagination: {
@@ -22,6 +25,13 @@ interface AllBookcase {
     limit: number;
     totalPages: number;
   };
+}
+export interface CommonBookcase {
+  _id: string;
+  name: string;
+}
+interface AllCommonBookcase {
+  bookcases: Array<CommonBookcase>;
 }
 
 interface BookcaseDetailRes {
@@ -40,9 +50,10 @@ interface BookcaseResponse {
 }
 
 interface BookcaseForm {
+  _id: string;
   name: string;
   description: string;
-  library: string;
+  libraryId: string;
 }
 
 export const allBookcase = createAsyncThunk<AllBookcase, BookcaseSearch>(
@@ -66,8 +77,29 @@ export const allBookcase = createAsyncThunk<AllBookcase, BookcaseSearch>(
     }
   }
 );
+export const allCommonBookcase = createAsyncThunk<AllCommonBookcase, void>(
+  "bookcase/allCommon",
+  async (_, { rejectWithValue }) => {
+    try {
+      const authApi = useAuthAxios();
+      const response = await authApi.get(BOOKCASE_ENDPOINT.COMMON);
+      return response.data;
+    } catch (error) {
+      console.log(error);
 
-export const createBookcase = createAsyncThunk<BookcaseResponse, BookcaseForm>(
+      if (error instanceof AxiosError && error.response) {
+        return rejectWithValue(error.response.data);
+      }
+      return rejectWithValue("Error fetching common bookcase data");
+    }
+  }
+);
+interface BookcaseFormCreate {
+  name: string;
+  description: string;
+  libraryId: string;
+}
+export const createBookcase = createAsyncThunk<BookcaseResponse, BookcaseFormCreate>(
   "bookcase/create",
   async (data, { rejectWithValue }) => {
     try {
@@ -106,7 +138,7 @@ export const editBookcase = createAsyncThunk<BookcaseResponse, BookcaseForm>(
   async (data, { rejectWithValue }) => {
     try {
       const authApi = useAuthAxios();
-      const response = await authApi.put(BOOKCASE_ENDPOINT.EDIT, data);
+      const response = await authApi.put(`${BOOKCASE_ENDPOINT.EDIT}/${data._id}`, data);
       return response.data;
     } catch (error) {
       console.log(error);

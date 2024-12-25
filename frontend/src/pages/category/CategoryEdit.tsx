@@ -1,10 +1,10 @@
 import { Link, useNavigate, useParams } from "react-router"
-import { useAppDispatch, useAppSelector } from "../../../hooks/reduxhooks"
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks"
 import { useEffect, useState } from "react";
-import { allCategory, categoryDetail, editCategory } from "../../../apis/actions/category.action";
+import { allCategory, categoryDetail, editCategory } from "../../apis/actions/category.action";
 import { toast } from "react-toastify";
-import { reset, resetError } from "../../../apis/slices/category/category.slice";
-import Loading from "../../../common/loading/Loading";
+import { reset, resetError } from "../../apis/slices/category/category.slice";
+import Loading from "../../common/loading/Loading";
 import { StylesConfig } from "react-select";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Select from "react-select";
@@ -106,7 +106,7 @@ const CategoryEdit = () => {
     <>
       {
         loading ? (<Loading />) :
-          (<form onSubmit={handleSubmit(onSubmit)} className="category-create d-flex flex-column justify-content-between rounded p-2">
+          (<form onSubmit={handleSubmit(onSubmit)} className="form-create d-flex flex-column justify-content-between rounded p-2">
             <div className="d-flex flex-column">
               <div className="box-input">
                 <input {...control.register("_id", {

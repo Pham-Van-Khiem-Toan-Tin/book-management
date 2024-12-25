@@ -1,12 +1,11 @@
 import { Link, useParams } from "react-router"
-import { useAppDispatch, useAppSelector } from "../../../hooks/reduxhooks"
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks"
 import { useEffect } from "react";
 import moment from "moment";
 import { toast } from "react-toastify";
-import Loading from "../../../common/loading/Loading";
-import { viewLibrary } from "../../../apis/actions/library.action";
-import "./library-detail.css";
-import { resetError } from "../../../apis/slices/library/library.slice";
+import Loading from "../../common/loading/Loading";
+import { viewLibrary } from "../../apis/actions/library.action";
+import { resetError } from "../../apis/slices/library/library.slice";
 const LibraryDetail = () => {
     const dispatch = useAppDispatch();
     const { library, loading, error, message } = useAppSelector((state) => state.library);
@@ -25,7 +24,7 @@ const LibraryDetail = () => {
         <>
             {
                 loading ? (<Loading />) :
-                    (<div className="library-create d-flex flex-column justify-content-between rounded p-2">
+                    (<div className="form-detail d-flex flex-column justify-content-between rounded p-2">
                         <div className="d-flex flex-column">
                             <div className="box-input">
                                 <label htmlFor="name">Name: <span className="text-danger">*</span></label>

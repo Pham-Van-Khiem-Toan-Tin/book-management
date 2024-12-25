@@ -1,11 +1,11 @@
 import { Link, useNavigate, useParams } from "react-router"
-import { useAppDispatch, useAppSelector } from "../../../hooks/reduxhooks"
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks"
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import Loading from "../../../common/loading/Loading";
+import Loading from "../../common/loading/Loading";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { editLibrary, viewLibrary } from "../../../apis/actions/library.action";
-import { reset, resetError } from "../../../apis/slices/library/library.slice";
+import { editLibrary, viewLibrary } from "../../apis/actions/library.action";
+import { reset, resetError } from "../../apis/slices/library/library.slice";
 
 interface Library {
     _id: string,
@@ -57,7 +57,7 @@ const LibraryEdit = () => {
         <>
             {
                 loading ? (<Loading />) :
-                    (<form onSubmit={handleSubmit(onSubmit)} className="category-create d-flex flex-column justify-content-between rounded p-2">
+                    (<form onSubmit={handleSubmit(onSubmit)} className="form-create d-flex flex-column justify-content-between rounded p-2">
                         <div className="d-flex flex-column">
                             <div className="box-input">
                                 <input {...control.register("_id", {

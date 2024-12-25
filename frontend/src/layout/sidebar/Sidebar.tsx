@@ -72,18 +72,12 @@ const Sidebar = () => {
                         </h2>
                         <div id="users" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
                             <div className="accordion-body">
-                                <div className="btn-icon">
+                                <Link to="/users/all" className="btn-icon">
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Customer List</span>
-                                </div>
-                                <div className="btn-icon">
-                                    <div className="icon">
-                                        <GoDotFill />
-                                    </div>
-                                    <span>Employee List</span>
-                                </div>
+                                    <span>User List</span>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -133,17 +127,17 @@ const Sidebar = () => {
                                 <div className="icon">
                                     <RiArchiveDrawerLine />
                                 </div>
-                                <span>Bookshelf Management</span>
+                                <span>Bookcase Management</span>
                             </button>
                         </h2>
                         <div id="orders" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
                             <div className="accordion-body">
-                                <div className="btn-icon">
+                                <Link to="/bookcases/all" className="btn-icon">
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Bookshelf List</span>
-                                </div>
+                                    <span>Bookcase List</span>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -158,12 +152,12 @@ const Sidebar = () => {
                         </h2>
                         <div id="coupon" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
                             <div className="accordion-body">
-                                <div className="btn-icon">
+                                <Link to="/bookshelves/all" className="btn-icon">
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
                                     <span>Shelf List</span>
-                                </div>
+                                </Link>
                             </div>
                         </div>
                     </div>

@@ -1,105 +1,54 @@
-import { Link, useNavigate, useSearchParams } from "react-router";
-import { useAppDispatch, useAppSelector } from "../../../hooks/reduxhooks";
-import { useEffect, useState } from "react";
-import { allLibrary, deleteLibrary, Library } from "../../../apis/actions/library.action";
-import { SingleValue, StylesConfig } from "react-select";
-import { Modal, Tooltip } from "bootstrap";
+import { useEffect, useState } from "react"
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks"
+import { allCategory, Category, deleteCategory } from "../../apis/actions/category.action";
 import { toast } from "react-toastify";
-import { reset, resetError } from "../../../apis/slices/library/library.slice";
-import Loading from "../../../common/loading/Loading";
+import { reset, resetError } from "../../apis/slices/category/category.slice";
+import Loading from "../../common/loading/Loading";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import moment from "moment";
 import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine, RiDeleteBin5Line, RiInformation2Line, RiPencilLine } from "react-icons/ri";
-import Select from "react-select";
-import ModalBs from "../../../common/modal/Modal";
+import { Modal, Tooltip } from "bootstrap";
+import Select, { SingleValue } from "react-select";
+import ModalBs from "../../common/modal/Modal";
 import { CiWarning } from "react-icons/ci";
+import { selectStyle, optionRecord, Option } from "../../configs/select.config";
 
+const CategoryList = () => {
 
-interface Option {
-  value: number;
-  label: number;
-}
-const LibraryList = () => {
-  const selectStyle: StylesConfig<Option, false> = {
-    control: (baseStyles) => ({
-      ...baseStyles,
-      border: '1px solid #ececec',
-      boxShadow: 'none',
-      minWidth: '72px',
-      padding: '0rem 0.6rem',
-      margin: '0 0.2rem',
-      fontSize: '0.9rem',
-      "&:hover": {
-        borderColor: '#ececec'
-      }
-    }),
-    indicatorSeparator: (provided) => ({
-      ...provided,
-      display: 'none',
-    }),
-    dropdownIndicator: (provided) => ({
-      ...provided,
-      paddingBlock: 0,
-      paddingRight: 0
-
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      padding: 0
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: '#a6a6a6',
-      fontWeight: 300,
-      margin: 0
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      padding: '0.2rem 0.6rem',
-      fontSize: '0.9rem',
-      cursor: 'pointer',
-      backgroundColor: state.isSelected ? '#00b207' : 'transparent',
-      "&:hover": {
-        backgroundColor: state.isSelected ? '#00b207' : '#dae5da'
-      }
-    })
-  }
-  const optionRecord = [
-    {
-      value: 10,
-      label: 10
-    },
-    {
-      value: 15,
-      label: 15
-    },
-    {
-      value: 20,
-      label: 20
-    },
-  ]
   const [searchParam] = useSearchParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading, libraries, pagination, error, success, message } = useAppSelector((state) => state.library);
+  const { loading, message, categories, error, pagination, success } = useAppSelector((state) => state.category);
   const [keyword, setKeyword] = useState(searchParam.get("keyword") ?? undefined);
-  const [libraryDelete, setLibraryDelete] = useState<Library | null>(null);
-  const index = optionRecord.findIndex((option) => option.value === (searchParam.get("view") ? parseInt(searchParam.get("view")!) : 10));
+  const [categoryDelete, setCategoryDelete] = useState<Category | null>(null);
+  const index = optionRecord.findIndex(
+    (item) => item.value === parseInt(searchParam.get("view") ?? "10")
+  );
+
   useEffect(() => {
-    setKeyword(searchParam.get("keyword") ?? undefined);
-    dispatch(allLibrary({ keyword: searchParam.get("keyword"), page: searchParam.get("page") ? parseInt(searchParam.get("page")!) : 1, view: searchParam.get("view") ? parseInt(searchParam.get("view")!) : 10 }));
-  }, [searchParam, dispatch]);
+    setKeyword(searchParam.get("keyword") ?? undefined)
+    dispatch(allCategory({ keyword: searchParam.get("keyword"), view: parseInt(searchParam.get("view") ?? "10"), page: parseInt(searchParam.get("page") ?? "1") }));
+  }, [dispatch, searchParam]);
   useEffect(() => {
     let toolTipList = null;
-    if (libraries.length > 0) {
+    if (categories.length > 0) {
       const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
       toolTipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl));
     }
     return () => {
-      toolTipList?.forEach((tooltip) => {
-        tooltip.dispose()
-      });
+      if (toolTipList) {
+        toolTipList.forEach(item => {
+          item.hide();
+        })
+      }
+      const modelElement = document.getElementById("modal-bookshop") as HTMLElement;
+      if (modelElement) {
+        const modal = new Modal(modelElement);
+        modal.hide();
+      }
     }
-  }, [libraries]);
+  }, [categories])
+
   useEffect(() => {
     if (success) {
       toast.success(message);
@@ -110,18 +59,18 @@ const LibraryList = () => {
       toast.error(message);
       dispatch(resetError());
     }
-  }, [success, error, message, dispatch]);
+  }, [dispatch, error, message, success]);
   const handleSearch = () => {
-    if (!keyword) {
+    if (!keyword)
       searchParam.delete("keyword");
-    } else if (keyword.trim()) {
+    else if (keyword.trim())
       searchParam.set("keyword", keyword);
-    }
-    searchParam.delete("page");
     searchParam.delete("view");
-    navigate(`?${searchParam.toString()}`);
+    searchParam.delete("page");
+    console.log(searchParam.toString());
+    navigate(`?${searchParam.toString()}`)
     window.location.reload();
-  };
+  }
   const handleChangePerView = (data: SingleValue<Option>) => {
     const recordNumber = optionRecord.find((item) => item.value == data?.value) || optionRecord[0];
     searchParam.set("view", JSON.stringify(recordNumber.value));
@@ -138,14 +87,14 @@ const LibraryList = () => {
 
     }
   }
-  const toggleModalDelete = (item: Library) => {
+  const toggleModalDelete = (item: Category) => {
     const modelElement = document.getElementById("modal-bookshop") as HTMLElement;
     const modal = new Modal(modelElement);
-    setLibraryDelete(item);
+    setCategoryDelete(item);
     modal.toggle();
   };
   const handleDelete = () => {
-    if (libraryDelete) dispatch(deleteLibrary(libraryDelete?._id))
+    if (categoryDelete) dispatch(deleteCategory(categoryDelete?._id))
   }
   return (
     <>
@@ -157,7 +106,7 @@ const LibraryList = () => {
             <button onClick={handleSearch} className="btn-fill rounded">Search</button>
           </div>
           <div className="box-handle mb-3">
-            <Link to="/libraries/create" className="btn-fill rounded">Create</Link>
+            <Link to="/categories/create" className="btn-fill rounded">Create</Link>
             <button className="btn-fill rounded">Export</button>
           </div>
           <div className="table-container rounded border">
@@ -171,27 +120,27 @@ const LibraryList = () => {
                   <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Location</th>
+                    <th scope="col">Parent</th>
                     <th scope="col">Created at</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {libraries && libraries.length > 0 ? (
-                    libraries.map((item, index) => (
+                  {categories && categories.length > 0 ? (
+                    categories.map((item, index) => (
                       <tr key={item._id}>
-                        <td className="align-middle">{index + 1}</td>
+                        <td className="align-middle">{(pagination.page - 1 ) * pagination.limit + index + 1}</td>
                         <td className="align-middle">{item.name}</td>
-                        <td className="align-middle">{item.location}</td>
+                        <td className="align-middle">{item.parent_id?.name ?? "No data"}</td>
                         <td className="align-middle">{moment(item?.createdAt).format("DD-MM-YYYY")}</td>
                         <td className="align-middle">
                           <div className="btn-group d-flex gap-2 align-items-center">
-                            <Link className="btn-icon" to={`/libraries/view/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="View">
+                            <Link className="btn-icon" to={`/categories/view/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="View">
                               <div className="icon">
                                 <RiInformation2Line />
                               </div>
                             </Link>
-                            <Link className="btn-icon" to={`/libraries/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
+                            <Link className="btn-icon" to={`/categories/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
                               <div className="icon">
                                 <RiPencilLine />
                               </div>
@@ -222,7 +171,7 @@ const LibraryList = () => {
                       styles={selectStyle}
                       onChange={handleChangePerView}
                       value={optionRecord[index]}
-                      isDisabled={libraries.length === 0}
+                      isDisabled={categories.length == 0}
                       options={optionRecord} />
                   </div>
                   record</span>
@@ -254,23 +203,25 @@ const LibraryList = () => {
               </ul>
             </div>
           </div>
-          <ModalBs maxWidth="500px">
-            <div className="d-flex flex-column align-items-center justify-content-center py-4">
-              <div className="icon mb-2">
-                <CiWarning />
+          <div className="modal-delete">
+            <ModalBs maxWidth="500px">
+              <div className="d-flex flex-column align-items-center justify-content-center py-4">
+                <div className="icon mb-2">
+                  <CiWarning />
+                </div>
+                <h5 className="text-danger">Delete</h5>
+                <span className="d-inline-block mb-4">Are you sure you would like to delete category {categoryDelete?.name}?</span>
+                <div className="btn-group d-flex align-items-center justify-content-center gap-4">
+                  <button className="btn-base btn-fill px-3 py-2 rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                  <button onClick={handleDelete} className="btn-base btn-border px-3 py-2 rounded text-danger border-danger" data-bs-dismiss="modal" aria-label="Close">Delete</button>
+                </div>
               </div>
-              <h5 className="text-danger">Delete</h5>
-              <span className="d-inline-block mb-4">Are you sure you would like to delete category {libraryDelete?.name}?</span>
-              <div className="btn-group d-flex align-items-center justify-content-center gap-4">
-                <button className="btn-base btn-fill px-3 py-2 rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                <button onClick={handleDelete} className="btn-base btn-border px-3 py-2 rounded text-danger border-danger" data-bs-dismiss="modal" aria-label="Close">Delete</button>
-              </div>
-            </div>
-          </ModalBs>
+            </ModalBs>
+          </div>
         </div>
       }
     </>
   )
 }
 
-export default LibraryList
+export default CategoryList

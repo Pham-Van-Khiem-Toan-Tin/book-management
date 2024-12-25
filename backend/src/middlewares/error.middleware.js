@@ -5,6 +5,8 @@ const errorHandler = (err, req, res, next) => {
       // Nếu lỗi là BusinessException
       return res.status(err.statusCode).send(err.message);
     }
+    console.log(err);
+    
     return res.status(500).json({
       success: false,
       message: "An unexpected error occurred.",

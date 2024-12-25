@@ -1,10 +1,10 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { createLibrary } from "../../../apis/actions/library.action";
-import { useAppDispatch, useAppSelector } from "../../../hooks/reduxhooks";
+import { createLibrary } from "../../apis/actions/library.action";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { reset, resetError } from "../../../apis/slices/library/library.slice";
+import { reset, resetError } from "../../apis/slices/library/library.slice";
 
 interface Library {
     name: string,

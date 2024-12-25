@@ -5,5 +5,6 @@ export const BOOKCASE_ENDPOINT = {
     CREATE: `${baseUrl}/admin/bookcases/create`,
     VIEW: `${baseUrl}/admin/bookcases/view`,
     EDIT: `${baseUrl}/admin/bookcases/edit`,
-    DELETE: `${baseUrl}/admin/bookcases/delete`
+    DELETE: `${baseUrl}/admin/bookcases/delete`,
+    COMMON: `${baseUrl}/admin/bookcases/common/all`,
 }

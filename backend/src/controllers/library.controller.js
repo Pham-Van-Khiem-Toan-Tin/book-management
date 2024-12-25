@@ -27,6 +27,14 @@ module.exports.search = catchAsyncError(async (req, res, next) => {
     });
 });
 
+module.exports.allCommon = catchAsyncError(async (req, res, next) => {
+    let list = await libraryModel.find().select("_id name");
+    if (!list) list = [];
+    res.status(200).json({
+      libraries: list,
+    });
+});
+
 module.exports.viewLibrary = catchAsyncError(async (req, res, next) => {
     const { id } = req.params;
     if (!id) throw new BusinessException(500, "Invalid data");

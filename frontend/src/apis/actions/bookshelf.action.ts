@@ -3,10 +3,11 @@ import useAuthAxios from "../../hooks/useAuthApi";
 import { BOOKSHELF_ENDPOINT } from "../endpoints/bookshelf.endpoint";
 import { AxiosError } from "axios";
 
-interface Bookshelf {
+export interface Bookshelf {
   _id: string;
   name: string;
   description: string;
+  createdAt: string;
   bookcase: {
     _id: string;
     name: string;
@@ -43,9 +44,10 @@ interface BookshelfResponse {
 }
 
 interface BookshelfForm {
+  _id: string;
   name: string;
   description: string;
-  bookcase: string;
+  bookcaseId: string;
 }
 
 export const allBookshelf = createAsyncThunk<AllBookshelf, BookshelfSearch>(
@@ -70,9 +72,14 @@ export const allBookshelf = createAsyncThunk<AllBookshelf, BookshelfSearch>(
   }
 );
 
+interface BookshelfFormCreate {
+  name: string;
+  description: string;
+  bookcaseId: string;
+}
 export const createBookshelf = createAsyncThunk<
-  BookshelfDetailRes,
-  BookshelfForm
+  BookshelfResponse,
+  BookshelfFormCreate
 >("bookshelf/create", async (bookshelf, { rejectWithValue }) => {
   try {
     const authApi = useAuthAxios();
@@ -111,11 +118,9 @@ export const editBookshelf = createAsyncThunk<BookshelfResponse, BookshelfForm>(
   async (form, { rejectWithValue }) => {
     try {
       const authApi = useAuthAxios();
-      const response = await authApi.put(BOOKSHELF_ENDPOINT.EDIT, form);
+      const response = await authApi.put(`${BOOKSHELF_ENDPOINT.EDIT}/${form._id}`, form);
       return response.data;
     } catch (error) {
-      console.log(error);
-
       if (error instanceof AxiosError && error.response) {
         return rejectWithValue(error.response.data);
       }

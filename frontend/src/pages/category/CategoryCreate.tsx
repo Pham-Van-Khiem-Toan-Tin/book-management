@@ -1,12 +1,11 @@
 import Select, { StylesConfig } from "react-select";
-import "./category-create.css"
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../../../hooks/reduxhooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks";
 import { useEffect, useState } from "react";
-import { allCategory, createCategory } from "../../../apis/actions/category.action";
+import { allCategory, createCategory } from "../../apis/actions/category.action";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { reset, resetError } from "../../../apis/slices/category/category.slice";
+import { reset, resetError } from "../../apis/slices/category/category.slice";
 interface Option {
   label: string;
   value: string | number | null;
@@ -87,7 +86,7 @@ const CategoryCreate = () => {
     dispatch(createCategory(data));
   }
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="category-create d-flex flex-column justify-content-between rounded p-2">
+    <form onSubmit={handleSubmit(onSubmit)} className="form-create d-flex flex-column justify-content-between rounded p-2">
       <div className="d-flex flex-column">
         <div className="box-input">
           <label htmlFor="name">Name: <span className="text-danger">*</span></label>

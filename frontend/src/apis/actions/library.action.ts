@@ -21,7 +21,13 @@ interface AllLibrary {
         totalPages: number,
     }
 };
-
+interface LibraryCommon {
+    _id: string,
+    name: string,
+};
+interface CommonLibraries {
+    libraries: Array<LibraryCommon>
+}
 interface LibraryDetailRes {
     library: Library
 };
@@ -54,6 +60,21 @@ export const allLibrary = createAsyncThunk<AllLibrary, LibrarySearch>(
             const response = await authApi.get(LIBRARY_ENDPOINT.ALL + query);
             return response.data;
         } catch (error) {
+            if (error instanceof AxiosError && error.response) {
+                return rejectWithValue(error.response.data);
+            }
+            return rejectWithValue("Error fetching user data");
+        }
+    }
+);
+export const allCommonLibrary = createAsyncThunk<CommonLibraries,void>(
+    "library/allCommon",
+    async (_, { rejectWithValue }) => {
+        try {
+            const authApi = useAuthAxios();
+            const response = await authApi.get(LIBRARY_ENDPOINT.COMMON);
+            return response.data;
+        } catch (error) {
             console.log(error);
 
             if (error instanceof AxiosError && error.response) {
@@ -63,8 +84,12 @@ export const allLibrary = createAsyncThunk<AllLibrary, LibrarySearch>(
         }
     }
 );
-
-export const createLibrary = createAsyncThunk<LibraryResponse, LibraryForm>(
+interface LibraryFormCreate {
+    name: string,
+    location: string,
+    description: string
+};
+export const createLibrary = createAsyncThunk<LibraryResponse, LibraryFormCreate>(
     "library/create",
     async (library, { rejectWithValue }) => {
         try {

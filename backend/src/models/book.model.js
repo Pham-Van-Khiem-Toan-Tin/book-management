@@ -15,6 +15,10 @@ const bookSchema = new mongoose.Schema(
       minLength: [2, "Author should have more than 2 characters"],
       maxLength: [32, "Author can not exceed 32 characters"],
     },
+    image: {
+      type: String,
+      required: [true, "Image is not valid"],
+    },
     description: {
       type: String,
       required: [true, "Description is not valid"],
@@ -37,8 +41,16 @@ const bookSchema = new mongoose.Schema(
           ref: "bookcases",
           required: true,
         },
+        quantity: {
+          type: Number,
+          required: true,
+          default: 1,
+        }
       },
     ],
   },
   { timestamps: true }
 );
+
+const bookModel = mongoose.model("books", bookSchema);
+module.exports = bookModel;

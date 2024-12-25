@@ -216,6 +216,21 @@ textarea.search {
   padding-left: 1rem;
 }
 
+.form-create, .form-detail {
+  width: 100%;
+  min-height: 100%;
+  background-color: rgba(0, 178, 7, 0.1);
+}
+
+.modal-delete .modal .modal-content .modal-body .icon {
+  font-size: 2.5rem;
+  color: #eab408;
+}
+.modal-delete .modal .modal-content .modal-body h5 {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
 .input-error {
   color: var(--danger);
   font-size: 0.8rem;
