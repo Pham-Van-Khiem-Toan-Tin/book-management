@@ -4,7 +4,8 @@ import { AUTH_ENDPOINT } from "../endpoints/auth.endpoint";
 import useAuthAxios from "../../hooks/useAuthApi";
 
 interface TokenResponse {
-  accessToken: string
+  accessToken: string,
+  sub: string,
 }
 export const loginSuccess = createAsyncThunk<TokenResponse, void>(
   "auth/token",
@@ -13,7 +14,7 @@ export const loginSuccess = createAsyncThunk<TokenResponse, void>(
       const response = await axios.get(AUTH_ENDPOINT.LOGIN_SUCCESS, {
         withCredentials: true,
       });
-      return response.data as TokenResponse;
+      return response.data;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
         return rejectWithValue(error.response.data);

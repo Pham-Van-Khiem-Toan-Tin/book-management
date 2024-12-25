@@ -28,6 +28,7 @@ const tokenSlice = createSlice({
     builder.addCase(loginSuccess.fulfilled, (state, action) => {
       state.loading = false;
       localStorage.setItem("act", action.payload.accessToken);
+      localStorage.setItem("sb", action.payload.sub);
     });
     builder.addCase(loginSuccess.rejected, (state) => {
       state.loading = false;

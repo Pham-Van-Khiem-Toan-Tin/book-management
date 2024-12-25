@@ -5,9 +5,8 @@ import { allCategory, categoryDetail, editCategory } from "../../apis/actions/ca
 import { toast } from "react-toastify";
 import { reset, resetError } from "../../apis/slices/category/category.slice";
 import Loading from "../../common/loading/Loading";
-import { StylesConfig } from "react-select";
+import Select, { StylesConfig } from "react-select";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import Select from "react-select";
 interface Option {
   label: string;
   value: string | number | null;

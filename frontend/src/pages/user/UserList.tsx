@@ -129,16 +129,20 @@ const UserList = () => {
                                                                 <RiInformation2Line />
                                                             </div>
                                                         </Link>
-                                                        <Link className="btn-icon" to={`/users/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
-                                                            <div className="icon">
-                                                                <RiPencilLine />
-                                                            </div>
-                                                        </Link>
-                                                        <button onClick={() => handleLockUser(item._id, !item.lock)} className="btn-icon" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title={item.lock ? "Unlock" : "Lock"}>
-                                                            <div className="icon">
-                                                                {!item.lock ? (<RiLock2Line />) : (<RiKey2Line />)}
-                                                            </div>
-                                                        </button>
+                                                        {localStorage.getItem("sb") != item._id && (
+                                                            <>
+                                                                <Link className="btn-icon" to={`/users/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
+                                                                    <div className="icon">
+                                                                        <RiPencilLine />
+                                                                    </div>
+                                                                </Link>
+                                                                <button onClick={() => handleLockUser(item._id, !item.lock)} className="btn-icon" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title={item.lock ? "Unlock" : "Lock"}>
+                                                                    <div className="icon">
+                                                                        {!item.lock ? (<RiLock2Line />) : (<RiKey2Line />)}
+                                                                    </div>
+                                                                </button>
+                                                            </>
+                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>

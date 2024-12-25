@@ -46,6 +46,8 @@ module.exports.updateUser = catchAsyncError(async (req, res, next) => {
   const { name, email, roleId } = req.body;
   if (!id || !name || !email || !roleId)
     throw new BusinessException(500, "Invalid data");
+  const userId = req.user;
+  if (id == userId) throw new BusinessException(500, "Cannot update yourself!");
   const user = await userModel.findById(id);
   if (!user) throw new BusinessException(500, "User does not exist!");
   user.name = name;
@@ -62,6 +64,8 @@ module.exports.lockUser = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
   const { status } = req.body;
   if (!id) throw new BusinessException(500, "Invalid data");
+  const userId = req.user;
+  if (id == userId) throw new BusinessException(500, "Cannot lock yourself!");
   const user = await userModel.findByIdAndUpdate(id, { lock: status });
   if (!user) throw new BusinessException(500, "User does not exist!");
   res.status(200).json({

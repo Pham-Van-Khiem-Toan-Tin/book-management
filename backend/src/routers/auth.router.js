@@ -36,6 +36,7 @@ router.get("/login/success", (req, res) => {
     })
     res.status(200).json({
       accessToken: accessToken,
+      sub: user._id,
     });
   } else {
     res.status(500).json({
