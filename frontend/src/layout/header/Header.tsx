@@ -8,14 +8,10 @@ import "./header.css"
 import { RiLogoutBoxLine, RiMailLine, RiNotification2Line, RiUserSettingsLine } from "react-icons/ri";
 import { useAppSelector } from '../../hooks/reduxhooks';
 const Header = () => {
-  const { loading, name, avatar } = useAppSelector((state) => state.auth);
+  const { loading, avatar } = useAppSelector((state) => state.auth);
   const ref = useRef(null);
   const [menuState, toggle] = useMenuState({ transition: true });
   const { anchorProps, hoverProps } = useHover(menuState.state, toggle);
-  const login = () => {
-    // auth.signIn()
-    // Xử lý response và token sau khi đăng nhập thành công
-  };
   return (
     <div className='py-2 px-4 header-management'>
       <div className="header-container d-flex align-items-center justify-content-between">

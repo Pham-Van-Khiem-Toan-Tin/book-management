@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.5.0",
     "@szhsin/react-menu": "^4.2.3",
     "@types/bootstrap": "^5.2.10",
+    "@types/lodash": "^4.17.13",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
     "frontend": "file:",
@@ -25,7 +26,9 @@
     "react-redux": "^9.2.0",
     "react-router": "^7.0.2",
     "react-select": "^5.9.0",
-    "react-toastify": "^11.0.1"
+    "react-tabs": "^6.1.0",
+    "react-toastify": "^11.0.1",
+    "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

@@ -139,6 +139,7 @@ body.modal-open {
 }
 
 .pagination li a, .pagination li button {
+  font-weight: 500;
   color: var(--hard-primary);
 }
 .pagination li a:hover, .pagination li a:active, .pagination li button:hover, .pagination li button:active {

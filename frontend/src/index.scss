@@ -150,6 +150,7 @@ body {
 .pagination {
   li {
     a, button {
+      font-weight: 500;
       color: var(--hard-primary);
       &:hover, &:active {
         color: var(--hard-primary);

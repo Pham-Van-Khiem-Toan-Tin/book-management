@@ -6,6 +6,9 @@ import libraryReducer from "./slices/library/library.slice";
 import bookcaseReducer from "./slices/bookcase/bookcase.slice";
 import bookshelfReducer from "./slices/bookshelf/bookshelf.slice";
 import userReducer from "./slices/user/user.slice";
+import authorityReducer from "./slices/authority/authority.slice";
+import functionReducer from "./slices/function.slice";
+import subFunctionReducer from "./slices/subfunction.slice";
 
 export const store = configureStore({
     reducer: {
@@ -16,6 +19,9 @@ export const store = configureStore({
         bookcase: bookcaseReducer,
         bookshelf: bookshelfReducer,
         user: userReducer,
+        authority: authorityReducer,
+        functions: functionReducer,
+        subFunction: subFunctionReducer
     }
 });
 

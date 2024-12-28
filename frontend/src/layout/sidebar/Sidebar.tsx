@@ -92,11 +92,23 @@ const Sidebar = () => {
                         </h2>
                         <div id="roles" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
                             <div className="accordion-body">
-                                <Link to="/users/all" className="btn-icon">
+                                <Link to="/authorities/all" className="btn-icon">
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
                                     <span>Authorities List</span>
+                                </Link>
+                                <Link to="/functions/all" className="btn-icon">
+                                    <div className="icon">
+                                        <GoDotFill />
+                                    </div>
+                                    <span>Functions List</span>
+                                </Link>
+                                <Link to="/subfunctions/all" className="btn-icon">
+                                    <div className="icon">
+                                        <GoDotFill />
+                                    </div>
+                                    <span>SubFunctions List</span>
                                 </Link>
                             </div>
                         </div>

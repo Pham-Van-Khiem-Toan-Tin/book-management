@@ -27,6 +27,13 @@ import BookshelfEdit from './pages/bookshelf/BookshelfEdit.tsx';
 import UserList from './pages/user/UserList.tsx';
 import UserView from './pages/user/UserView.tsx';
 import UserEdit from './pages/user/UserEdit.tsx';
+import AuthoritiesList from './pages/authority/AuthoritiesList.tsx';
+import AuthorityDetail from './pages/authority/AuthorityDetail.tsx';
+import FunctionsList from './pages/authority/FunctionsList.tsx';
+import SubFunctionsList from './pages/authority/SubFunctionsList.tsx';
+import SubFunctionCreate from './pages/authority/SubFunctionCreate.tsx';
+import FunctionEdit from './pages/authority/FunctionEdit.tsx';
+import AuthorityEdit from './pages/authority/AuthorityEdit.tsx';
 
 const router = createBrowserRouter([
   {
@@ -52,6 +59,34 @@ const router = createBrowserRouter([
       {
         path: "users/edit/:id",
         element: <UserEdit />
+      },
+      {
+        path: "authorities/all",
+        element: <AuthoritiesList />
+      },
+      {
+        path: "authorities/view/:id",
+        element: <AuthorityDetail />
+      },
+      {
+        path: "authorities/edit/:id",
+        element: <AuthorityEdit />
+      },
+      {
+        path: "functions/all",
+        element: <FunctionsList />
+      },
+      {
+        path: "functions/edit/:id",
+        element: <FunctionEdit />
+      },
+      {
+        path: "subfunctions/all",
+        element: <SubFunctionsList />
+      },
+      {
+        path: "subfunctions/create",
+        element: <SubFunctionCreate />
       },
       {
         path: "categories/all",
