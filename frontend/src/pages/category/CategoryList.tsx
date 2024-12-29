@@ -14,7 +14,6 @@ import { CiWarning } from "react-icons/ci";
 import { selectStyle, optionRecord, Option } from "../../configs/select.config";
 
 const CategoryList = () => {
-
   const [searchParam] = useSearchParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -129,7 +128,7 @@ const CategoryList = () => {
                   {categories && categories.length > 0 ? (
                     categories.map((item, index) => (
                       <tr key={item._id}>
-                        <td className="align-middle">{(pagination.page - 1 ) * pagination.limit + index + 1}</td>
+                        <td className="align-middle">{(pagination.page - 1) * pagination.limit + index + 1}</td>
                         <td className="align-middle">{item.name}</td>
                         <td className="align-middle">{item.parent_id?.name ?? "No data"}</td>
                         <td className="align-middle">{moment(item?.createdAt).format("DD-MM-YYYY")}</td>

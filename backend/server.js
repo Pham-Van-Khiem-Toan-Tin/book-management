@@ -59,7 +59,7 @@ const libraryRouter = require("./src/routers/library.router");
 const bookcaseRouter = require("./src/routers/bookcase.router");
 const bookshelfRouter = require("./src/routers/bookshelf.router");
 const userRouter = require("./src/routers/user.router");
-
+const bookRouter = require("./src/routers/book.router");
 // app.set("trust proxy", 1);
 app.use("/auth", authRoute);
 app.use("/admin", authoritiesRouter);
@@ -68,5 +68,6 @@ app.use("/admin/libraries", libraryRouter);
 app.use("/admin/bookcases", bookcaseRouter);
 app.use("/admin/bookshelves", bookshelfRouter);
 app.use("/admin/users", userRouter);
+app.use("/admin/books", bookRouter);
 
 module.exports = app;

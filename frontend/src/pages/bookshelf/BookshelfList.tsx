@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import Loading from "../../common/loading/Loading";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import moment from "moment";
-import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine, RiDeleteBin5Line, RiInformation2Line, RiPencilLine } from "react-icons/ri";
+import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine, RiDeleteBin5Line, RiHealthBookLine, RiInformation2Line, RiPencilLine } from "react-icons/ri";
 import { Modal, Tooltip } from "bootstrap";
 import Select, { SingleValue } from "react-select";
 import ModalBs from "../../common/modal/Modal";
@@ -102,28 +102,28 @@ const BookshelfList = () => {
                 <Loading /> :
                 <div>
                     <div className="box-search mb-3">
-                        <input type="text" value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="Search by name" />
-                        <button onClick={handleSearch} className="btn-fill rounded">Search</button>
+                        <input type="text" value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="Tìm kiếm theo tên" />
+                        <button onClick={handleSearch} className="btn-fill rounded">Tìm kiếm</button>
                     </div>
                     <div className="box-handle mb-3">
-                        <Link to="/bookshelves/create" className="btn-fill rounded">Create</Link>
-                        <button className="btn-fill rounded">Export</button>
+                        <Link to="/bookshelves/create" className="btn-fill rounded">Thêm mới</Link>
+                        <button className="btn-fill rounded">Xuất excel</button>
                     </div>
                     <div className="table-container rounded border">
                         <div className="table-caption py-2">
-                            <div className="px-2">Total records: <span className="">{pagination.total}</span></div>
+                            <div className="px-2">Tổng số bản ghi: <span className="">{pagination.total}</span></div>
                         </div>
                         <div className="table-responsive-container">
                             <table className="table table-striped table-borderless mb-0 table-hover caption-top">
 
                                 <thead>
                                     <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Bookcase</th>
-                                        <th scope="col">Library</th>
-                                        <th scope="col">Created at</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Tên giá sách</th>
+                                        <th scope="col">Tủ sách</th>
+                                        <th scope="col">Thư viện</th>
+                                        <th scope="col">Thời gian tạo</th>
+                                        <th scope="col">Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -131,8 +131,8 @@ const BookshelfList = () => {
                                         bookshelves.map((item, index) => (
                                             <tr key={item._id}>
                                                 <td className="align-middle">{(pagination.page - 1) * pagination.limit + index + 1}</td>
-                                                <td className="align-middle">{item.name}</td>
-                                                <td className="align-middle">{item.bookcase.name}</td>
+                                                <td className="align-middle">{`${item.code} - ${item.name}`}</td>
+                                                <td className="align-middle">{`${item.bookcase.code} - ${item.bookcase.name}`}</td>
                                                 <td className="align-middle">{item.bookcase.library.name}</td>
                                                 <td className="align-middle">{moment(item?.createdAt).format("DD-MM-YYYY")}</td>
                                                 <td className="align-middle">
@@ -145,6 +145,11 @@ const BookshelfList = () => {
                                                         <Link className="btn-icon" to={`/bookshelves/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
                                                             <div className="icon">
                                                                 <RiPencilLine />
+                                                            </div>
+                                                        </Link>
+                                                        <Link className="btn-icon" to={`/bookshelves/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Add book">
+                                                            <div className="icon">
+                                                                <RiHealthBookLine />
                                                             </div>
                                                         </Link>
                                                         <button onClick={() => toggleModalDelete(item)} className="btn-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Delete">
@@ -167,7 +172,7 @@ const BookshelfList = () => {
                         </div>
                         <div className="d-flex align-items-center justify-content-between p-2">
                             <div className="display-record">
-                                <span>Display
+                                <span>Hiển thị
                                     <div className="select-record">
                                         <Select
                                             styles={selectStyle}
@@ -176,7 +181,7 @@ const BookshelfList = () => {
                                             isDisabled={bookshelves.length == 0}
                                             options={optionRecord} />
                                     </div>
-                                    record</span>
+                                    bản ghi</span>
                             </div>
                             <ul className="pagination pagination-sm mb-0">
                                 <li className="page-item">

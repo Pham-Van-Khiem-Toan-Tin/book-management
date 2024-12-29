@@ -1,42 +1,50 @@
-import { Link, useNavigate, useSearchParams } from "react-router";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks";
-import { useEffect, useState } from "react";
-import { allLibrary } from "../../apis/actions/library.action";
-import Select, { SingleValue } from "react-select";
-import { Tooltip } from "bootstrap";
+import { useEffect, useState } from "react"
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks"
 import { toast } from "react-toastify";
-import { reset, resetError } from "../../apis/slices/library/library.slice";
 import Loading from "../../common/loading/Loading";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import moment from "moment";
-import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine, RiInformation2Line, RiPencilLine } from "react-icons/ri";
+import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine, RiDeleteBin5Line, RiInformation2Line, RiPencilLine } from "react-icons/ri";
+import { Modal, Tooltip } from "bootstrap";
+import Select, { SingleValue } from "react-select";
+import ModalBs from "../../common/modal/Modal";
+import { CiWarning } from "react-icons/ci";
 import { selectStyle, optionRecord, Option } from "../../configs/select.config";
-
-
-
-const LibraryList = () => {
-
+import { reset, resetError } from "../../apis/slices/book.slice";
+import { allBook, Book } from "../../apis/actions/book.action";
+const BookList = () => {
   const [searchParam] = useSearchParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading, libraries, pagination, error, success, message } = useAppSelector((state) => state.library);
+  const { loading, message, books, error, pagination, success } = useAppSelector((state) => state.book);
   const [keyword, setKeyword] = useState(searchParam.get("keyword") ?? undefined);
-  const index = optionRecord.findIndex((option) => option.value === (searchParam.get("view") ? parseInt(searchParam.get("view")!) : 10));
+  const [bookDelete, setBookDelete] = useState<Book | null>(null);
+  const index = optionRecord.findIndex(
+    (item) => item.value === parseInt(searchParam.get("view") ?? "10")
+  );
   useEffect(() => {
-    setKeyword(searchParam.get("keyword") ?? undefined);
-    dispatch(allLibrary({ keyword: searchParam.get("keyword"), page: searchParam.get("page") ? parseInt(searchParam.get("page")!) : 1, view: searchParam.get("view") ? parseInt(searchParam.get("view")!) : 10 }));
-  }, [searchParam, dispatch]);
+    setKeyword(searchParam.get("keyword") ?? undefined)
+    dispatch(allBook({ keyword: searchParam.get("keyword"), view: parseInt(searchParam.get("view") ?? "10"), page: parseInt(searchParam.get("page") ?? "1") }));
+  }, [dispatch, searchParam]);
   useEffect(() => {
     let toolTipList = null;
-    if (libraries.length > 0) {
+    if (books.length > 0) {
       const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
       toolTipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl));
     }
     return () => {
-      toolTipList?.forEach((tooltip) => {
-        tooltip.dispose()
-      });
+      if (toolTipList) {
+        toolTipList.forEach(item => {
+          item.hide();
+        })
+      }
+      const modelElement = document.getElementById("modal-bookshop") as HTMLElement;
+      if (modelElement) {
+        const modal = new Modal(modelElement);
+        modal.hide();
+      }
     }
-  }, [libraries]);
+  }, [books]);
   useEffect(() => {
     if (success) {
       toast.success(message);
@@ -47,18 +55,18 @@ const LibraryList = () => {
       toast.error(message);
       dispatch(resetError());
     }
-  }, [success, error, message, dispatch]);
+  }, [dispatch, error, message, success]);
   const handleSearch = () => {
-    if (!keyword) {
+    if (!keyword)
       searchParam.delete("keyword");
-    } else if (keyword.trim()) {
+    else if (keyword.trim())
       searchParam.set("keyword", keyword);
-    }
-    searchParam.delete("page");
     searchParam.delete("view");
-    navigate(`?${searchParam.toString()}`);
+    searchParam.delete("page");
+    console.log(searchParam.toString());
+    navigate(`?${searchParam.toString()}`)
     window.location.reload();
-  };
+  }
   const handleChangePerView = (data: SingleValue<Option>) => {
     const recordNumber = optionRecord.find((item) => item.value == data?.value) || optionRecord[0];
     searchParam.set("view", JSON.stringify(recordNumber.value));
@@ -75,6 +83,15 @@ const LibraryList = () => {
 
     }
   }
+  const toggleModalDelete = (item: Book) => {
+    const modelElement = document.getElementById("modal-bookshop") as HTMLElement;
+    const modal = new Modal(modelElement);
+    setBookDelete(item);
+    modal.toggle();
+  };
+  const handleDelete = () => {
+    // if (bookDelete) dispatch(deleteCategory(bookDelete?._id))
+  }
   return (
     <>
       {loading ?
@@ -82,54 +99,64 @@ const LibraryList = () => {
         <div>
           <div className="box-search mb-3">
             <input type="text" value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="Search by name" />
-            <button onClick={handleSearch} className="btn-fill rounded">Search</button>
+            <button onClick={handleSearch} className="btn-fill rounded">Tìm kiếm</button>
           </div>
           <div className="box-handle mb-3">
-            <Link to="/libraries/create" className="btn-fill rounded">Create</Link>
-            <button className="btn-fill rounded">Export</button>
+            <Link to="/books/create" className="btn-fill rounded">Thêm mới</Link>
+            <button className="btn-fill rounded">Xuất excel</button>
           </div>
           <div className="table-container rounded border">
             <div className="table-caption py-2">
-              <div className="px-2">Total records: <span className="">{pagination.total}</span></div>
+              <div className="px-2">Tổng số bản ghi: <span className="">{pagination.total}</span></div>
             </div>
             <div className="table-responsive-container">
               <table className="table table-striped table-borderless mb-0 table-hover caption-top">
+
                 <thead>
                   <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">Created at</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">STT</th>
+                    <th scope="col">Tiêu đề</th>
+                    <th scope="col">Tác giả</th>
+                    <th scope="col">Nhà xuất bản</th>
+                    <th scope="col">Thể loại</th>
+                    <th scope="col">Thời gian tạo</th>
+                    <th scope="col">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {libraries && libraries.length > 0 ? (
-                    libraries.map((item, index) => (
+                  {books && books.length > 0 ? (
+                    books.map((item, index) => (
                       <tr key={item._id}>
                         <td className="align-middle">{(pagination.page - 1) * pagination.limit + index + 1}</td>
-                        <td className="align-middle">{item.name}</td>
-                        <td className="align-middle">{item.location}</td>
+                        <td className="align-middle">{item.title}</td>
+                        <td className="align-middle">{item.author}</td>
+                        <td className="align-middle">{item.publisher}</td>
+                        <td className="align-middle">{item.category.name}</td>
                         <td className="align-middle">{moment(item?.createdAt).format("DD-MM-YYYY")}</td>
                         <td className="align-middle">
                           <div className="btn-group d-flex gap-2 align-items-center">
-                            <Link className="btn-icon" to={`/libraries/view/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="View">
+                            <Link className="btn-icon" to={`/books/view/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="View">
                               <div className="icon">
                                 <RiInformation2Line />
                               </div>
                             </Link>
-                            <Link className="btn-icon" to={`/libraries/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
+                            <Link className="btn-icon" to={`/books/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
                               <div className="icon">
                                 <RiPencilLine />
                               </div>
                             </Link>
+                            <button onClick={() => toggleModalDelete(item)} className="btn-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Delete">
+                              <div className="icon">
+                                <RiDeleteBin5Line />
+                              </div>
+                            </button>
                           </div>
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={5}>
+                      <td colSpan={7}>
                         <p className="text-center mb-0">No data</p>
                       </td>
                     </tr>)}
@@ -138,16 +165,16 @@ const LibraryList = () => {
             </div>
             <div className="d-flex align-items-center justify-content-between p-2">
               <div className="display-record">
-                <span>Display
+                <span>Hiển thị
                   <div className="select-record">
                     <Select
                       styles={selectStyle}
                       onChange={handleChangePerView}
                       value={optionRecord[index]}
-                      isDisabled={libraries.length === 0}
+                      isDisabled={books.length == 0}
                       options={optionRecord} />
                   </div>
-                  record</span>
+                  bản ghi</span>
               </div>
               <ul className="pagination pagination-sm mb-0">
                 <li className="page-item">
@@ -176,10 +203,25 @@ const LibraryList = () => {
               </ul>
             </div>
           </div>
+          <div className="modal-delete">
+            <ModalBs maxWidth="500px">
+              <div className="d-flex flex-column align-items-center justify-content-center py-4">
+                <div className="icon mb-2">
+                  <CiWarning />
+                </div>
+                <h5 className="text-danger">Delete</h5>
+                <span className="d-inline-block mb-4">Are you sure you would like to delete category {bookDelete?.name}?</span>
+                <div className="btn-group d-flex align-items-center justify-content-center gap-4">
+                  <button className="btn-base btn-fill px-3 py-2 rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                  <button onClick={handleDelete} className="btn-base btn-border px-3 py-2 rounded text-danger border-danger" data-bs-dismiss="modal" aria-label="Close">Delete</button>
+                </div>
+              </div>
+            </ModalBs>
+          </div>
         </div>
       }
     </>
   )
 }
 
-export default LibraryList
+export default BookList

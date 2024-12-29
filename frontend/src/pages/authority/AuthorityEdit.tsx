@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { reset, resetError } from '../../apis/slices/authority/authority.slice';
 import './authority.css'
 import Loading from '../../common/loading/Loading';
-import _ from 'lodash';
+import _ from "lodash";
 const AuthorityEdit = () => {
     const [roleDetail, setRoleDetail] = useState<AuthorityDetail | null>(null)
     const dispatch = useAppDispatch();
@@ -37,7 +37,7 @@ const AuthorityEdit = () => {
             toast.error(message);
             dispatch(resetError())
         }
-    }, [dispatch, error, message, success])
+    }, [dispatch, error, message, success, navigate])
     const handleChangeSubFunction = (e: React.ChangeEvent<HTMLInputElement>, functionId: string, subfunctionId: string): void => {        
         if(roleDetail) {
             const index = roleDetail.role.findIndex((role) => role._id === functionId);

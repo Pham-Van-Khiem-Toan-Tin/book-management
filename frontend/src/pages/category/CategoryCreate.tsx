@@ -2,7 +2,7 @@ import Select, { StylesConfig } from "react-select";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks";
 import { useEffect, useState } from "react";
-import { allCategory, createCategory } from "../../apis/actions/category.action";
+import { allCategory, commonCategory, createCategory } from "../../apis/actions/category.action";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { reset, resetError } from "../../apis/slices/category/category.slice";
@@ -18,10 +18,10 @@ interface Category {
 const CategoryCreate = () => {
   const dispatch = useAppDispatch();
   const [disabled, setDisabled] = useState(false);
-  const { categories, success, error, message } = useAppSelector((state) => state.category);
+  const { categoryCommon, success, error, message } = useAppSelector((state) => state.category);
   const navigate = useNavigate();
   useEffect(() => {
-    dispatch(allCategory({keyword: null, view: null, page: null}));
+    dispatch(commonCategory());
   }, [dispatch]);
   useEffect(() => {
     if (success) {
@@ -105,11 +105,11 @@ const CategoryCreate = () => {
             render={({ field }) =>
               <Select
                 ref={field.ref}
-                options={categories.length > 0 ? categories.map((item) => ({
+                options={categoryCommon.length > 0 ? categoryCommon.map((item) => ({
                   label: item.name,
                   value: item._id
                 })) : []}
-                value={categories.map((item) => ({ value: item._id, label: item.name })).find(c => c.value == field.value) ?? null}
+                value={categoryCommon.map((item) => ({ value: item._id, label: item.name })).find(c => c.value == field.value) ?? null}
                 onChange={val => {
                   field.onChange(val?.value);
                 }}

@@ -143,20 +143,3 @@ export const editLibrary = createAsyncThunk<LibraryResponse, LibraryForm>(
     }
 );
 
-export const deleteLibrary = createAsyncThunk<LibraryResponse, string>(
-    "library/delete",
-    async (id, { rejectWithValue }) => {
-        try {
-            const authApi = useAuthAxios();
-            const response = await authApi.delete(`${LIBRARY_ENDPOINT.DELETE}/${id}`);
-            return response.data;
-        } catch (error) {
-            console.log(error);
-
-            if (error instanceof AxiosError && error.response) {
-                return rejectWithValue(error.response.data);
-            }
-            return rejectWithValue("Error deleting library");
-        }
-    }
-);

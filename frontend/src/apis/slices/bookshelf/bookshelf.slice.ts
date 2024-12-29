@@ -1,15 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { allBookshelf, Bookshelf, createBookshelf, deleteBookshelf, editBookshelf, viewBookshelf } from "../../actions/bookshelf.action";
 import { allCommonBookcase, CommonBookcase } from "../../actions/bookcase.action";
+import { CategoryCommon, subCategory } from "../../actions/category.action";
 
 interface BookshelfState {
     success: boolean,
     message: string | null,
     loading: boolean,
+    loadingBookcase: boolean,
+    loadingCategory: boolean,
     error: boolean,
     bookshelf: Bookshelf | null,
     bookshelves: Array<Bookshelf>,
     bookcases: Array<CommonBookcase>,
+    categories: Array<CategoryCommon>,
     pagination: {
         total: number,
         page: number,
@@ -21,9 +25,12 @@ const initialState: BookshelfState = {
     success: false as boolean,
     message: null,
     loading: false as boolean,
+    loadingBookcase: false as boolean,
+    loadingCategory: false as boolean,
     bookshelf: null,
     bookshelves: [],
     bookcases: [],
+    categories: [],
     error: false as boolean,
     pagination: {
         total: 0,
@@ -59,14 +66,26 @@ const bookshelfSlice = createSlice({
             state.message = action.payload as string;
         });
         builder.addCase(allCommonBookcase.pending, (state) => {
-            state.loading = true;
+            state.loadingBookcase = true;
         });
         builder.addCase(allCommonBookcase.fulfilled, (state, action) => {
-            state.loading = false;
+            state.loadingBookcase = false;
             state.bookcases = action.payload.bookcases;
         });
         builder.addCase(allCommonBookcase.rejected, (state, action) => {
-            state.loading = false;
+            state.loadingBookcase = false;
+            state.message = action.payload as string;
+        });
+        builder.addCase(subCategory.pending, (state) => {
+            state.loadingCategory = true;
+        });
+        builder.addCase(subCategory.fulfilled, (state, action) => {
+            state.loadingCategory = false;
+            state.categories = action.payload.categories;
+        });
+        builder.addCase(subCategory.rejected, (state, action) => {
+            state.loadingCategory = false;
+            state.error = true;
             state.message = action.payload as string;
         });
         builder.addCase(createBookshelf.pending, (state) => {

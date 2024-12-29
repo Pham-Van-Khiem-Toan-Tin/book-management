@@ -3,6 +3,12 @@ const ObjectId = mongoose.Schema.ObjectId;
 
 const bookcaseSchema = new mongoose.Schema(
   {
+    code: {
+      type: String,
+      required: [true, "Bookcase code is not valid"],
+      minLength: [1, "Bookcase code should have more than 2 characters"],
+      maxLength: [32, "Bookcase code can not exceed 32 characters"],
+    },
     name: {
       type: String,
       required: [true, "Bookcase name is not valid"],

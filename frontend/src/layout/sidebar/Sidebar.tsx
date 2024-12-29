@@ -204,12 +204,12 @@ const Sidebar = () => {
                         </h2>
                         <div id="review" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
                             <div className="accordion-body">
-                                <div className="btn-icon">
+                                <Link to="/books/all" className="btn-icon">
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
                                     <span>Book List</span>
-                                </div>
+                                </Link>
                             </div>
                         </div>
                     </div>

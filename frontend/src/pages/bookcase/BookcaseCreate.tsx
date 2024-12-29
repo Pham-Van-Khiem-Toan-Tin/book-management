@@ -1,17 +1,16 @@
-import Select, { StylesConfig } from "react-select";
+import Select from "react-select";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { createBookcase } from "../../apis/actions/bookcase.action";
 import { reset, resetError } from "../../apis/slices/bookcase/bookcase.slice";
 import { allCommonLibrary } from "../../apis/actions/library.action";
-interface Option {
-  label: string;
-  value: string | number | null;
-}
+import { selectStyleAsync } from "../../configs/select.config";
+
 interface Bookcase {
+  id: string,
   name: string,
   libraryId: string,
   description: string,
@@ -19,94 +18,71 @@ interface Bookcase {
 const BookcaseCreate = () => {
   const dispatch = useAppDispatch();
   const [disabled, setDisabled] = useState(false);
-  const { libraries, success, error, message, loading } = useAppSelector((state) => state.bookcase);
-  const navigate = useNavigate();
-    useEffect(() => {
-      dispatch(allCommonLibrary());
-    }, [dispatch]);
-    useEffect(() => {
-      if (success) {
-        toast.success(message);
-        dispatch(reset());
-        setDisabled(true);
-        setTimeout(() => {
-          navigate("/bookcases/all")
-        }, 1500);
-      } else if(error) {
-        toast.error(message);
-        setDisabled(false);
-        dispatch(resetError());
-      }
-    }, [dispatch, success, error, navigate, message])
-    
-    const selectStyle: StylesConfig<Option, false> = {
-      control: (baseStyles, state) => ({
-        ...baseStyles,
-        border: '1px solid #ececec',
-        boxShadow: state.isFocused ? '0 0 0 1px #00b207' : 'none',
-        padding: '0.6rem 1rem',
-        fontSize: '0.9rem',
-        "&:hover": {
-          borderColor: '#ececec'
-        }
-      }),
-      indicatorSeparator: (provided) => ({
-        ...provided,
-        display: 'none',
-      }),
-      dropdownIndicator: (provided) => ({
-        ...provided,
-        paddingBlock: 0,
-        paddingRight: 0
+  const { libraries, success, error, message, loadingLibrary } = useAppSelector((state) => state.bookcase);
   
-      }),
-      valueContainer: (provided) => ({
-        ...provided,
-        padding: 0
-      }),
-      placeholder: (provided) => ({
-        ...provided,
-        color: '#a6a6a6',
-        fontWeight: 300,
-        margin: 0
-      }),
-      option: (provided, state) => ({
-        ...provided,
-        padding: '0.6rem 1rem',
-        fontSize: '0.9rem',
-        cursor: 'pointer',
-        backgroundColor: state.isSelected ? '#00b207' : 'transparent',
-        "&:hover": {
-          backgroundColor: state.isSelected ? '#00b207' : '#dae5da'
-        }
-      })
-    }
-    const { handleSubmit, control, formState: { errors } } = useForm<Bookcase>();
-    const onSubmit: SubmitHandler<Bookcase> = (data) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(allCommonLibrary());
+  }, [dispatch]);
+  useEffect(() => {
+    if (success) {
+      toast.success(message);
+      dispatch(reset());
       setDisabled(true);
-      dispatch(createBookcase(data));
+      setTimeout(() => {
+        navigate("/bookcases/all")
+      }, 1500);
+    } else if (error) {
+      toast.error(message);
+      setDisabled(false);
+      dispatch(resetError());
     }
+  }, [dispatch, success, error, navigate, message])
+
+
+  const { handleSubmit, control, formState: { errors } } = useForm<Bookcase>();
+  const onSubmit: SubmitHandler<Bookcase> = (data) => {
+    setDisabled(true);
+    dispatch(createBookcase(data));
+  }
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === ' ') {
+      e.preventDefault();
+    }
+  }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form-create d-flex flex-column justify-content-between rounded p-2">
       <div className="d-flex flex-column">
         <div className="box-input">
-          <label htmlFor="name">Name: <span className="text-danger">*</span></label>
-          <input {...control.register("name", {
-            required: "Name is required",
+          <label htmlFor="id">Mã tủ sách: <span className="text-danger">*</span></label>
+          <input {...control.register("id", {
+            required: "Vui lòng nhập mã tủ sách",
             validate: (value) =>
-              value.trim() != "" || "Name is required"
-          })} minLength={2} maxLength={72} type="text" placeholder="Enter bookcase name" id="name" />
+              value.trim() != "" || "Vui lòng nhập mã tủ sách"
+          })} minLength={2} maxLength={72} onKeyDown={handleKeyDown} type="text" placeholder="Nhập mã tủ sách" id="id" />
           {errors.name && <span className="input-error">{errors?.name?.message}</span>}
         </div>
         <div className="box-input">
-          <label htmlFor="library-id">Library: <span className="text-danger">*</span></label>
+          <label htmlFor="name">Tên tử sách: <span className="text-danger">*</span></label>
+          <input {...control.register("name", {
+            required: "Vui lòng nhập tên tủ sách",
+            validate: (value) =>
+              value.trim() != "" || "Vui lòng nhập tên tủ sách"
+          })} minLength={2} maxLength={72} type="text" placeholder="Nhập tên tủ sách" id="name" />
+          {errors.name && <span className="input-error">{errors?.name?.message}</span>}
+        </div>
+        <div className="box-input">
+          <label htmlFor="library-id">Thư viện: <span className="text-danger">*</span></label>
           <Controller
             name="libraryId"
             control={control}
+            rules={{
+              required: "Vui lòng chọn thư viện",
+            }}
             render={({ field }) =>
               <Select
                 ref={field.ref}
-                isLoading={loading}
+                isLoading={loadingLibrary}
                 options={libraries.length > 0 ? libraries.map((item) => ({
                   label: item.name,
                   value: item._id
@@ -115,22 +91,23 @@ const BookcaseCreate = () => {
                 onChange={val => {
                   field.onChange(val?.value);
                 }}
-                styles={selectStyle}
+                styles={selectStyleAsync}
                 isSearchable={false}
                 inputId="library-id"
-                placeholder="Enter library"
+                placeholder="Chọn thư viện"
               />
             }
           />
+          {errors.libraryId && <span className="input-error">{errors?.libraryId?.message}</span>}
         </div>
         <div className="box-input">
-          <label htmlFor="description">Description: <span className="text-danger">*</span></label>
+          <label htmlFor="description">Thông tin chi tiết: <span className="text-danger">*</span></label>
           <textarea {...control.register("description", {
-            required: "Description is required",
+            required: "Vui lòng nhập thông tin chi tiết tủ sách",
             validate: (value) =>
-              value.trim() != "" || "Description is required"
+              value.trim() != "" || "Vui lòng nhập thông tin chi tiết tủ sách"
           })}
-            minLength={2} maxLength={500} placeholder="Enter bookcase description" id="description" />
+            minLength={2} maxLength={500} placeholder="Nhập thông tin chi tiết" id="description" />
           {errors.description && <span className="input-error">{errors?.description?.message}</span>}
         </div>
       </div>

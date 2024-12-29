@@ -27,23 +27,27 @@ const BookshelfDetail = () => {
                     (<div className="form-detail d-flex flex-column justify-content-between rounded p-2">
                         <div className="d-flex flex-column">
                             <div className="box-input">
-                                <label htmlFor="name">Name: <span className="text-danger">*</span></label>
+                                <label htmlFor="name">Mã giá sách: <span className="text-danger">*</span></label>
+                                <span className="span-input">{bookshelf?.code}</span>
+                            </div>
+                            <div className="box-input">
+                                <label htmlFor="name">Tên giá sách: <span className="text-danger">*</span></label>
                                 <span className="span-input">{bookshelf?.name}</span>
                             </div>
                             <div className="box-input">
-                                <label htmlFor="parent-id">Bookcase: <span className="text-danger">*</span></label>
-                                <span className="span-input">{bookshelf?.bookcase?.name}</span>
+                                <label htmlFor="parent-id">Tủ sách: <span className="text-danger">*</span></label>
+                                <span className="span-input">{`${bookshelf?.bookcase.code} - ${bookshelf?.bookcase?.name}`}</span>
                             </div>
                             <div className="box-input">
-                                <label htmlFor="parent-id">Library: <span className="text-danger">*</span></label>
+                                <label htmlFor="parent-id">Thư viện: <span className="text-danger">*</span></label>
                                 <span className="span-input">{bookshelf?.bookcase.library?.name}</span>
                             </div>
                             <div className="box-input">
-                                <label htmlFor="parent-id">Created at: <span className="text-danger">*</span></label>
+                                <label htmlFor="parent-id">Thời gian tạo: <span className="text-danger">*</span></label>
                                 <span className="span-input">{moment(bookshelf?.createdAt).format("HH:mm:ss DD-MM-YYYY")}</span>
                             </div>
                             <div className="box-input">
-                                <label htmlFor="description">Description: <span className="text-danger">*</span></label>
+                                <label htmlFor="description">Thông tin chi tiết: <span className="text-danger">*</span></label>
                                 <span className="span-area">{bookshelf?.description}</span>
                             </div>
                         </div>

@@ -1,6 +1,7 @@
 const catchAsyncError = require("../middlewares/catchAsyncError.middleware");
 const bookcaseModel = require("../models/bookcase.model");
 const bookshelfModel = require("../models/bookshelf.model");
+const categoryModel = require("../models/categories.model");
 const BusinessException = require("../utils/error.util");
 
 module.exports.search = catchAsyncError(async (req, res, next) => {
@@ -9,10 +10,10 @@ module.exports.search = catchAsyncError(async (req, res, next) => {
   const skip = (page - 1) * limit;
   let list = await bookshelfModel
     .find({ name: { $regex: regexKeyword } })
-    .select("_id name description bookcase createdAt")
+    .select("_id name code bookcase createdAt")
     .populate({
       path: "bookcase",
-      select: "_id name library",
+      select: "_id name code library",
       populate: {
         path: "library",
         select: "_id name",
@@ -40,15 +41,16 @@ module.exports.viewBookshelf = catchAsyncError(async (req, res, next) => {
   if (!id) throw new BusinessException(500, "Invalid data");
   let bookshelf = await bookshelfModel
     .findById(id)
-    .select("_id name description bookcase createdAt")
+    .select("_id name code description bookcase createdAt")
     .populate({
       path: "bookcase",
-      select: "_id name library",
+      select: "_id name code library",
       populate: {
         path: "library",
         select: "_id name",
       },
-    });
+    })
+    .populate("category", "_id name");
   if (!bookshelf) throw new BusinessException(500, "Bookshelf does not exist!");
   res.status(200).json({
     bookshelf: bookshelf,
@@ -56,22 +58,30 @@ module.exports.viewBookshelf = catchAsyncError(async (req, res, next) => {
 });
 
 module.exports.addBookshelf = catchAsyncError(async (req, res, next) => {
-  const { name, description, bookcaseId } = req.body;
-  if (!name || !description || !bookcaseId)
-    throw new BusinessException(500, "Invalid data");
+  const { code, name, description, bookcaseId, categoryId } = req.body;
+  if (!code || !name || !description || !bookcaseId || !categoryId)
+    throw new BusinessException(500, "Dữ liệu không hợp lệ");
   const existsBookcase = await bookcaseModel.exists({ _id: bookcaseId });
   if (!existsBookcase)
-    throw new BusinessException(500, "Bookcase does not exist!");
+    throw new BusinessException(500, "Dữ liệu không hợp lệ!");
+  const existsCategory = await categoryModel.exists({
+    _id: categoryId,
+    parent_id: { $ne: null },
+  });
+  if (!existsCategory)
+    throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   const exists = await bookshelfModel.exists({
-    name: name,
+    code: code,
     bookcase: bookcaseId,
   });
   if (exists)
-    throw new BusinessException(500, "The bookshelf that already exists!");
+    throw new BusinessException(500, "Giá sách đã tồn tại!");
   await bookshelfModel.create({
+    code: code,
     name: name,
     description: description,
     bookcase: bookcaseId,
+    category: categoryId
   });
   res.status(200).json({
     success: true,
@@ -81,16 +91,17 @@ module.exports.addBookshelf = catchAsyncError(async (req, res, next) => {
 
 module.exports.updateBookshelf = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  const { name, description, bookcaseId } = req.body;
+  const { code, name, description, bookcaseId } = req.body;
   if (!id || !name || !description || !bookcaseId)
     throw new BusinessException(500, "Invalid data");
   const exists = await bookshelfModel.exists({
-    name: name,
+    code: code,
     bookcase: bookcaseId,
   });
   if (exists)
     throw new BusinessException(500, "The bookshelf that already exists!");
   await bookshelfModel.findByIdAndUpdate(id, {
+    code: code,
     name: name,
     description: description,
     bookcase: bookcaseId,

@@ -94,19 +94,6 @@ const librarySlice = createSlice({
             state.error = true;
             state.message = action.payload as string;
         });
-        builder.addCase(deleteLibrary.pending, (state) => {
-            state.loading = true;
-        });
-        builder.addCase(deleteLibrary.fulfilled, (state, action) => {
-            state.loading = false;
-            state.success = action.payload.success;
-            state.message = action.payload.message;
-        });
-        builder.addCase(deleteLibrary.rejected, (state, action) => {
-            state.loading = false;
-            state.error = true;
-            state.message = action.payload as string;
-        });
     }
 });
 

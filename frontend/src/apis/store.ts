@@ -9,6 +9,7 @@ import userReducer from "./slices/user/user.slice";
 import authorityReducer from "./slices/authority/authority.slice";
 import functionReducer from "./slices/function.slice";
 import subFunctionReducer from "./slices/subfunction.slice";
+import bookReducer from "./slices/book.slice";
 
 export const store = configureStore({
     reducer: {
@@ -21,7 +22,8 @@ export const store = configureStore({
         user: userReducer,
         authority: authorityReducer,
         functions: functionReducer,
-        subFunction: subFunctionReducer
+        subFunction: subFunctionReducer,
+        book: bookReducer,
     }
 });
 

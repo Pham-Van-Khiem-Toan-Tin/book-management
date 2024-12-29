@@ -36,7 +36,7 @@ const LibraryCreate = () => {
         dispatch(createLibrary(data));
     }
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="library-create d-flex flex-column justify-content-between rounded p-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="form-create d-flex flex-column justify-content-between rounded p-2">
             <div className="d-flex flex-column">
                 <div className="box-input">
                     <label htmlFor="name">Name: <span className="text-danger">*</span></label>
@@ -48,7 +48,7 @@ const LibraryCreate = () => {
                     {errors.name && <span className="input-error">{errors?.name?.message}</span>}
                 </div>
                 <div className="box-input">
-                    <label htmlFor="location">Parent(optional)</label>
+                    <label htmlFor="location">Location: <span className="text-danger">*</span></label>
                     <input {...control.register("location", {
                         required: "Location is required",
                         validate: (value) =>

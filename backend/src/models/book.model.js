@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Schema.ObjectId;
 
 const bookSchema = new mongoose.Schema(
   {
     title: {
       type: String,
+      unique: true,
       required: [true, "Title is not valid"],
       minLength: [2, "Title should have more than 2 characters"],
       maxLength: [32, "Title can not exceed 32 characters"],
@@ -15,39 +15,32 @@ const bookSchema = new mongoose.Schema(
       minLength: [2, "Author should have more than 2 characters"],
       maxLength: [32, "Author can not exceed 32 characters"],
     },
-    image: {
+    publisher: {
       type: String,
-      required: [true, "Image is not valid"],
+      required: [true, "Publisher is not valid"],
+      minLength: [2, "Publisher should have more than 2 characters"],
+      maxLength: [32, "Publisher can not exceed 32 characters"],
+    },
+    image: {
+      public_id: {
+        type: String,
+        required: [true, "Image is not valid"],
+      },
+      url: {
+        type: String,
+        required: [true, "Image is not valid"],
+      },
+    },
+    type: {
+      type: String,
+      required: [true, "Type is not valid"],
+      enum: ["novel", "comic"]
     },
     description: {
       type: String,
       required: [true, "Description is not valid"],
       minLength: [2, "Description should have more than 2 characters"],
     },
-    location: [
-      {
-        library: {
-          type: ObjectId,
-          ref: "libraries",
-          required: true,
-        },
-        bookshelf: {
-          type: ObjectId,
-          ref: "bookshelves",
-          required: true,
-        },
-        bookcase: {
-          type: ObjectId,
-          ref: "bookcases",
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-          default: 1,
-        }
-      },
-    ],
   },
   { timestamps: true }
 );

@@ -5,5 +5,7 @@ export const CATEGORY_ENDPOINT = {
     CREATE: `${baseUrl}/admin/categories/create`,
     VIEW: `${baseUrl}/admin/categories/view`,
     EDIT: `${baseUrl}/admin/categories/edit`,
-    DELETE: `${baseUrl}/admin/categories/delete`
+    DELETE: `${baseUrl}/admin/categories/delete`,
+    COMMON: `${baseUrl}/admin/categories/common`,
+    SUBCATEGORY: `${baseUrl}/admin/categories/sub-category`,
 }

@@ -3,31 +3,32 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks"
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "../../common/loading/Loading";
-import Select, { StylesConfig } from "react-select";
+import Select from "react-select";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { editBookcase, viewBookcase } from "../../apis/actions/bookcase.action";
 import { reset, resetError } from "../../apis/slices/bookcase/bookcase.slice";
 import { allCommonLibrary } from "../../apis/actions/library.action";
-interface Option {
-    label: string;
-    value: string | number | null;
-}
+import { selectStyleAsync } from "../../configs/select.config";
+import { subCategory } from "../../apis/actions/category.action";
+
 interface Bookcase {
     _id: string,
+    id: string,
     name: string,
     libraryId: string,
-    description: string
+    description: string,
 }
 
 
 const BookcaseEdit = () => {
     const [disabled, setDisabled] = useState(false);
     const dispatch = useAppDispatch();
-    const { loading, error, bookcase, message, success, libraries } = useAppSelector((state) => state.bookcase);
+    const { loading, loadingLibrary, error, bookcase, message, success, libraries } = useAppSelector((state) => state.bookcase);
     const { id } = useParams();
     const navigate = useNavigate();
     useEffect(() => {
         if (id) {
+            dispatch(subCategory());
             dispatch(allCommonLibrary());
             dispatch(viewBookcase(id));
         }
@@ -46,53 +47,13 @@ const BookcaseEdit = () => {
             dispatch(resetError());
         }
     }, [dispatch, success, error, navigate, message])
-    const selectStyle: StylesConfig<Option, false> = {
-        control: (baseStyles, state) => ({
-            ...baseStyles,
-            border: '1px solid #ececec',
-            boxShadow: state.isFocused ? '0 0 0 1px #00b207' : 'none',
-            padding: '0.6rem 1rem',
-            fontSize: '0.9rem',
-            "&:hover": {
-                borderColor: '#ececec'
-            }
-        }),
-        indicatorSeparator: (provided) => ({
-            ...provided,
-            display: 'none',
-        }),
-        dropdownIndicator: (provided) => ({
-            ...provided,
-            paddingBlock: 0,
-            paddingRight: 0
 
-        }),
-        valueContainer: (provided) => ({
-            ...provided,
-            padding: 0
-        }),
-        placeholder: (provided) => ({
-            ...provided,
-            color: '#a6a6a6',
-            fontWeight: 300,
-            margin: 0
-        }),
-        option: (provided, state) => ({
-            ...provided,
-            padding: '0.6rem 1rem',
-            fontSize: '0.9rem',
-            cursor: 'pointer',
-            backgroundColor: state.isSelected ? '#00b207' : 'transparent',
-            "&:hover": {
-                backgroundColor: state.isSelected ? '#00b207' : '#dae5da'
-            }
-        })
-    }
     const { handleSubmit, control, formState: { errors }, reset: resetForm } = useForm<Bookcase>();
     useEffect(() => {
         if (bookcase) {
             resetForm({
                 _id: bookcase._id,
+                id: bookcase.code,
                 name: bookcase.name,
                 libraryId: bookcase.library?._id,
                 description: bookcase.description
@@ -104,6 +65,11 @@ const BookcaseEdit = () => {
         setDisabled(true);
         dispatch(editBookcase(data));
     }
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === ' ') {
+            e.preventDefault();
+        }
+    }
     return (
         <>
             {
@@ -112,28 +78,41 @@ const BookcaseEdit = () => {
                         <div className="d-flex flex-column">
                             <div className="box-input">
                                 <input {...control.register("_id", {
-                                    required: "Name is required",
+                                    required: "Vui lòng nhập id tủ sách",
                                     validate: (value) =>
-                                        value.trim() != "" || "Name is required"
-                                })} hidden minLength={2} disabled maxLength={72} type="text" placeholder="Enter category name" id="_id" />
+                                        value.trim() != "" || "Vui lòng nhập id tủ sách"
+                                })} hidden minLength={2} disabled maxLength={72} type="text" placeholder="Nhập id tủ sách" id="_id" />
                             </div>
                             <div className="box-input">
-                                <label htmlFor="name">Name: <span className="text-danger">*</span></label>
-                                <input {...control.register("name", {
-                                    required: "Name is required",
+                                <label htmlFor="id">Mã tủ sách: <span className="text-danger">*</span></label>
+                                <input {...control.register("id", {
+                                    required: "Vui lòng nhập mã tủ sách",
                                     validate: (value) =>
-                                        value.trim() != "" || "Name is required"
-                                })} minLength={2} maxLength={72} type="text" placeholder="Enter category name" id="name" />
+                                        value.trim() != "" || "Vui lòng nhập mã tủ sách"
+                                })} onKeyDown={handleKeyDown} type="text" placeholder="Nhập mã tủ sách" id="id" />
                                 {errors.name && <span className="input-error">{errors?.name?.message}</span>}
                             </div>
                             <div className="box-input">
-                                <label htmlFor="parent-id">Parent(optional)</label>
+                                <label htmlFor="name">Tên tử sách: <span className="text-danger">*</span></label>
+                                <input {...control.register("name", {
+                                    required: "Vui lòng nhập tên tủ sách",
+                                    validate: (value) =>
+                                        value.trim() != "" || "Vui lòng nhập tên tủ sách"
+                                })} minLength={2} maxLength={72} type="text" placeholder="Nhập tên tủ sách" id="name" />
+                                {errors.name && <span className="input-error">{errors?.name?.message}</span>}
+                            </div>
+                            <div className="box-input">
+                                <label htmlFor="library-id">Thư viện: <span className="text-danger">*</span></label>
                                 <Controller
-                                    name="libraryId"	
+                                    name="libraryId"
                                     control={control}
+                                    rules={{
+                                        required: "Vui lòng chọn thư viện",
+                                    }}
                                     render={({ field }) =>
                                         <Select
                                             ref={field.ref}
+                                            isLoading={loadingLibrary}
                                             options={libraries.length > 0 ? libraries.map((item) => ({
                                                 label: item.name,
                                                 value: item._id
@@ -142,13 +121,14 @@ const BookcaseEdit = () => {
                                             onChange={val => {
                                                 field.onChange(val?.value);
                                             }}
-                                            styles={selectStyle}
+                                            styles={selectStyleAsync}
                                             isSearchable={false}
                                             inputId="parent-id"
                                             placeholder="Enter parent id"
                                         />
                                     }
                                 />
+                                {errors.libraryId && <span className="input-error">{errors?.libraryId?.message}</span>}
                             </div>
                             <div className="box-input">
                                 <label htmlFor="description">Description: <span className="text-danger">*</span></label>

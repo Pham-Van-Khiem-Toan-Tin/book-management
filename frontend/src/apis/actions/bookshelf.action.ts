@@ -6,11 +6,17 @@ import { AxiosError } from "axios";
 export interface Bookshelf {
   _id: string;
   name: string;
+  code: string;
   description: string;
   createdAt: string;
+  category: {
+    _id: string;
+    name: string;
+  }
   bookcase: {
     _id: string;
     name: string;
+    code: string;
     library: {
       _id: string;
       name: string;
@@ -73,9 +79,11 @@ export const allBookshelf = createAsyncThunk<AllBookshelf, BookshelfSearch>(
 );
 
 interface BookshelfFormCreate {
-  name: string;
-  description: string;
-  bookcaseId: string;
+  code: string,
+  name: string,
+  bookcaseId: string,
+  categoryId: string,
+  description: string,
 }
 export const createBookshelf = createAsyncThunk<
   BookshelfResponse,

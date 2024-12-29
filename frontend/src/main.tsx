@@ -34,6 +34,7 @@ import SubFunctionsList from './pages/authority/SubFunctionsList.tsx';
 import SubFunctionCreate from './pages/authority/SubFunctionCreate.tsx';
 import FunctionEdit from './pages/authority/FunctionEdit.tsx';
 import AuthorityEdit from './pages/authority/AuthorityEdit.tsx';
+import BookList from './pages/book/BookList.tsx';
 
 const router = createBrowserRouter([
   {
@@ -151,6 +152,10 @@ const router = createBrowserRouter([
       {
         path: "bookshelves/edit/:id",
         element: <BookshelfEdit />
+      },
+      {
+        path:"books/all",
+        element: <BookList />
       }
     ]
   },

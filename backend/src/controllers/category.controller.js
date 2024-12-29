@@ -22,14 +22,37 @@ module.exports.search = catchAsyncError(async (req, res, next) => {
       total,
       page: parseInt(page),
       limit: parseInt(limit),
-      totalPages: Math.ceil(total/limit)
-    }
+      totalPages: Math.ceil(total / limit),
+    },
   });
 });
+
+module.exports.categoryCommon = catchAsyncError(async (req, res, next) => {
+  let list = await categoryModel.find({ parent_id: null }).select("_id name");
+  if (!list) list = [];
+  res.status(200).json({
+    categories: list,
+  });
+});
+
+module.exports.categoriesListSelect = catchAsyncError(
+  async (req, res, next) => {
+    let list = await categoryModel
+      .find({ parent_id: { $ne: null } })
+      .select("_id name");
+    if (!list) list = [];
+    res.status(200).json({
+      categories: list,
+    });
+  }
+);
 module.exports.viewCategory = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
   if (!id) throw new BusinessException(500, "Invalid data");
-  let category = await categoryModel.findById(id).select("_id name description parent_id createdAt").populate("parent_id", "name");
+  let category = await categoryModel
+    .findById(id)
+    .select("_id name description parent_id createdAt")
+    .populate("parent_id", "name");
   if (!category) throw new BusinessException(500, "Category does not exist!");
   res.status(200).json({
     category: category,
@@ -44,6 +67,11 @@ module.exports.addCategory = catchAsyncError(async (req, res, next) => {
       500,
       "The category of book that already exists!"
     );
+  const existsParent = await categoryModel.exists({
+    _id: parentId,
+    parent_id: null,
+  });
+  if (parentId && !existsParent) throw new BusinessException(500, "Parent does not exist!");
   await categoryModel.create({
     name: name,
     parent_id: parentId,

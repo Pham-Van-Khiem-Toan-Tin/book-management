@@ -7,10 +7,11 @@ interface BookcaseState {
     success: boolean,
     message: string | null,
     loading: boolean,
+    loadingLibrary: boolean,
     error: boolean,
     bookcase: Bookcase | null,
     bookcases: Array<Bookcase>,
-    libraries: Array<Library>
+    libraries: Array<Library>,
     pagination: {
         total: number,
         page: number,
@@ -22,6 +23,7 @@ const initialState: BookcaseState = {
     success: false as boolean,
     message: null,
     loading: false as boolean,
+    loadingLibrary: false as boolean,
     bookcase: null,
     bookcases: [],
     libraries: [],
@@ -61,14 +63,14 @@ const bookcaseSlice = createSlice({
             state.message = action.payload as string;
         });
         builder.addCase(allCommonLibrary.pending, (state) => {
-            state.loading = true;
+            state.loadingLibrary = true;
         });
         builder.addCase(allCommonLibrary.fulfilled, (state, action) => {
-            state.loading = false;
+            state.loadingLibrary = false;
             state.libraries = action.payload.libraries;
         });
         builder.addCase(allCommonLibrary.rejected, (state, action) => {
-            state.loading = false;
+            state.loadingLibrary = false;
             state.message = action.payload as string;
         });
         builder.addCase(createBookcase.pending, (state) => {

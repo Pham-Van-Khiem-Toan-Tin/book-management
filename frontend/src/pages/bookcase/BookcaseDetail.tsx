@@ -27,11 +27,15 @@ const BookcaseDetail = () => {
                     (<div className="form-detail d-flex flex-column justify-content-between rounded p-2">
                         <div className="d-flex flex-column">
                             <div className="box-input">
-                                <label htmlFor="name">Name: <span className="text-danger">*</span></label>
+                                <label htmlFor="name">Mã tủ sách: <span className="text-danger">*</span></label>
+                                <span className="span-input">{bookcase?.code}</span>
+                            </div>
+                            <div className="box-input">
+                                <label htmlFor="name">Tên tủ sách: <span className="text-danger">*</span></label>
                                 <span className="span-input">{bookcase?.name}</span>
                             </div>
                             <div className="box-input">
-                                <label htmlFor="parent-id">Library: <span className="text-danger">*</span></label>
+                                <label htmlFor="parent-id">Thư viện: <span className="text-danger">*</span></label>
                                 <span className="span-input">{bookcase?.library?.name}</span>
                             </div>
                             <div className="box-input">
@@ -44,7 +48,7 @@ const BookcaseDetail = () => {
                             </div>
                         </div>
                         <div className="d-flex justify-content-end gap-2">
-                            <Link to="/categories/all" className="btn-border text-decoration-none py-2 px-3 rounded">Return</Link>
+                            <Link to="/bookcases/all" className="btn-border text-decoration-none py-2 px-3 rounded">Return</Link>
                         </div>
                     </div>)
 

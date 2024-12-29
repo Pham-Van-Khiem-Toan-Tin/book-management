@@ -1,4 +1,4 @@
-import Select, { StylesConfig } from "react-select";
+import Select from "react-select";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks";
 import { useEffect, useState } from "react";
@@ -7,21 +7,23 @@ import { toast } from "react-toastify";
 import { createBookshelf } from "../../apis/actions/bookshelf.action";
 import { reset, resetError } from "../../apis/slices/bookshelf/bookshelf.slice";
 import { allCommonBookcase } from "../../apis/actions/bookcase.action";
-interface Option {
-    label: string;
-    value: string | number | null;
-}
+import { selectStyleAsync } from "../../configs/select.config";
+import { subCategory } from "../../apis/actions/category.action";
+
 interface BookShelf {
+    code: string,
     name: string,
     bookcaseId: string,
     description: string,
+    categoryId: string
 }
 const BookshelfCreate = () => {
     const dispatch = useAppDispatch();
     const [disabled, setDisabled] = useState(false);
-    const { bookcases, success, error, message, loading } = useAppSelector((state) => state.bookshelf);
+    const { bookcases, success, error, message, loadingBookcase, loadingCategory, categories } = useAppSelector((state) => state.bookshelf);
     const navigate = useNavigate();
     useEffect(() => {
+        dispatch(subCategory());
         dispatch(allCommonBookcase());
     }, [dispatch]);
     useEffect(() => {
@@ -38,99 +40,103 @@ const BookshelfCreate = () => {
             dispatch(resetError());
         }
     }, [dispatch, success, error, navigate, message])
-
-    const selectStyle: StylesConfig<Option, false> = {
-        control: (baseStyles, state) => ({
-            ...baseStyles,
-            border: '1px solid #ececec',
-            boxShadow: state.isFocused ? '0 0 0 1px #00b207' : 'none',
-            padding: '0.6rem 1rem',
-            fontSize: '0.9rem',
-            "&:hover": {
-                borderColor: '#ececec'
-            }
-        }),
-        indicatorSeparator: (provided) => ({
-            ...provided,
-            display: 'none',
-        }),
-        dropdownIndicator: (provided) => ({
-            ...provided,
-            paddingBlock: 0,
-            paddingRight: 0
-
-        }),
-        valueContainer: (provided) => ({
-            ...provided,
-            padding: 0
-        }),
-        placeholder: (provided) => ({
-            ...provided,
-            color: '#a6a6a6',
-            fontWeight: 300,
-            margin: 0
-        }),
-        option: (provided, state) => ({
-            ...provided,
-            padding: '0.6rem 1rem',
-            fontSize: '0.9rem',
-            cursor: 'pointer',
-            backgroundColor: state.isSelected ? '#00b207' : 'transparent',
-            "&:hover": {
-                backgroundColor: state.isSelected ? '#00b207' : '#dae5da'
-            }
-        })
-    }
     const { handleSubmit, control, formState: { errors } } = useForm<BookShelf>();
     const onSubmit: SubmitHandler<BookShelf> = (data) => {
         setDisabled(true);
         dispatch(createBookshelf(data));
     }
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === ' ') {
+            e.preventDefault();
+        }
+    }
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="form-create d-flex flex-column justify-content-between rounded p-2">
             <div className="d-flex flex-column">
                 <div className="box-input">
-                    <label htmlFor="name">Name: <span className="text-danger">*</span></label>
-                    <input {...control.register("name", {
-                        required: "Name is required",
+                    <label htmlFor="code">Mã giá sách: <span className="text-danger">*</span></label>
+                    <input {...control.register("code", {
+                        required: "Vui lòng nhập mã giá sách",
                         validate: (value) =>
-                            value.trim() != "" || "Name is required"
-                    })} minLength={2} maxLength={72} type="text" placeholder="Enter bookcase name" id="name" />
+                            value.trim() != "" || "Vui lòng nhập mã giá sách"
+                    })} onKeyDown={handleKeyDown} type="text" placeholder="Nhập mã giá sách" id="code" />
+                    {errors.code && <span className="input-error">{errors?.code?.message}</span>}
+                </div>
+                <div className="box-input">
+                    <label htmlFor="name">Tên giá sách: <span className="text-danger">*</span></label>
+                    <input {...control.register("name", {
+                        required: "Vui lòng nhập tên giá sách",
+                        validate: (value) =>
+                            value.trim() != "" || "Vui lòng nhập tên giá sách"
+                    })} minLength={2} maxLength={72} type="text" placeholder="Nhập tên giá sách" id="name" />
                     {errors.name && <span className="input-error">{errors?.name?.message}</span>}
                 </div>
                 <div className="box-input">
-                    <label htmlFor="bookcase-id">Library: <span className="text-danger">*</span></label>
+                    <label htmlFor="bookcase-id">Tủ sách: <span className="text-danger">*</span></label>
                     <Controller
                         name="bookcaseId"
                         control={control}
+                        rules={{
+                            required: "Vui lòng chọn tủ sách",
+                        }}
                         render={({ field }) =>
                             <Select
                                 ref={field.ref}
-                                isLoading={loading}
+                                isLoading={loadingBookcase}
                                 options={bookcases.length > 0 ? bookcases.map((item) => ({
-                                    label: item.name,
+                                    label: `${item.code} - ${item.name} - ${item.library.name}`,
                                     value: item._id
                                 })) : []}
                                 value={bookcases.map((item) => ({ value: item._id, label: item.name })).find(c => c.value == field.value) ?? null}
                                 onChange={val => {
                                     field.onChange(val?.value);
                                 }}
-                                styles={selectStyle}
+                                styles={selectStyleAsync}
                                 isSearchable={false}
                                 inputId="bookcase-id"
-                                placeholder="Enter bookcase"
+                                placeholder="Chọn tủ sách"
                             />
                         }
                     />
+                    {errors.bookcaseId && <span className="input-error">{errors?.bookcaseId?.message}</span>}
+                </div>
+                <div className="box-input">
+                    <label htmlFor="category-id">Thể loại: <span className="text-danger">*</span></label>
+                    <Controller
+                        name="categoryId"
+                        control={control}
+                        rules={{
+                            required: "Vui lòng chọn thể loại sách",
+                        }}
+                        render={({ field }) =>
+                            <Select
+                                ref={field.ref}
+                                isLoading={loadingCategory}
+                                options={categories.length > 0 ? categories.map((item) => ({
+                                    label: item.name,
+                                    value: item._id
+                                })) : []}
+                                value={categories.map((item) => ({ value: item._id, label: item.name })).find(c => c.value == field.value) ?? null}
+                                onChange={val => {
+                                    field.onChange(val?.value);
+                                }}
+                                styles={selectStyleAsync}
+                                isSearchable={false}
+                                inputId="category-id"
+                                placeholder="Chọn thể loại sách"
+                            />
+                        }
+                    />
+                    {errors.categoryId && <span className="input-error">{errors?.categoryId?.message}</span>}
                 </div>
                 <div className="box-input">
                     <label htmlFor="description">Description: <span className="text-danger">*</span></label>
                     <textarea {...control.register("description", {
-                        required: "Description is required",
+                        required: "Vui lòng nhập thông tin chi tiết giá sách",
                         validate: (value) =>
-                            value.trim() != "" || "Description is required"
+                            value.trim() != "" || "Vui lòng nhập thông tin chi tiết giá sách"
                     })}
-                        minLength={2} maxLength={500} placeholder="Enter bookshelf description" id="description" />
+                        minLength={2} maxLength={500} placeholder="Nhập thông tin chi tiết giá sách" id="description" />
                     {errors.description && <span className="input-error">{errors?.description?.message}</span>}
                 </div>
             </div>

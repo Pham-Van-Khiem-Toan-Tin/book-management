@@ -9,6 +9,5 @@ router.route("/common/all").get(isAuthenticated, isAuthorization("LIST_LIBRARY")
 router.route("/view/:id").get(isAuthenticated, isAuthorization("VIEW_LIBRARY"), viewLibrary);
 router.route("/create").post(isAuthenticated, isAuthorization("CREATE_LIBRARY"), addLibrary);
 router.route("/edit/:id").put(isAuthenticated, isAuthorization("EDIT_LIBRARY"), editLibrary);
-router.route("/delete/:id").delete(isAuthenticated, isAuthorization("DELETE_LIBRARY"), deleteLibrary);
 
 module.exports = router;

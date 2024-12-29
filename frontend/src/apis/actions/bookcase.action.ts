@@ -5,6 +5,7 @@ import { AxiosError } from "axios";
 
 export interface Bookcase {
   _id: string;
+  code: string;
   name: string;
   description: string;
   library: {
@@ -14,8 +15,8 @@ export interface Bookcase {
   createdAt: string;
 }
 export interface Library {
-  _id: string,
-  name: string
+  _id: string;
+  name: string;
 }
 interface AllBookcase {
   bookcases: Array<Bookcase>;
@@ -28,7 +29,12 @@ interface AllBookcase {
 }
 export interface CommonBookcase {
   _id: string;
+  code: string;
   name: string;
+  library: {
+    _id: string;
+    name: string;
+  };
 }
 interface AllCommonBookcase {
   bookcases: Array<CommonBookcase>;
@@ -51,9 +57,10 @@ interface BookcaseResponse {
 
 interface BookcaseForm {
   _id: string;
+  id: string;
   name: string;
-  description: string;
   libraryId: string;
+  description: string;
 }
 
 export const allBookcase = createAsyncThunk<AllBookcase, BookcaseSearch>(
@@ -95,27 +102,28 @@ export const allCommonBookcase = createAsyncThunk<AllCommonBookcase, void>(
   }
 );
 interface BookcaseFormCreate {
+  id: string;
   name: string;
-  description: string;
   libraryId: string;
+  description: string;
 }
-export const createBookcase = createAsyncThunk<BookcaseResponse, BookcaseFormCreate>(
-  "bookcase/create",
-  async (data, { rejectWithValue }) => {
-    try {
-      const authApi = useAuthAxios();
-      const response = await authApi.post(BOOKCASE_ENDPOINT.CREATE, data);
-      return response.data;
-    } catch (error) {
-      console.log(error);
+export const createBookcase = createAsyncThunk<
+  BookcaseResponse,
+  BookcaseFormCreate
+>("bookcase/create", async (data, { rejectWithValue }) => {
+  try {
+    const authApi = useAuthAxios();
+    const response = await authApi.post(BOOKCASE_ENDPOINT.CREATE, data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
 
-      if (error instanceof AxiosError && error.response) {
-        return rejectWithValue(error.response.data);
-      }
-      return rejectWithValue("Error creating bookcase");
+    if (error instanceof AxiosError && error.response) {
+      return rejectWithValue(error.response.data);
     }
+    return rejectWithValue("Error creating bookcase");
   }
-);
+});
 
 export const viewBookcase = createAsyncThunk<BookcaseDetailRes, string>(
   "bookcase/view",
@@ -138,7 +146,10 @@ export const editBookcase = createAsyncThunk<BookcaseResponse, BookcaseForm>(
   async (data, { rejectWithValue }) => {
     try {
       const authApi = useAuthAxios();
-      const response = await authApi.put(`${BOOKCASE_ENDPOINT.EDIT}/${data._id}`, data);
+      const response = await authApi.put(
+        `${BOOKCASE_ENDPOINT.EDIT}/${data._id}`,
+        data
+      );
       return response.data;
     } catch (error) {
       console.log(error);

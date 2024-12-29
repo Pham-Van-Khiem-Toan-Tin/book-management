@@ -55,6 +55,45 @@ export const allCategory = createAsyncThunk<AllCategory, CategorySearch>(
     }
   }
 );
+export interface CategoryCommon {
+  _id: string;
+  name: string;
+}
+interface AllCategoryCommon {
+  categories: Array<CategoryCommon>;
+}
+export const commonCategory = createAsyncThunk<AllCategoryCommon, void>(
+  "category/common",
+  async (_, { rejectWithValue }) => {
+    try {
+      const authApi = useAuthAxios();
+
+      const response = await authApi.get(CATEGORY_ENDPOINT.COMMON);
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        return rejectWithValue(error.response.data);
+      }
+      return rejectWithValue("Error fetching user data");
+    }
+  }
+);
+
+export const subCategory = createAsyncThunk<AllCategoryCommon, void>(
+  "category/sub",
+  async (_, { rejectWithValue }) => {
+    try {
+      const authApi = useAuthAxios();
+      const response = await authApi.get(CATEGORY_ENDPOINT.SUBCATEGORY);
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        return rejectWithValue(error.response.data);
+      }
+      return rejectWithValue("Error fetching user data");
+    }
+  }
+);
 interface CategoryForm {
   name: string;
   parentId: string | null;
