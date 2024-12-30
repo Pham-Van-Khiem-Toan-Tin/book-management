@@ -7,24 +7,27 @@ import { toast } from "react-toastify";
 import { resetError } from "../../apis/slices/auth/token.slice";
 
 const LoginSuccess = () => {
-  const {loading, message} = useAppSelector((state) => state.token);
+  const { loading, message } = useAppSelector((state) => state.token);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(loginSuccess());
   }, [dispatch]);
   useEffect(() => {
-    if(message) {
+    if (message) {
       toast.error(message)
       dispatch(resetError());
     }
   }, [dispatch, message])
-  
-  if (loading) {
-    return <Loading />
+  if (localStorage.getItem("act")) {
+    return <Navigate to="/" replace />
+  } else {
+    if (loading) {
+      return <Loading />
+    }
+    return (
+      <Navigate to="/" replace />
+    )
   }
-  return (
-    <Navigate to="/" replace />
-  )
 }
 
 export default LoginSuccess;

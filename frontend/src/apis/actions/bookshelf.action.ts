@@ -3,12 +3,21 @@ import useAuthAxios from "../../hooks/useAuthApi";
 import { BOOKSHELF_ENDPOINT } from "../endpoints/bookshelf.endpoint";
 import { AxiosError } from "axios";
 
+interface Book {
+  book: {
+    _id: string;
+    title: string;
+  },
+  code: string,
+  quantity: number;
+}
 export interface Bookshelf {
   _id: string;
   name: string;
   code: string;
   description: string;
   createdAt: string;
+  books: Array<Book>;
   category: {
     _id: string;
     name: string;
@@ -153,6 +162,33 @@ export const deleteBookshelf = createAsyncThunk<BookshelfResponse, string>(
         return rejectWithValue(error.response.data);
       }
       return rejectWithValue("Error deleting bookshelf");
+    }
+  }
+);
+
+interface BookshelfBook {
+  code: string;
+  bookId: string;
+  quantity: number;
+}
+interface AllBookshelfBook {
+  bookshelfId: string;
+  books: Array<BookshelfBook>;
+}
+export const addBookToBookshelf = createAsyncThunk<BookshelfResponse, AllBookshelfBook>(
+  "bookshelf/addBook",
+  async (data, { rejectWithValue }) => {
+    try {
+      const authApi = useAuthAxios();
+      const response = await authApi.put(`${BOOKSHELF_ENDPOINT.ADD_BOOK}/${data.bookshelfId}`, data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+
+      if (error instanceof AxiosError && error.response) {
+        return rejectWithValue(error.response.data);
+      }
+      return rejectWithValue("Error adding book to bookshelf");
     }
   }
 );

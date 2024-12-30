@@ -1,15 +1,12 @@
-import Select, { StylesConfig } from "react-select";
+import Select from "react-select";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks";
 import { useEffect, useState } from "react";
-import { allCategory, commonCategory, createCategory } from "../../apis/actions/category.action";
+import { commonCategory, createCategory } from "../../apis/actions/category.action";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { reset, resetError } from "../../apis/slices/category/category.slice";
-interface Option {
-  label: string;
-  value: string | number | null;
-}
+import { selectStyleAsync } from "../../configs/select.config";
 interface Category {
   name: string,
   parentId: string | null,
@@ -38,48 +35,6 @@ const CategoryCreate = () => {
     }
   }, [dispatch, success, error, navigate, message])
   
-  const selectStyle: StylesConfig<Option, false> = {
-    control: (baseStyles, state) => ({
-      ...baseStyles,
-      border: '1px solid #ececec',
-      boxShadow: state.isFocused ? '0 0 0 1px #00b207' : 'none',
-      padding: '0.6rem 1rem',
-      fontSize: '0.9rem',
-      "&:hover": {
-        borderColor: '#ececec'
-      }
-    }),
-    indicatorSeparator: (provided) => ({
-      ...provided,
-      display: 'none',
-    }),
-    dropdownIndicator: (provided) => ({
-      ...provided,
-      paddingBlock: 0,
-      paddingRight: 0
-
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      padding: 0
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: '#a6a6a6',
-      fontWeight: 300,
-      margin: 0
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      padding: '0.6rem 1rem',
-      fontSize: '0.9rem',
-      cursor: 'pointer',
-      backgroundColor: state.isSelected ? '#00b207' : 'transparent',
-      "&:hover": {
-        backgroundColor: state.isSelected ? '#00b207' : '#dae5da'
-      }
-    })
-  }
   const { handleSubmit, control, formState: { errors } } = useForm<Category>();
   const onSubmit: SubmitHandler<Category> = (data) => {
     setDisabled(true);
@@ -113,7 +68,7 @@ const CategoryCreate = () => {
                 onChange={val => {
                   field.onChange(val?.value);
                 }}
-                styles={selectStyle}
+                styles={selectStyleAsync}
                 isSearchable={false}
                 inputId="parent-id"
                 placeholder="Enter parent id"

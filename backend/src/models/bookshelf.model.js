@@ -38,6 +38,10 @@ const bookshelfSchema = new mongoose.Schema(
           ref: "books",
           required: true,
         },
+        code: {
+          type: String,
+          required: true,
+        },
         quantity: {
           type: Number,
           required: true,
@@ -48,6 +52,15 @@ const bookshelfSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
+bookshelfSchema.pre("save", function (next) {
+  const codes = this.books.map((item) => item.code);
+  const uniqueCodes = new Set(codes);
+  if (uniqueCodes.size !== codes.length) {
+    const error = new Error("Duplicate code found in books array");
+    error.name = "ValidationError";
+    return next(error);
+  }
+  next();
+})
 const bookshelfModel = mongoose.model("bookshelves", bookshelfSchema);
 module.exports = bookshelfModel;

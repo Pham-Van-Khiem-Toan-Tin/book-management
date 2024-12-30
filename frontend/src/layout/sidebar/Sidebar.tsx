@@ -9,15 +9,15 @@ const Sidebar = () => {
     useEffect(() => {
         const parent = document.getElementById("sidebar-accordion") as HTMLElement;
         const collapseElementList = document.querySelectorAll('.accordion-collapse.collapse');
-        collapseElementList.forEach(collapseEl => new Collapse(collapseEl, {parent: parent, toggle: false}));
-      }, [])
+        collapseElementList.forEach(collapseEl => new Collapse(collapseEl, { parent: parent, toggle: false }));
+    }, [])
     return (
         <div className="sidebar">
             <div className="top py-2 px-4">
                 <div className="logo">
                     <div className="logo-content d-flex">
                         <img src={Logo} alt="Logo" />
-                        <span>Ecobazar</span>
+                        <span>Thư Viện Tuổi Trẻ</span>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@ const Sidebar = () => {
                                 <div className="icon">
                                     <RiDashboardLine />
                                 </div>
-                                <span>Dashboard</span>
+                                <span>Thống kê</span>
                             </button>
                         </h2>
                         <div id="dashboard" className="accordion-collapse collapse show" data-bs-parent="#sidebar-accordion">
@@ -38,25 +38,25 @@ const Sidebar = () => {
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Overview</span>
+                                    <span>Tổng quan</span>
                                 </div>
                                 <div className="btn-icon">
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Statistics By Category</span>
+                                    <span>Thống kê danh mục</span>
                                 </div>
                                 <div className="btn-icon">
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Statistics By Product</span>
+                                    <span>Thống kê sách</span>
                                 </div>
                                 <div className="btn-icon">
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Statistics By Customer</span>
+                                    <span>Thống kê khách hàng</span>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@ const Sidebar = () => {
                                 <div className="icon">
                                     <RiUserAddLine />
                                 </div>
-                                <span>User Management</span>
+                                <span>Quản lí người dùng</span>
                             </button>
                         </h2>
                         <div id="users" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
@@ -76,7 +76,7 @@ const Sidebar = () => {
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>User List</span>
+                                    <span>Danh sách người dùng</span>
                                 </Link>
                             </div>
                         </div>
@@ -87,7 +87,7 @@ const Sidebar = () => {
                                 <div className="icon">
                                     <RiP2pLine />
                                 </div>
-                                <span>Authority Management</span>
+                                <span>Quản lí phân quyền</span>
                             </button>
                         </h2>
                         <div id="roles" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
@@ -96,7 +96,7 @@ const Sidebar = () => {
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Authorities List</span>
+                                    <span>Danh sách nhóm quyền</span>
                                 </Link>
                                 <Link to="/functions/all" className="btn-icon">
                                     <div className="icon">
@@ -119,7 +119,7 @@ const Sidebar = () => {
                                 <div className="icon">
                                     <RiArchiveStackLine />
                                 </div>
-                                <span>Library Management</span>
+                                <span>Quản lí cơ sở</span>
                             </button>
                         </h2>
                         <div id="products" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
@@ -128,7 +128,7 @@ const Sidebar = () => {
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Library List</span>
+                                    <span>Danh sách cơ sở</span>
                                 </Link>
                             </div>
                         </div>
@@ -139,7 +139,7 @@ const Sidebar = () => {
                                 <div className="icon">
                                     <RiListCheck2 />
                                 </div>
-                                <span>Category Management</span>
+                                <span>Quản lí danh mục</span>
                             </button>
                         </h2>
                         <div id="categories" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
@@ -148,7 +148,7 @@ const Sidebar = () => {
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Category List</span>
+                                    <span>Danh sách danh mục</span>
                                 </NavLink>
                             </div>
                         </div>
@@ -159,7 +159,7 @@ const Sidebar = () => {
                                 <div className="icon">
                                     <RiArchiveDrawerLine />
                                 </div>
-                                <span>Bookcase Management</span>
+                                <span>Quản lí tủ sách</span>
                             </button>
                         </h2>
                         <div id="orders" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
@@ -168,7 +168,7 @@ const Sidebar = () => {
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Bookcase List</span>
+                                    <span>Danh sách tủ sách</span>
                                 </Link>
                             </div>
                         </div>
@@ -179,7 +179,7 @@ const Sidebar = () => {
                                 <div className="icon">
                                     <RiArchive2Line />
                                 </div>
-                                <span>Shelf Management</span>
+                                <span>Quản lí giá sách</span>
                             </button>
                         </h2>
                         <div id="coupon" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
@@ -188,27 +188,47 @@ const Sidebar = () => {
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Shelf List</span>
+                                    <span>Danh sách giá sách</span>
                                 </Link>
                             </div>
                         </div>
                     </div>
                     <div className="accordion-item">
                         <h2 className="accordion-header">
-                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#review" aria-expanded="false" aria-controls="review">
+                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#book" aria-expanded="false" aria-controls="book">
                                 <div className="icon">
                                     <RiBookMarkedLine />
                                 </div>
-                                <span>Book Management</span>
+                                <span>Quản lí sách</span>
                             </button>
                         </h2>
-                        <div id="review" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
+                        <div id="book" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
                             <div className="accordion-body">
                                 <Link to="/books/all" className="btn-icon">
                                     <div className="icon">
                                         <GoDotFill />
                                     </div>
-                                    <span>Book List</span>
+                                    <span>Danh sách sách</span>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="accordion-item">
+                        <h2 className="accordion-header">
+                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#borrow" aria-expanded="false" aria-controls="borrow">
+                                <div className="icon">
+                                    <RiBookMarkedLine />
+                                </div>
+                                <span>Quản lí mượn sách</span>
+                            </button>
+                        </h2>
+                        <div id="borrow" className="accordion-collapse collapse" data-bs-parent="#sidebar-accordion">
+                            <div className="accordion-body">
+                                <Link to="/borrows/all" className="btn-icon">
+                                    <div className="icon">
+                                        <GoDotFill />
+                                    </div>
+                                    <span>Danh sách mượn</span>
                                 </Link>
                             </div>
                         </div>

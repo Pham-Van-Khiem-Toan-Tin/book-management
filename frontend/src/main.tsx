@@ -35,6 +35,13 @@ import SubFunctionCreate from './pages/authority/SubFunctionCreate.tsx';
 import FunctionEdit from './pages/authority/FunctionEdit.tsx';
 import AuthorityEdit from './pages/authority/AuthorityEdit.tsx';
 import BookList from './pages/book/BookList.tsx';
+import BookCreate from './pages/book/BookCreate.tsx';
+import BookDetail from './pages/book/BookDetail.tsx';
+import BookEdit from './pages/book/BookEdit.tsx';
+import { BorrowList } from './pages/borrow/BorrowList.tsx';
+import ProtectRouter from './common/protect-router/ProtectRouter.tsx';
+import BorrowCreate from './pages/borrow/BorrowCreate.tsx';
+import BookshelfAddBook from './pages/bookshelf/BookshelfAddBook.tsx';
 
 const router = createBrowserRouter([
   {
@@ -47,115 +54,308 @@ const router = createBrowserRouter([
       },
       {
         path: "dashboard",
-        element: <Dashboard />
+        element: (
+          <ProtectRouter>
+            <Dashboard />
+          </ProtectRouter>
+        )
       },
       {
         path: "users/all",
-        element: <UserList />
+        element:
+          (
+            <ProtectRouter>
+              <UserList />
+            </ProtectRouter>
+          )
       },
       {
         path: "users/view/:id",
-        element: <UserView />
+        element:
+          (
+            <ProtectRouter>
+              <UserView />
+            </ProtectRouter>
+          )
       },
       {
         path: "users/edit/:id",
-        element: <UserEdit />
+        element:
+          (
+            <ProtectRouter>
+              <UserEdit />
+            </ProtectRouter>
+          )
       },
       {
         path: "authorities/all",
-        element: <AuthoritiesList />
+        element:
+          (
+            <ProtectRouter>
+              <AuthoritiesList />
+            </ProtectRouter>
+          )
       },
       {
         path: "authorities/view/:id",
-        element: <AuthorityDetail />
+        element:
+          (
+            <ProtectRouter>
+              <AuthorityDetail />
+            </ProtectRouter>
+          )
       },
       {
         path: "authorities/edit/:id",
-        element: <AuthorityEdit />
+        element:
+          (
+            <ProtectRouter>
+              <AuthorityEdit />
+            </ProtectRouter>
+          )
       },
       {
         path: "functions/all",
-        element: <FunctionsList />
+        element:
+          (
+            <ProtectRouter>
+              <FunctionsList />
+            </ProtectRouter>
+          )
       },
       {
         path: "functions/edit/:id",
-        element: <FunctionEdit />
+        element:
+          (
+            <ProtectRouter>
+              <FunctionEdit />
+            </ProtectRouter>
+          )
       },
       {
         path: "subfunctions/all",
-        element: <SubFunctionsList />
+        element:
+          (
+            <ProtectRouter>
+              <SubFunctionsList />
+            </ProtectRouter>
+          )
       },
       {
         path: "subfunctions/create",
-        element: <SubFunctionCreate />
+        element:
+          (
+            <ProtectRouter>
+              <SubFunctionCreate />
+            </ProtectRouter>
+          )
       },
       {
         path: "categories/all",
-        element: <CategoryList />
+        element:
+          (
+            <ProtectRouter>
+              <CategoryList />
+            </ProtectRouter>
+          )
       },
       {
         path: "categories/create",
-        element: <CategoryCreate />
+        element:
+          (
+            <ProtectRouter>
+              <CategoryCreate />
+            </ProtectRouter>
+          )
       },
       {
         path: "categories/view/:id",
-        element: <CategoryDetail />
+        element:
+          (
+            <ProtectRouter>
+              <CategoryDetail />
+            </ProtectRouter>
+          )
       },
       {
         path: "categories/edit/:id",
-        element: <CategoryEdit />
+        element:
+          (
+            <ProtectRouter>
+              <CategoryEdit />
+            </ProtectRouter>
+          )
       },
       {
         path: "libraries/all",
-        element: <LibraryList />
+        element:
+          (
+            <ProtectRouter>
+              <LibraryList />
+            </ProtectRouter>
+          )
       },
       {
         path: "libraries/create",
-        element: <LibraryCreate />
+        element:
+          (
+            <ProtectRouter>
+              <LibraryCreate />
+            </ProtectRouter>
+          )
       },
       {
         path: "libraries/view/:id",
-        element: <LibraryDetail />
+        element:
+          (
+            <ProtectRouter>
+              <LibraryDetail />
+            </ProtectRouter>
+          )
       },
       {
         path: "libraries/edit/:id",
-        element: <LibraryEdit />
+        element:
+          (
+            <ProtectRouter>
+              <LibraryEdit />
+            </ProtectRouter>
+          )
       },
       {
         path: "bookcases/all",
-        element: <BookcaseList />
+        element:
+          (
+            <ProtectRouter>
+              <BookcaseList />
+            </ProtectRouter>
+          )
       },
       {
         path: "bookcases/create",
-        element: <BookcaseCreate />
+        element:
+          (
+            <ProtectRouter>
+              <BookcaseCreate />
+            </ProtectRouter>
+          )
       },
       {
         path: "bookcases/view/:id",
-        element: <BookcaseDetail />
+        element:
+          (
+            <ProtectRouter>
+              <BookcaseDetail />
+            </ProtectRouter>
+          )
       },
       {
         path: "bookcases/edit/:id",
-        element: <BookcaseEdit />
+        element:
+          (
+            <ProtectRouter>
+              <BookcaseEdit />
+            </ProtectRouter>
+          )
       },
       {
         path: "bookshelves/all",
-        element: <BookshelfList />
+        element:
+          (
+            <ProtectRouter>
+              <BookshelfList />
+            </ProtectRouter>
+          )
       },
       {
         path: "bookshelves/create",
-        element: <BookshelfCreate />
+        element:
+          (
+            <ProtectRouter>
+              <BookshelfCreate />
+            </ProtectRouter>
+          )
       },
       {
-        path: "bookshelves/view/:id",	
-        element: <BookshelfDetail />
+        path: "bookshelves/view/:id",
+        element:
+          (
+            <ProtectRouter>
+              <BookshelfDetail />
+            </ProtectRouter>
+          )
       },
       {
         path: "bookshelves/edit/:id",
-        element: <BookshelfEdit />
+        element:
+          (
+            <ProtectRouter>
+              <BookshelfEdit />
+            </ProtectRouter>
+          )
       },
       {
-        path:"books/all",
-        element: <BookList />
+        path: "/bookshelves/:id/book/add",
+        element:
+          (
+            <ProtectRouter>
+              <BookshelfAddBook />
+            </ProtectRouter>
+          )
+      },
+      {
+        path: "books/all",
+        element:
+          (
+            <ProtectRouter>
+              <BookList />
+            </ProtectRouter>
+          )
+      },
+      {
+        path: "/books/create",
+        element:
+          (
+            <ProtectRouter>
+              <BookCreate />
+            </ProtectRouter>
+          )
+      },
+      {
+        path: "/books/view/:id",
+        element:
+          (
+            <ProtectRouter>
+              <BookDetail />
+            </ProtectRouter>
+          )
+      },
+      {
+        path: "/books/edit/:id",
+        element:
+          (
+            <ProtectRouter>
+              <BookEdit />
+            </ProtectRouter>
+          )
+      },
+      {
+        path: "/borrows/all",
+        element:
+          (
+            <ProtectRouter>
+              <BorrowList />
+            </ProtectRouter>
+          )
+      },
+      {
+        path: "/borrows/create",
+        element:
+          (
+            <ProtectRouter>
+              <BorrowCreate />
+            </ProtectRouter>
+          )
       }
     ]
   },

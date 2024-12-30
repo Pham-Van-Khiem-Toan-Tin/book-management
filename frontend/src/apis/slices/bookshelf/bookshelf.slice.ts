@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allBookshelf, Bookshelf, createBookshelf, deleteBookshelf, editBookshelf, viewBookshelf } from "../../actions/bookshelf.action";
+import { addBookToBookshelf, allBookshelf, Bookshelf, createBookshelf, deleteBookshelf, editBookshelf, viewBookshelf } from "../../actions/bookshelf.action";
 import { allCommonBookcase, CommonBookcase } from "../../actions/bookcase.action";
 import { CategoryCommon, subCategory } from "../../actions/category.action";
 
@@ -135,6 +135,19 @@ const bookshelfSlice = createSlice({
             state.message = action.payload.message;
         });
         builder.addCase(editBookshelf.rejected, (state, action) => {
+            state.loading = false;
+            state.error = true;
+            state.message = action.payload as string;
+        });
+        builder.addCase(addBookToBookshelf.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(addBookToBookshelf.fulfilled, (state, action) => {
+            state.loading = false;
+            state.success = action.payload.success;
+            state.message = action.payload.message;
+        });
+        builder.addCase(addBookToBookshelf.rejected, (state, action) => {
             state.loading = false;
             state.error = true;
             state.message = action.payload as string;

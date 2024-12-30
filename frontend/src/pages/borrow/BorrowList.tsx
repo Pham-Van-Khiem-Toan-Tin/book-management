@@ -4,31 +4,28 @@ import { toast } from "react-toastify";
 import Loading from "../../common/loading/Loading";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import moment from "moment";
-import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine, RiDeleteBin5Line, RiInformation2Line, RiPencilLine } from "react-icons/ri";
+import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine, RiInformation2Line, RiPencilLine } from "react-icons/ri";
 import { Modal, Tooltip } from "bootstrap";
 import Select, { SingleValue } from "react-select";
-import ModalBs from "../../common/modal/Modal";
-import { CiWarning } from "react-icons/ci";
 import { selectStyle, optionRecord, Option } from "../../configs/select.config";
-import { reset, resetError } from "../../apis/slices/book.slice";
-import { allBook, Book } from "../../apis/actions/book.action";
-const BookList = () => {
+import { allBorrow } from "../../apis/actions/borrow.action";
+import { reset, resetError } from "../../apis/slices/borrow.slice";
+export const BorrowList = () => {
   const [searchParam] = useSearchParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading, message, books, error, pagination, success } = useAppSelector((state) => state.book);
+  const { loading, message, borrows, error, pagination, success } = useAppSelector((state) => state.borrow);
   const [keyword, setKeyword] = useState(searchParam.get("keyword") ?? undefined);
-  const [bookDelete, setBookDelete] = useState<Book | null>(null);
   const index = optionRecord.findIndex(
     (item) => item.value === parseInt(searchParam.get("view") ?? "10")
   );
   useEffect(() => {
     setKeyword(searchParam.get("keyword") ?? undefined)
-    dispatch(allBook({ keyword: searchParam.get("keyword"), view: parseInt(searchParam.get("view") ?? "10"), page: parseInt(searchParam.get("page") ?? "1") }));
+    dispatch(allBorrow({ keyword: searchParam.get("keyword"), view: parseInt(searchParam.get("view") ?? "10"), page: parseInt(searchParam.get("page") ?? "1") }));
   }, [dispatch, searchParam]);
   useEffect(() => {
     let toolTipList = null;
-    if (books.length > 0) {
+    if (borrows.length > 0) {
       const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
       toolTipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl));
     }
@@ -44,7 +41,7 @@ const BookList = () => {
         modal.hide();
       }
     }
-  }, [books]);
+  }, [borrows]);
   useEffect(() => {
     if (success) {
       toast.success(message);
@@ -83,15 +80,15 @@ const BookList = () => {
 
     }
   }
-  const toggleModalDelete = (item: Book) => {
-    const modelElement = document.getElementById("modal-bookshop") as HTMLElement;
-    const modal = new Modal(modelElement);
-    setBookDelete(item);
-    modal.toggle();
-  };
-  const handleDelete = () => {
-    // if (bookDelete) dispatch(deleteCategory(bookDelete?._id))
-  }
+  // const toggleModalDelete = (item: Book) => {
+  //   const modelElement = document.getElementById("modal-bookshop") as HTMLElement;
+  //   const modal = new Modal(modelElement);
+  //   setBookDelete(item);
+  //   modal.toggle();
+  // };
+  // const handleDelete = () => {
+  //   // if (bookDelete) dispatch(deleteCategory(bookDelete?._id))
+  // }
   return (
     <>
       {loading ?
@@ -102,7 +99,7 @@ const BookList = () => {
             <button onClick={handleSearch} className="btn-fill rounded">Tìm kiếm</button>
           </div>
           <div className="box-handle mb-3">
-            <Link to="/books/create" className="btn-fill rounded">Thêm mới</Link>
+            <Link to="/borrows/create" className="btn-fill rounded">Thêm mới</Link>
             <button className="btn-fill rounded">Xuất excel</button>
           </div>
           <div className="table-container rounded border">
@@ -124,32 +121,27 @@ const BookList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {books && books.length > 0 ? (
-                    books.map((item, index) => (
+                  {borrows && borrows.length > 0 ? (
+                    borrows.map((item, index) => (
                       <tr key={item._id}>
                         <td className="align-middle">{(pagination.page - 1) * pagination.limit + index + 1}</td>
-                        <td className="align-middle">{item.title}</td>
-                        <td className="align-middle">{item.author}</td>
-                        <td className="align-middle">{item.publisher}</td>
-                        <td className="align-middle">{item.categories.map((item) => item.name).join(", ")}</td>
-                        <td className="align-middle">{moment(item?.createdAt).format("DD-MM-YYYY")}</td>
+                        <td className="align-middle">{item.book.title}</td>
+                        <td className="align-middle">{item.borrower.name}</td>
+                        <td className="align-middle">{item.status}</td>
+                        <td className="align-middle">{item.type}</td>
+                        <td className="align-middle">{moment(item?.borrow_date).format("DD-MM-YYYY")}</td>
                         <td className="align-middle">
                           <div className="btn-group d-flex gap-2 align-items-center">
-                            <Link className="btn-icon" to={`/books/view/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="View">
+                            <Link className="btn-icon" to={`/borrows/view/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="View">
                               <div className="icon">
                                 <RiInformation2Line />
                               </div>
                             </Link>
-                            <Link className="btn-icon" to={`/books/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
+                            <Link className="btn-icon" to={`/borrows/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
                               <div className="icon">
                                 <RiPencilLine />
                               </div>
                             </Link>
-                            <button onClick={() => toggleModalDelete(item)} className="btn-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Delete">
-                              <div className="icon">
-                                <RiDeleteBin5Line />
-                              </div>
-                            </button>
                           </div>
                         </td>
                       </tr>
@@ -171,7 +163,7 @@ const BookList = () => {
                       styles={selectStyle}
                       onChange={handleChangePerView}
                       value={optionRecord[index]}
-                      isDisabled={books.length == 0}
+                      isDisabled={borrows.length == 0}
                       options={optionRecord} />
                   </div>
                   bản ghi</span>
@@ -203,25 +195,9 @@ const BookList = () => {
               </ul>
             </div>
           </div>
-          <div className="modal-delete">
-            <ModalBs maxWidth="500px">
-              <div className="d-flex flex-column align-items-center justify-content-center py-4">
-                <div className="icon mb-2">
-                  <CiWarning />
-                </div>
-                <h5 className="text-danger">Delete</h5>
-                <span className="d-inline-block mb-4">Are you sure you would like to delete category {bookDelete?.name}?</span>
-                <div className="btn-group d-flex align-items-center justify-content-center gap-4">
-                  <button className="btn-base btn-fill px-3 py-2 rounded" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                  <button onClick={handleDelete} className="btn-base btn-border px-3 py-2 rounded text-danger border-danger" data-bs-dismiss="modal" aria-label="Close">Delete</button>
-                </div>
-              </div>
-            </ModalBs>
-          </div>
+          
         </div>
       }
     </>
   )
 }
-
-export default BookList

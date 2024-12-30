@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema(
             unique: true,
             validate: [validator.isEmail, "Please Enter a valid Email"]
         },
+        library: {
+            type: ObjectId,
+            ref: "libraries"
+        },
         avatar: {
             type: String,
         },

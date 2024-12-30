@@ -10,6 +10,7 @@ import authorityReducer from "./slices/authority/authority.slice";
 import functionReducer from "./slices/function.slice";
 import subFunctionReducer from "./slices/subfunction.slice";
 import bookReducer from "./slices/book.slice";
+import borrowReducer from "./slices/borrow.slice";
 
 export const store = configureStore({
     reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
         functions: functionReducer,
         subFunction: subFunctionReducer,
         book: bookReducer,
+        borrow: borrowReducer,
     }
 });
 

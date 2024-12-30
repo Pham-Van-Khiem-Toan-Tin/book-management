@@ -7,4 +7,5 @@ export const BOOK_ENDPOINT = {
     EDIT: `${baseUrl}/admin/books/edit`,
     DELETE: `${baseUrl}/admin/books/delete`,
     COMMON: `${baseUrl}/admin/books/common/all`,
+    SELECT: `${baseUrl}/admin/books/select/all`,
 }

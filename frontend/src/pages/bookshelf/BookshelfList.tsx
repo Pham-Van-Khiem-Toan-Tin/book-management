@@ -147,7 +147,7 @@ const BookshelfList = () => {
                                                                 <RiPencilLine />
                                                             </div>
                                                         </Link>
-                                                        <Link className="btn-icon" to={`/bookshelves/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Add book">
+                                                        <Link className="btn-icon" to={`/bookshelves/${item._id}/book/add`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Add book">
                                                             <div className="icon">
                                                                 <RiHealthBookLine />
                                                             </div>

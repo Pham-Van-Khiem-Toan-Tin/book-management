@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const ObjectId = mongoose.Schema.ObjectId;
 const bookSchema = new mongoose.Schema(
   {
     title: {
@@ -21,6 +21,13 @@ const bookSchema = new mongoose.Schema(
       minLength: [2, "Publisher should have more than 2 characters"],
       maxLength: [32, "Publisher can not exceed 32 characters"],
     },
+    categories: [
+      {
+        type: ObjectId,
+        ref: "categories",
+        required: [true, "Category is not valid"],
+      },
+    ],
     image: {
       public_id: {
         type: String,

@@ -11,11 +11,11 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-
 }
 
 .app > .right .outlet-container {
     flex: 1;
     overflow: hidden;
     overflow-y: auto;
+    scrollbar-width: thin;
 }

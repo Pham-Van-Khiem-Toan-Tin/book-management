@@ -15,13 +15,17 @@ require("dotenv").config();
 
 const app = express();
 
-// app.use(helmet());
+app.use(helmet());
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(fileUpLoad());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "10mb" }));
+app.use(fileUpLoad({
+  useTempFiles: true,
+  tempFileDir: path.join(__dirname, "tmp"),
+  limits: { fileSize: 50 * 1024 * 1024 },
+}));
 
 app.use(
   session({
@@ -60,7 +64,8 @@ const bookcaseRouter = require("./src/routers/bookcase.router");
 const bookshelfRouter = require("./src/routers/bookshelf.router");
 const userRouter = require("./src/routers/user.router");
 const bookRouter = require("./src/routers/book.router");
-// app.set("trust proxy", 1);
+const borrowRouter = require("./src/routers/borrow.router");
+
 app.use("/auth", authRoute);
 app.use("/admin", authoritiesRouter);
 app.use("/admin/categories", categoryRouter);
@@ -69,5 +74,6 @@ app.use("/admin/bookcases", bookcaseRouter);
 app.use("/admin/bookshelves", bookshelfRouter);
 app.use("/admin/users", userRouter);
 app.use("/admin/books", bookRouter);
+app.use("/admin/borrows", borrowRouter);
 
 module.exports = app;

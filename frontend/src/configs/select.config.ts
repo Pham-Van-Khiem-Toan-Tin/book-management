@@ -62,9 +62,95 @@ export const optionRecord = [
   },
 ];
 
-interface OptionAsync {
+export interface OptionAsync {
   label: string;
   value: string | number | null;
+}
+export const selectMultipleStyleAsync: StylesConfig<OptionAsync, true> = {
+  control: (baseStyles, state) => ({
+    ...baseStyles,
+    border: "1px solid #ececec",
+    boxShadow: state.isFocused ? "0 0 0 1px #00b207" : "none",
+    padding: "0.6rem 1rem",
+    fontSize: "0.9rem",
+    "&:hover": {
+      borderColor: "#ececec",
+    },
+  }),
+  indicatorSeparator: (provided) => ({
+    ...provided,
+    display: "none",
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    paddingBlock: 0,
+    paddingRight: 0,
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    padding: 0,
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    color: "#a6a6a6",
+    fontWeight: 300,
+    margin: 0,
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    padding: "0.6rem 1rem",
+    fontSize: "0.9rem",
+    cursor: "pointer",
+    backgroundColor: state.isSelected ? "#00b207" : "transparent",
+    "&:hover": {
+      backgroundColor: state.isSelected ? "#00b207" : "#dae5da",
+    },
+  }),
+};
+export const createSelectStyles = <OptionType,>(): StylesConfig<OptionType, false> => ({
+  control: (baseStyles, state) => ({
+    ...baseStyles,
+    border: "1px solid #ececec",
+    boxShadow: state.isFocused ? "0 0 0 1px #00b207" : "none",
+    padding: "0.6rem 1rem",
+    fontSize: "0.9rem",
+    "&:hover": {
+      borderColor: "#ececec",
+    },
+  }),
+  indicatorSeparator: (provided) => ({
+    ...provided,
+    display: "none",
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    paddingBlock: 0,
+    paddingRight: 0,
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    padding: 0,
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    color: "#a6a6a6",
+    fontWeight: 300,
+    margin: 0,
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    padding: "0.6rem 1rem",
+    fontSize: "0.9rem",
+    cursor: "pointer",
+    backgroundColor: state.isSelected ? "#00b207" : "transparent",
+    "&:hover": {
+      backgroundColor: state.isSelected ? "#00b207" : "#dae5da",
+    },
+  }),
+});
+export interface OptionString {
+  label: string;
+  value: string;
 }
 export const selectStyleAsync: StylesConfig<OptionAsync, false> = {
   control: (baseStyles, state) => ({

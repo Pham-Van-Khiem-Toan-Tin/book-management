@@ -4,5 +4,6 @@ export const BOOKSHELF_ENDPOINT = {
     CREATE: `${baseUrl}/admin/bookshelves/create`,
     VIEW: `${baseUrl}/admin/bookshelves/view`,
     EDIT: `${baseUrl}/admin/bookshelves/update`,
-    DELETE: `${baseUrl}/admin/bookshelves/delete`
+    DELETE: `${baseUrl}/admin/bookshelves/delete`,
+    ADD_BOOK: `${baseUrl}/admin/bookshelves/add-book`,
 }
