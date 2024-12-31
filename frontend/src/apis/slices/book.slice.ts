@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allBook, Book, BookSelect, createBook, editBook, selectBook, viewBook } from "../actions/book.action";
+import { allBook, allBookOfLibrary, Book, BookOfLibrary, BookSelect, createBook, editBook, selectBook, viewBook } from "../actions/book.action";
 import { CategoryCommon, subCategory } from "../actions/category.action";
 
 interface BookState {
@@ -9,6 +9,7 @@ interface BookState {
   loadingCategory: boolean;
   error: boolean;
   book: Book | null;
+  bookOfLibrary: Array<BookOfLibrary>;
   books: Array<Book>;
   bookSelects: Array<BookSelect>;
   categories: Array<CategoryCommon>;
@@ -25,6 +26,7 @@ const initialState: BookState = {
   loading: false as boolean,
   loadingCategory: false as boolean,
   book: null,
+  bookOfLibrary: [],
   books: [],
   bookSelects: [],
   categories: [],
@@ -62,6 +64,18 @@ const bookSlice = createSlice({
     });
     builder.addCase(allBook.rejected, (state, action) => {
       state.loading = false;
+      state.message = action.payload as string;
+    });
+    builder.addCase(allBookOfLibrary.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(allBookOfLibrary.fulfilled, (state, action) => {
+      state.loading = false;
+      state.bookOfLibrary = action.payload.books;
+    });
+    builder.addCase(allBookOfLibrary.rejected, (state, action) => {
+      state.loading = false;
+      state.error = true;
       state.message = action.payload as string;
     });
     builder.addCase(subCategory.pending, (state) => {

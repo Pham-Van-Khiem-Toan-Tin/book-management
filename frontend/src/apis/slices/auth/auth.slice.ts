@@ -6,6 +6,8 @@ interface AuthState {
     success: boolean,
     message: string | null,
     loading: boolean,
+    sub: string | null,
+    library: string | null,
     name: string | null,
     roles: Array<string>,
     avatar: string | null
@@ -16,6 +18,8 @@ const initialState: AuthState = {
     message: null,
     loading: false as boolean,
     name: null,
+    sub: null,
+    library: null,
     roles: [],
     avatar: null,
 };
@@ -33,6 +37,8 @@ const authSlice = createSlice({
             state.name = action.payload.name;
             state.roles = action.payload.roles;
             state.avatar = action.payload.avatar;
+            state.sub = action.payload.sub;
+            state.library = action.payload.library;
         });
         builder.addCase(baseProfile.rejected, (state) => {
             state.loading = false;

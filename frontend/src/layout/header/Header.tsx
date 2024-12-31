@@ -7,11 +7,19 @@ import AvatarDefault from "../../assets/images/user/avatar.png";
 import "./header.css"
 import { RiLogoutBoxLine, RiMailLine, RiNotification2Line, RiUserSettingsLine } from "react-icons/ri";
 import { useAppSelector } from '../../hooks/reduxhooks';
+import { useNavigate } from 'react-router';
 const Header = () => {
   const { loading, avatar } = useAppSelector((state) => state.auth);
   const ref = useRef(null);
   const [menuState, toggle] = useMenuState({ transition: true });
   const { anchorProps, hoverProps } = useHover(menuState.state, toggle);
+  const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("act");
+    localStorage.removeItem("sb");
+    localStorage.removeItem("lib");
+    navigate("/login", { replace: true });
+  }
   return (
     <div className='py-2 px-4 header-management'>
       <div className="header-container d-flex align-items-center justify-content-between">
@@ -79,10 +87,10 @@ const Header = () => {
                 <span>Account Setting</span>
               </div></MenuItem>
             <MenuItem>
-              <div className="d-flex align-items-center gap-2">
+              <button onClick={logout} className="w-100 bg-transparent d-flex align-items-center gap-2">
                 <div className="icon"><RiLogoutBoxLine /></div>
                 <span>Logout</span>
-              </div></MenuItem>
+              </button></MenuItem>
           </ControlledMenu>
         </div>
       </div>

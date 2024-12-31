@@ -7,6 +7,10 @@ interface Book {
   book: {
     _id: string;
     title: string;
+    image: {
+      url: string;
+      public_id: string;
+    }
   },
   code: string,
   quantity: number;

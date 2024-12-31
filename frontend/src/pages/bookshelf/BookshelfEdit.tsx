@@ -166,7 +166,7 @@ const BookshelfEdit = () => {
                             </div>
                         </div>
                         <div className="d-flex justify-content-end gap-2">
-                            <Link to="/bookcases/all" className="btn-border text-decoration-none py-2 px-3 rounded">Cancel</Link>
+                            <Link to="/bookshelves/all" className="btn-border text-decoration-none py-2 px-3 rounded">Cancel</Link>
                             <button disabled={disabled} type="submit" className="btn-fill py-2 px-3 rounded">Save</button>
                         </div>
                     </form>)

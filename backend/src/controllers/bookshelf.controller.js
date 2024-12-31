@@ -50,7 +50,7 @@ module.exports.viewBookshelf = catchAsyncError(async (req, res, next) => {
         select: "_id name",
       },
     })
-    .populate("books.book", "_id title")
+    .populate("books.book", "_id title image")
     .populate("category", "_id name");
   if (!bookshelf) throw new BusinessException(500, "Bookshelf does not exist!");
   res.status(200).json({

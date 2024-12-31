@@ -8,7 +8,7 @@ import { createBookcase } from "../../apis/actions/bookcase.action";
 import { reset, resetError } from "../../apis/slices/bookcase/bookcase.slice";
 import { allCommonLibrary } from "../../apis/actions/library.action";
 import { selectStyleAsync } from "../../configs/select.config";
-
+import { resetError as resetErrorLb } from "../../apis/slices/library/library.slice";
 interface Bookcase {
   id: string,
   name: string,
@@ -18,8 +18,8 @@ interface Bookcase {
 const BookcaseCreate = () => {
   const dispatch = useAppDispatch();
   const [disabled, setDisabled] = useState(false);
-  const { libraries, success, error, message, loadingLibrary } = useAppSelector((state) => state.bookcase);
-  
+  const { success, error, message } = useAppSelector((state) => state.bookcase);
+  const { loading: loadingLibrary, error: errorLibrary, message: messageLibrary, librariesSelect } = useAppSelector((state) => state.library);
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(allCommonLibrary());
@@ -36,8 +36,12 @@ const BookcaseCreate = () => {
       toast.error(message);
       setDisabled(false);
       dispatch(resetError());
+    } else if (errorLibrary) {
+      toast.error(messageLibrary);
+      setDisabled(false);
+      dispatch(resetErrorLb());
     }
-  }, [dispatch, success, error, navigate, message])
+  }, [dispatch, success, error, navigate, message, errorLibrary, messageLibrary])
 
 
   const { handleSubmit, control, formState: { errors } } = useForm<Bookcase>();
@@ -83,11 +87,11 @@ const BookcaseCreate = () => {
               <Select
                 ref={field.ref}
                 isLoading={loadingLibrary}
-                options={libraries.length > 0 ? libraries.map((item) => ({
+                options={librariesSelect.length > 0 ? librariesSelect.map((item) => ({
                   label: item.name,
                   value: item._id
                 })) : []}
-                value={libraries.map((item) => ({ value: item._id, label: item.name })).find(c => c.value == field.value) ?? null}
+                value={librariesSelect.map((item) => ({ value: item._id, label: item.name })).find(c => c.value == field.value) ?? null}
                 onChange={val => {
                   field.onChange(val?.value);
                 }}

@@ -4,5 +4,6 @@ export const USER_ENDPOINT = {
     ALL: `${baseUrl}/admin/users/all`,
     VIEW: `${baseUrl}/admin/users/view`,
     EDIT: `${baseUrl}/admin/users/update`,
-    LOCK: `${baseUrl}/admin/users/lock`
+    LOCK: `${baseUrl}/admin/users/lock`,
+    READER: `${baseUrl}/admin/users/reader`,
 }

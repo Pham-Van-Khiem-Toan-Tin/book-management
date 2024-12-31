@@ -6,5 +6,6 @@ export const LIBRARY_ENDPOINT = {
     VIEW: `${baseUrl}/admin/libraries/view`,
     EDIT: `${baseUrl}/admin/libraries/edit`,
     DELETE: `${baseUrl}/admin/libraries/delete`,
-    COMMON: `${baseUrl}/admin/libraries/common/all`
+    COMMON: `${baseUrl}/admin/libraries/common/all`,
+    SELECT: `${baseUrl}/admin/libraries/select/all`
 }

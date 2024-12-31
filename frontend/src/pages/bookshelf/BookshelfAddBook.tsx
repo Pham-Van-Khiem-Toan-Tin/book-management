@@ -1,6 +1,6 @@
 import { KeyboardEvent, useEffect, useState } from 'react'
 import Select from 'react-select';
-import { OptionString, createSelectStyles } from '../../configs/select.config';
+import { createSelectStyles } from '../../configs/select.config';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxhooks';
 import { useDebounceCallback } from 'usehooks-ts';
 import { selectBook } from '../../apis/actions/book.action';
@@ -19,6 +19,14 @@ interface BookShelfAddBook {
     bookName: string;
     code: string;
     quantity: number;
+    image: string;
+}
+interface OptionObject {
+    value: {
+        _id: string;
+        image: string;
+    };
+    label: string;
 }
 const BookshelfAddBook = () => {
     const { id } = useParams();
@@ -26,7 +34,7 @@ const BookshelfAddBook = () => {
     const [disabled, setDisabled] = useState(false);
     const [bookList, setBookList] = useState<Array<BookShelfAddBook>>([]);
     const [bookKeyword, setBookKeyword] = useState<string | null>(null);
-    const [selectedValue, setSelectedValue] = useState<OptionString | null>(null);
+    const [selectedValue, setSelectedValue] = useState<OptionObject | null>(null);
     const { loading: loadingBook, bookSelects } = useAppSelector(state => state.book);
     const { loading, bookshelf, success, message, error } = useAppSelector(state => state.bookshelf);
     const dispatch = useAppDispatch();
@@ -35,19 +43,20 @@ const BookshelfAddBook = () => {
             dispatch(selectBook({ keyword: inputValue, excludedBookIds: bookList.map((item) => item.bookId), categoryId: bookshelf.category._id }));
         }
     }, 500);
-    const optionStyle = createSelectStyles<OptionString>()
+    const optionStyle = createSelectStyles<OptionObject>()
     useEffect(() => {
         if (id) {
             dispatch(viewBookshelf(id));
         }
     }, [dispatch, id]);
     useEffect(() => {
-        if (bookshelf && bookshelf.books.length > 0) {
+        if (bookshelf) {
             setBookList(bookshelf.books.map((item) => ({
                 bookId: item.book._id,
                 bookName: item.book.title,
                 code: item.code,
-                quantity: item.quantity
+                quantity: item.quantity,
+                image: item.book.image.url,
             })));
             setDisabled(false);
         } else {
@@ -170,10 +179,11 @@ const BookshelfAddBook = () => {
                                         onChange={(value) => {
                                             if (value && bookshelf) {
                                                 const newBookList = [...bookList, {
-                                                    bookId: value.value,
+                                                    bookId: value.value._id,
                                                     bookName: value.label,
                                                     code: '',
-                                                    quantity: 1
+                                                    quantity: 1,
+                                                    image: value.value.image
                                                 }];
                                                 setBookList(newBookList);
                                                 setSelectedValue(null);
@@ -181,9 +191,16 @@ const BookshelfAddBook = () => {
                                                 dispatch(selectBook({ keyword: null, excludedBookIds: newBookList.map((item) => item.bookId), categoryId: bookshelf.category._id }));
                                             }
                                         }}
+                                        inputId='search'
+                                        noOptionsMessage={() => 'Không tìm thấy sách'}
                                         placeholder='Nhập tên sách để tìm kiếm'
                                         filterOption={null}
-                                        options={bookSelects.map((book) => ({ value: book._id, label: book.title }))}
+                                        options={bookSelects.map((book) => ({
+                                            value: {
+                                                _id: book._id,
+                                                image: book.image.url
+                                            }, label: book.title
+                                        }))}
                                     />
                                 </div>
                                 <div >
@@ -192,6 +209,8 @@ const BookshelfAddBook = () => {
                                             <table className="table table-sm table-striped table-borderless mb-0">
                                                 <thead className='bg-light'>
                                                     <tr>
+                                                        <th scope='col'>STT</th>
+                                                        <th scope='col'>Ảnh</th>
                                                         <th scope="col">Tên sách</th>
                                                         <th scope="col">Mã sách</th>
                                                         <th scope="col">Số lượng</th>
@@ -200,8 +219,14 @@ const BookshelfAddBook = () => {
                                                 </thead>
                                                 <tbody>
                                                     {bookList && bookList.length > 0 ? (
-                                                        bookList.map((item) => (
+                                                        bookList.map((item, index) => (
                                                             <tr key={item.bookId}>
+                                                                <td className="align-middle">
+                                                                    {index + 1}
+                                                                </td>
+                                                                <td className='align-middle'>
+                                                                    <img src={item.image} alt='image-preview' className="img-fluid" style={{ width: "50px", maxHeight: "70px" }} />
+                                                                </td>
                                                                 <td className="align-middle">
                                                                     <input type="text" disabled value={item.bookName} />
                                                                 </td>
@@ -232,7 +257,7 @@ const BookshelfAddBook = () => {
                                                         ))
                                                     ) : (
                                                         <tr>
-                                                            <td colSpan={4}>
+                                                            <td colSpan={6}>
                                                                 <p className="text-center mb-0">No data</p>
                                                             </td>
                                                         </tr>)}

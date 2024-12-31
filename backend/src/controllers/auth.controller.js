@@ -76,7 +76,7 @@ module.exports.renewToken = catchAsyncError(async (req, res, next) => {
 
 module.exports.baseProfile = catchAsyncError(async (req, res, next) => {
   const id = req.user;
-  let user = await userModel.findById(id).select("_id name role avatar");
+  let user = await userModel.findById(id).select("_id name role library avatar");
   if (!user) throw new BusinessException(500, "Invalid user");
   user = await user.populate({
     path: "role",
@@ -102,7 +102,9 @@ module.exports.baseProfile = catchAsyncError(async (req, res, next) => {
     });
   });
   res.status(200).json({
+    sub: user._id,
     name: user.name,
+    library: user.library,
     roles: authorities,
     avatar: user.avatar
   })

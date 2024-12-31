@@ -5,7 +5,7 @@ import useAuthAxios from "../../hooks/useAuthApi";
 
 interface TokenResponse {
   accessToken: string,
-  sub: string,
+  functions: Array<string>,
 }
 export const loginSuccess = createAsyncThunk<TokenResponse, void>(
   "auth/token",
@@ -24,6 +24,8 @@ export const loginSuccess = createAsyncThunk<TokenResponse, void>(
   }
 );
 interface BaseProfileResponse {
+  sub: string;
+  library: string | null;
   name: string;
   roles: Array<string>,
   avatar: string

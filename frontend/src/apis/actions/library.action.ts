@@ -21,7 +21,7 @@ interface AllLibrary {
         totalPages: number,
     }
 };
-interface LibraryCommon {
+export interface LibraryCommon {
     _id: string,
     name: string,
 };
@@ -142,4 +142,5 @@ export const editLibrary = createAsyncThunk<LibraryResponse, LibraryForm>(
         }
     }
 );
+
 

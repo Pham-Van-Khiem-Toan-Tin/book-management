@@ -7,6 +7,10 @@ export interface User {
   _id: string;
   name: string;
   email: string;
+  library: {
+    _id: string;
+    name: string;
+  } | null;
   role: {
     _id: string;
     name: string;
@@ -59,6 +63,7 @@ interface UserEditForm {
   name: string;
   email: string;
   roleId: string;
+  libraryId: string | null | undefined;
 }
 export const editUser = createAsyncThunk<UserResponse, UserEditForm>(
   "users/edit",
@@ -100,6 +105,33 @@ export const viewUser = createAsyncThunk<UserDetailRes, string>(
     try {
       const authApi = useAuthAxios();
       const response = await authApi.get(`${USER_ENDPOINT.VIEW}/${id}`);
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        return rejectWithValue(error.response.data);
+      }
+      return rejectWithValue("Error fetching user data");
+    }
+  }
+);
+
+interface Reader {
+  _id: string;
+  name: string;
+  email: string | null;
+  phone: string | null;
+}
+interface AllUserSelect {
+  readers: Array<Reader>;
+}
+export const allReader = createAsyncThunk<AllUserSelect, string>(
+  "users/select",
+  async (keyword, { rejectWithValue }) => {
+    try {
+      const authApi = useAuthAxios();
+      let query = "";
+      if (keyword) query += `?keyword=${encodeURIComponent(keyword)}`;
+      const response = await authApi.get(USER_ENDPOINT.READER + query);
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {

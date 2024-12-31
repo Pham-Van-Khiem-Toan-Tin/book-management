@@ -16,6 +16,7 @@ const UserList = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { loading, users, pagination, error, success, message } = useAppSelector((state) => state.user);
+    const { sub } = useAppSelector((state) => state.auth);
     const [keyword, setKeyword] = useState(searchParam.get("keyword") ?? undefined);
     const index = optionRecord.findIndex((option) => option.value === (searchParam.get("view") ? parseInt(searchParam.get("view")!) : 10));
     useEffect(() => {
@@ -129,7 +130,7 @@ const UserList = () => {
                                                                 <RiInformation2Line />
                                                             </div>
                                                         </Link>
-                                                        {localStorage.getItem("sb") != item._id && (
+                                                        {sub != item._id && (
                                                             <>
                                                                 <Link className="btn-icon" to={`/users/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
                                                                     <div className="icon">

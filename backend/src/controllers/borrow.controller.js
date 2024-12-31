@@ -1,5 +1,6 @@
 const catchAsyncError = require("../middlewares/catchAsyncError.middleware");
 const borrowModel = require("../models/borrow.model");
+const BusinessException = require("../utils/error.util");
 
 module.exports.search = catchAsyncError(async (req, res, next) => {
   const { keyword, page = 1, limit = 10 } = req.query;
@@ -30,7 +31,59 @@ module.exports.search = catchAsyncError(async (req, res, next) => {
   });
 });
 
-module.exports.createBorrow = catchAsyncError(async (req, res, next) => {
-  const { borrows } = req.body;
-  
+module.exports.createBorrowOffline = catchAsyncError(async (req, res, next) => {
+  const {userId, email, phone, borrows } = req.body;
+  if(!userId || !email || !phone || !borrows || !Array.isArray(borrows)) throw new BusinessException(500, "Dữ liệu không hợp lệ!");
+  const borrowRecords = borrows.map((item) =>{
+    return ({
+      book: item.book,
+      code: item.code,
+      quantity: item.quantity,
+      library: item.library,
+      borrower: {
+        user: userId,
+        phone: phone,
+        email: email,
+      },
+      type: "offline",
+      borrow_date: new Date(),
+      return_date: item.returnDate,
+      status: "borrowed",
+    });
+  });
+  await borrowModel.insertMany(borrowRecords);
+  res.status(200).json({
+    success: true,
+    message: "Các bản ghi mượn sách đã được tạo thành công",
+  });
 });
+
+module.exports.createBorrowOnline = catchAsyncError(async (req, res, next) => {
+  const  {userId, email, phone, borrows, returnDate, address } = req.body;
+  const borrowRecords = borrows.map((item) =>{
+    return ({
+      book: item.book,
+      code: item.code,
+      quantity: item.quantity,
+      library: item.library,
+      borrower: {
+        user: userId,
+        phone: phone,
+        email: email,
+      },
+      type: "online",
+      borrow_date: new Date(),
+      return_date: returnDate,
+      status: "pending",
+      shipping: {
+        address: address,
+        pendingAt: new Date()
+      }
+    });
+  });
+  await borrowModel.insertMany(borrowRecords);
+  res.status(200).json({
+    success: true,
+    message: "Đơn mượn đang được xử lí. Vui lòng theo dõi trạng thái đơn mượn!",
+  });
+})

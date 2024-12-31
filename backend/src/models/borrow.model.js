@@ -1,17 +1,16 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Schema.ObjectId;
+const validator = require("validator");
 const borrowSchema = new mongoose.Schema(
   {
     book: {
-      id: {
-        type: ObjectId,
-        ref: "books",
-        required: true,
-      },
-      code: {
-        type: String,
-        required: true,
-      },
+      type: ObjectId,
+      ref: "books",
+      required: true,
+    },
+    code: {
+      type: String,
+      required: true,
     },
     quantity: {
       type: Number,
@@ -24,9 +23,21 @@ const borrowSchema = new mongoose.Schema(
       required: true,
     },
     borrower: {
-      type: ObjectId,
-      ref: "users",
-      required: true,
+      user: {
+        type: ObjectId,
+        ref: "users",
+        required: true,
+      },
+      phone: {
+        type: String,
+        required: true,
+        validate: [validator.isMobilePhone, "Enter phone number"],
+      },
+      email: {
+        type: String,
+        required: true,
+        validated: [validator.isEmail, "Enter email"]
+      }
     },
     type: {
       type: String,
@@ -44,7 +55,7 @@ const borrowSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["borrowed", "returned", "shipping", "failed"],
+      enum: ["pending", "borrowed", "returned", "shipping", "failed"],
       required: true,
       default: "borrowed",
     },
@@ -56,7 +67,6 @@ const borrowSchema = new mongoose.Schema(
     reason: { type: String },
     shipping: {
       address: { type: String },
-      phone: { type: String },
       status: {
         status_value: {
           type: String,

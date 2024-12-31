@@ -68,7 +68,7 @@ const BookshelfCreate = () => {
                         required: "Vui lòng nhập tên giá sách",
                         validate: (value) =>
                             value.trim() != "" || "Vui lòng nhập tên giá sách"
-                    })} minLength={2} maxLength={72} type="text" placeholder="Nhập tên giá sách" id="name" />
+                    })} type="text" placeholder="Nhập tên giá sách" id="name" />
                     {errors.name && <span className="input-error">{errors?.name?.message}</span>}
                 </div>
                 <div className="box-input">

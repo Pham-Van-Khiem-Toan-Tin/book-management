@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { allBookcase, Bookcase, createBookcase, deleteBookcase, editBookcase, Library, viewBookcase } from "../../actions/bookcase.action"
-import { allCommonLibrary } from "../../actions/library.action";
 
 
 interface BookcaseState {
@@ -11,7 +10,6 @@ interface BookcaseState {
     error: boolean,
     bookcase: Bookcase | null,
     bookcases: Array<Bookcase>,
-    libraries: Array<Library>,
     pagination: {
         total: number,
         page: number,
@@ -26,7 +24,6 @@ const initialState: BookcaseState = {
     loadingLibrary: false as boolean,
     bookcase: null,
     bookcases: [],
-    libraries: [],
     error: false as boolean,
     pagination: {
         total: 0,
@@ -60,17 +57,6 @@ const bookcaseSlice = createSlice({
         });
         builder.addCase(allBookcase.rejected, (state, action) => {
             state.loading = false;
-            state.message = action.payload as string;
-        });
-        builder.addCase(allCommonLibrary.pending, (state) => {
-            state.loadingLibrary = true;
-        });
-        builder.addCase(allCommonLibrary.fulfilled, (state, action) => {
-            state.loadingLibrary = false;
-            state.libraries = action.payload.libraries;
-        });
-        builder.addCase(allCommonLibrary.rejected, (state, action) => {
-            state.loadingLibrary = false;
             state.message = action.payload as string;
         });
         builder.addCase(createBookcase.pending, (state) => {

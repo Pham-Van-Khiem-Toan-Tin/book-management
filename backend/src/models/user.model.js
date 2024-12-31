@@ -29,6 +29,11 @@ const userSchema = new mongoose.Schema(
             unique: true,
             validate: [validator.isEmail, "Please Enter a valid Email"]
         },
+        phone: {
+            type: String,
+            unique: true,
+            validate: [validator.isMobilePhone, "Please Enter a valid Phone Number"]
+        },
         library: {
             type: ObjectId,
             ref: "libraries"

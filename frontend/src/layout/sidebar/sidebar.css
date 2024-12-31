@@ -52,25 +52,25 @@
 .sidebar .middle .accordion .accordion-item .accordion-header .accordion-button:focus {
   box-shadow: none;
 }
-.sidebar .middle .accordion .accordion-item .accordion-header .accordion-button.collapsed {
+.sidebar .middle .accordion .accordion-item .accordion-header .accordion-button:not(.collapsed), .sidebar .middle .accordion .accordion-item .accordion-header .accordion-button[data-active=true] {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+.sidebar .middle .accordion .accordion-item .accordion-header .accordion-button:not(.collapsed)::after, .sidebar .middle .accordion .accordion-item .accordion-header .accordion-button[data-active=true]::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+}
+.sidebar .middle .accordion .accordion-item .accordion-header .accordion-button.collapsed[data-active=false] {
   color: #8c909c;
 }
-.sidebar .middle .accordion .accordion-item .accordion-header .accordion-button.collapsed::after {
+.sidebar .middle .accordion .accordion-item .accordion-header .accordion-button.collapsed[data-active=false]::after {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%238c909c' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
 }
-.sidebar .middle .accordion .accordion-item .accordion-header .accordion-button.collapsed:hover {
+.sidebar .middle .accordion .accordion-item .accordion-header .accordion-button.collapsed[data-active=false]:hover {
   background-color: rgba(0, 178, 7, 0.8);
   opacity: 1;
   color: #ffffff;
 }
-.sidebar .middle .accordion .accordion-item .accordion-header .accordion-button.collapsed:hover::after {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
-}
-.sidebar .middle .accordion .accordion-item .accordion-header .accordion-button:not(.collapsed) {
-  background-color: var(--primary);
-  color: #ffffff;
-}
-.sidebar .middle .accordion .accordion-item .accordion-header .accordion-button:not(.collapsed)::after {
+.sidebar .middle .accordion .accordion-item .accordion-header .accordion-button.collapsed[data-active=false]:hover::after {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
 }
 .sidebar .middle .accordion .accordion-item .accordion-body {
@@ -91,12 +91,12 @@
 .sidebar .middle .accordion .accordion-item .accordion-body .btn-icon .icon {
   color: rgba(0, 178, 7, 0.3);
 }
-.sidebar .middle .accordion .accordion-item .accordion-body .btn-icon:hover {
+.sidebar .middle .accordion .accordion-item .accordion-body .btn-icon.active, .sidebar .middle .accordion .accordion-item .accordion-body .btn-icon:hover {
   cursor: pointer;
   background-color: rgba(0, 178, 7, 0.3);
   color: var(--primary);
 }
-.sidebar .middle .accordion .accordion-item .accordion-body .btn-icon:hover .icon {
+.sidebar .middle .accordion .accordion-item .accordion-body .btn-icon.active .icon, .sidebar .middle .accordion .accordion-item .accordion-body .btn-icon:hover .icon {
   color: var(--primary);
 }
 .sidebar .bottom {

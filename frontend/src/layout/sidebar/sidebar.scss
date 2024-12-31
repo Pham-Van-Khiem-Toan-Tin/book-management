@@ -41,7 +41,6 @@
             border: none;
             gap: 0.5rem;
             background-color: transparent;
-
             .icon {
               display: flex;
               align-items: center;
@@ -51,25 +50,28 @@
             &:focus {
               box-shadow: none;
             }
-            &.collapsed {
-              color: #8c909c;
-              &::after {
-                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%238c909c' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
-              }
-              &:hover {
-                background-color: rgba($color: #00b207, $alpha: 0.8);
-                opacity: 1;
-                color: #ffffff;
-                &::after {
-                  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
-                }
-              }
-            }
-            &:not(.collapsed) {
+            &:not(.collapsed),
+            &[data-active="true"] {
               background-color: var(--primary);
               color: #ffffff;
               &::after {
                 background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+              }
+            }
+            &.collapsed {
+              &[data-active="false"] {
+                color: #8c909c;
+                &::after {
+                  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%238c909c' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+                }
+                &:hover {
+                  background-color: rgba($color: #00b207, $alpha: 0.8);
+                  opacity: 1;
+                  color: #ffffff;
+                  &::after {
+                    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+                  }
+                }
               }
             }
           }
@@ -90,6 +92,7 @@
             .icon {
               color: rgba($color: #00b207, $alpha: 0.3);
             }
+            &.active,
             &:hover {
               cursor: pointer;
               background-color: rgba($color: #00b207, $alpha: 0.3);

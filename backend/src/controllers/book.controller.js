@@ -4,6 +4,8 @@ const bookModel = require("../models/book.model");
 const BusinessException = require("../utils/error.util");
 const fs = require("fs");
 const mongoose = require("mongoose");
+const bookshelfModel = require("../models/bookshelf.model");
+const ObjectId = mongoose.Types.ObjectId;
 
 module.exports.createBook = catchAsyncError(async (req, res, next) => {
   const { title, author, description, type, publisher, categories } = req.body;
@@ -76,21 +78,99 @@ module.exports.search = catchAsyncError(async (req, res, next) => {
     },
   });
 });
-
+module.exports.allBookOfLibrary = catchAsyncError(async (req, res, next) => {
+  const { libraryId, keyword, bookSelected } = req.body;
+  if (!libraryId) throw new BusinessException(500, "Dữ liệu không hợp lệ!");
+  const bookSelectedIds = bookSelected.map((item) => ({
+    bookId: ObjectId.createFromHexString(item.bookId),
+    shelfId: ObjectId.createFromHexString(item.bookshelfId),
+  }));
+  const regexKeyword = new RegExp(keyword ?? "", "i");
+  let list = await bookshelfModel.aggregate([
+    {
+      $unwind: "$books",
+    },
+    {
+      $lookup: {
+        from: "books",
+        localField: "books.book",
+        foreignField: "_id",
+        as: "bookDetails",
+      },
+    },
+    {
+      $unwind: "$bookDetails",
+    },
+    {
+      $lookup: {
+        from: "bookcases",
+        localField: "bookcase",
+        foreignField: "_id",
+        as: "bookcaseDetails",
+      },
+    },
+    {
+      $unwind: "$bookcaseDetails",
+    },
+    {
+      $match: {
+        $and: [
+          {
+            "bookcaseDetails.library": ObjectId.createFromHexString(libraryId),
+          },
+          {
+            $or: [
+              { "bookDetails.title": { $regex: regexKeyword } },
+              { "books.code": { $regex: regexKeyword } },
+            ],
+          },
+          {
+            $expr: {
+              $not: {
+                $in: [
+                  {
+                    bookId: "$bookDetails._id",
+                    shelfId: "$_id",
+                  },
+                  bookSelectedIds,
+                ],
+              },
+            },
+          },
+        ],
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        bookshelfId: "$_id",
+        code: "$books.code",
+        bookId: "$bookDetails._id",
+        image: "$bookDetails.image.url",
+        bookTitle: "$bookDetails.title",
+        quantity: "$books.quantity",
+      },
+    },
+  ]);
+  if (!list) list = [];
+  res.status(200).json({
+    books: list,
+  });
+});
 module.exports.selectBook = catchAsyncError(async (req, res, next) => {
   const { keyword, excluded, categoryId } = req.query;
   console.log(categoryId);
 
   const excludedIds = excluded ? excluded.split(",") : [];
   const regexKeyword = new RegExp(keyword, "i");
-  const categoryObjectId = new mongoose.Types.ObjectId(categoryId);
+  const categoryObjectId = new ObjectId.createFromHexString(categoryId);
   let list = await bookModel
     .find({
       _id: { $nin: excludedIds },
       title: { $regex: regexKeyword },
       categories: { $in: [categoryObjectId] },
     })
-    .select("_id title");
+    .select("_id title image");
   if (!list) list = [];
   res.status(200).json({
     books: list,

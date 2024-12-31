@@ -1,7 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allUser, editUser, lockUser, User, viewUser } from "../../actions/user.action";
+import { allReader, allUser, editUser, lockUser, User, viewUser } from "../../actions/user.action";
 import { authorityCommon, AuthorityCommon } from "../../actions/authorities.action";
 
+interface Reader {
+    _id: string;
+    name: string;
+    email: string | null;
+    phone: string | null;
+}
 
 interface UserState {
     success: boolean,
@@ -10,6 +16,7 @@ interface UserState {
     loadingAuthorities: boolean,
     error: boolean,
     user: User | null,
+    readers: Array<Reader>,
     users: Array<User>,
     authorities: Array<AuthorityCommon>
     pagination: {
@@ -27,6 +34,7 @@ const initialState: UserState = {
     loadingAuthorities: false as boolean,
     user: null,
     users: [],
+    readers: [],
     authorities: [],
     error: false as boolean,
     pagination: {
@@ -48,6 +56,7 @@ const userSlice = createSlice({
         reset: (state) => {
             state.message = null;
             state.success = false;
+            state.user = null;
         }
     },
     extraReducers: (builder) => {
@@ -110,6 +119,18 @@ const userSlice = createSlice({
         });
         builder.addCase(authorityCommon.rejected, (state, action) => {
             state.loadingAuthorities = false;
+            state.error = true;
+            state.message = action.payload as string;
+        });
+        builder.addCase(allReader.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(allReader.fulfilled, (state, action) => {
+            state.loading = false;
+            state.readers = action.payload.readers;
+        });
+        builder.addCase(allReader.rejected, (state, action) => {
+            state.loading = false;
             state.error = true;
             state.message = action.payload as string;
         });

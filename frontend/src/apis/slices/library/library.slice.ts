@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allLibrary, createLibrary, deleteLibrary, editLibrary, Library, viewLibrary } from "../../actions/library.action";
+import { allCommonLibrary, allLibrary, createLibrary, deleteLibrary, editLibrary, Library, LibraryCommon, viewLibrary } from "../../actions/library.action";
 
 
 interface LibraryState {
@@ -8,6 +8,7 @@ interface LibraryState {
     loading: boolean,
     error: boolean,
     library: Library | null,
+    librariesSelect: Array<LibraryCommon>,
     libraries: Array<Library>
     pagination: {
         total: number,
@@ -21,6 +22,7 @@ const initialState: LibraryState = {
     message: null,
     loading: false as boolean,
     library: null,
+    librariesSelect: [],
     libraries: [],
     error: false as boolean,
     pagination: {
@@ -55,6 +57,18 @@ const librarySlice = createSlice({
         });
         builder.addCase(allLibrary.rejected, (state, action) => {
             state.loading = false;
+            state.message = action.payload as string;
+        });
+        builder.addCase(allCommonLibrary.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(allCommonLibrary.fulfilled, (state, action) => {
+            state.loading = false;
+            state.librariesSelect = action.payload.libraries;
+        });
+        builder.addCase(allCommonLibrary.rejected, (state, action) => {
+            state.loading = false;
+            state.error = true;
             state.message = action.payload as string;
         });
         builder.addCase(createLibrary.pending, (state) => {

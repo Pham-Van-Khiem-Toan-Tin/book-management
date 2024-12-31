@@ -1,7 +1,7 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxhooks';
-import { useNavigate, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { AuthorityDetail, editAuthority, viewAuthority } from '../../apis/actions/authorities.action';
 import { toast } from 'react-toastify';
@@ -82,7 +82,7 @@ const AuthorityEdit = () => {
                     </div>
                     <div className='btn-group d-flex justify-content-end gap-3'>
                         <button className='btn-fill rounded px-3 py-2' onClick={handleSubmit}>Save</button>
-                        <button className='btn-border rounded px-3 py-2'>Cancel</button>
+                        <Link to="/authorities/all" className='btn-border rounded px-3 py-2'>Cancel</Link>
                     </div>
                 </div>
             )}
