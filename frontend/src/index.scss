@@ -81,6 +81,7 @@ body {
       color: var(--hard-primary);
     }
   }
+
   .table-responsive-container {
     min-width: 800px !important;
     max-height: 440px !important;
@@ -106,11 +107,49 @@ body {
             input {
               padding: 0.2rem 0.6rem;
               font-size: 0.8rem;
+              max-width: 150px;
+            }
+            .react-datepicker-wrapper {
+              .react-datepicker__calendar-icon {
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+              }
+              button {
+                font-size: 0.8rem;
+                min-width: 150px;
+                padding: 0.2rem 0.6rem;
+                padding-left: 2rem;
+                border: 1px solid #ececec;
+                text-align: start;
+              }
             }
             .status-error,
-            .status-active {
+            .status-active,
+            .status-pending,
+            .status-shipping,
+            .status-borrowed {
               font-size: 0.8rem;
               font-weight: 500;
+              max-width: 100px;
+            }
+            .status-pending {
+              span {
+                color: #f39c12;
+              }
+              background-color: #f8e5c5;
+            }
+            .status-borrowed {
+              span {
+                color: #2636c4;
+              }
+              background-color: #c5c6f8;
+            }
+            .status-shipping {
+              span {
+                color: #2c742f;
+              }
+              background-color: #c5f8d1;
             }
             .status-error {
               span {
@@ -206,7 +245,8 @@ body {
     font-size: 0.8rem;
     margin-bottom: 0.4rem;
   }
-  .label-file, .img-preview {
+  .label-file,
+  .img-preview {
     .icon {
       font-size: 1.2rem;
     }

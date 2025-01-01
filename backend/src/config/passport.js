@@ -3,6 +3,7 @@ const FacebookStrategy = require("passport-facebook").Strategy;
 
 const passport = require("passport");
 const userModel = require("../models/user.model");
+const AuthenticationException = require("../utils/errorAuth.util");
 require("dotenv").config();
 
 passport.use(
@@ -10,6 +11,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      
       callbackURL: "/auth/google/callback",
       scope: ["profile", "email"],
     },
@@ -30,6 +32,7 @@ passport.use(
             role: "READER",
           });
         }
+        if(user.lock) throw new AuthenticationException(401,"Tài khoản của bạn đã bị khóa!");
         user = await user.populate({
           path: "role",
           select: "_id functions",

@@ -4,7 +4,7 @@ import { loginSuccess } from "../../apis/actions/auth.action";
 import Loading from "../../common/loading/Loading";
 import { Navigate } from "react-router";
 import { toast } from "react-toastify";
-import { resetError } from "../../apis/slices/auth/token.slice";
+import { resetError } from "../../apis/slices/token.slice";
 
 const LoginSuccess = () => {
   const { loading, message } = useAppSelector((state) => state.token);

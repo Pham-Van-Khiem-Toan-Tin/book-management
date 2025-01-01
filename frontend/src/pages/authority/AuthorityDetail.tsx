@@ -5,7 +5,7 @@ import { useParams } from 'react-router';
 import { useEffect } from 'react';
 import { viewAuthority } from '../../apis/actions/authorities.action';
 import { toast } from 'react-toastify';
-import { resetError } from '../../apis/slices/authority/authority.slice';
+import { resetError } from '../../apis/slices/authority.slice';
 import './authority.css'
 import Loading from '../../common/loading/Loading';
 const AuthorityDetail = () => {

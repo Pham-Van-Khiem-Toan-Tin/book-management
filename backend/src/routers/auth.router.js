@@ -56,7 +56,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     successRedirect: process.env.GOOGLE_CLIENT_URL,
-    failureRedirect: "/login/failed",
+    failureRedirect: process.env.FACEBOOK_CLIENT_URL,
   })
 );
 router.get(

@@ -31,9 +31,9 @@ module.exports.allRoles = catchAsyncError(async (req, res, next) => {
 });
 module.exports.viewRole = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  if (!id) throw new BusinessException(500, "Invalid data");
+  if (!id) throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   let exist = await roleModel.exists({ _id: id });
-  if (!exist) throw new BusinessException(500, "Authority does not exist!");
+  if (!exist) throw new BusinessException(500, "Nhóm quyền không tồn tại");
   const allFunctions = await functionModel
     .find({})
     .select("_id subFunctions name")
@@ -67,10 +67,10 @@ module.exports.editRole = catchAsyncError(async (req, res, next) => {
   console.log(req.params);
   const { id } = req.params;
   const { _id, role } = req.body;
-  if(id != _id) throw new BusinessException(500, "Invalid data");
+  if(id != _id) throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   const exist = await roleModel.exists({ _id: id });
   
-  if (!exist) throw new BusinessException(500, "Authority does not exist!");
+  if (!exist) throw new BusinessException(500, "Nhóm quyền không tồn tại");
   const functions = role.filter((item) => item.subFunctions.every((subFunction) => subFunction.active)).map((item) => item._id);
   const allSubFunctionActive = role.map((item) => item.subFunctions.filter((subFunction) => subFunction.active).map((subFunction) => subFunction._id)).flat();
   await roleModel.findByIdAndUpdate(id, { functions: functions });
@@ -140,7 +140,7 @@ module.exports.addRole = catchAsyncError(async (req, res, next) => {
   });
   res.status(200).json({
     success: true,
-    message: "New permission added successfully!",
+    message: "Thêm mới nhóm quyền thành công!",
   });
 });
 module.exports.commonAuthorities = catchAsyncError(async (req, res, next) => {
@@ -149,7 +149,7 @@ module.exports.commonAuthorities = catchAsyncError(async (req, res, next) => {
     .findById(userId)
     .select("role")
     .populate("role", "_id order");
-  if (!user) throw new BusinessException(500, "User does not exist!");
+  if (!user) throw new BusinessException(500, "Nguời dùng không tồn tại!");
   const order = user.role.order;
   const authorities = await roleModel
     .find({ order: { $lte: order } })
@@ -162,7 +162,7 @@ module.exports.commonAuthorities = catchAsyncError(async (req, res, next) => {
 //   const { id } = req.query;
 //   const { name, description } = req.body;
 //   const role = await roleModel.findById(id);
-//   if (!role) throw new BusinessException(500, "Authority does not exist!");
+//   if (!role) throw new BusinessException(500, "Nhóm quyền không tồn tại");
 //   role.name = name;
 //   role.description = description;
 //   await role.save();
@@ -177,9 +177,9 @@ module.exports.addFunctionsListToRole = catchAsyncError(
     const { id } = req.query;
     const { functions } = req.body;
     if (!Array.isArray(functions))
-      throw new BusinessException(500, "Invalid data.");
+      throw new BusinessException(500, "Dữ liệu không hợp lệ!");
     const role = await roleModel.findById(id);
-    if (!role) throw new BusinessException(500, "Authority does not exist!");
+    if (!role) throw new BusinessException(500, "Nhóm quyền không tồn tại");
     functions.forEach((item) => {
       if (!role.functions.includes(item)) role.functions.push(item);
     });
@@ -211,7 +211,7 @@ module.exports.addFunction = catchAsyncError(async (req, res, next) => {
 
 module.exports.viewFunction = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  if (!id) throw new BusinessException(500, "Invalid data");
+  if (!id) throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   let functionView = await functionModel.findById(id);
   if (!functionView)
     throw new BusinessException(500, "Function does not exist!");
@@ -240,7 +240,7 @@ module.exports.addSubFunctionsToFunction = catchAsyncError(
     const { id } = req.query;
     const { subfunctions } = req.body;
     if (!Array.isArray(subfunctions))
-      throw new BusinessException(500, "Invalid data.");
+      throw new BusinessException(500, "Dữ liệu không hợp lệ!");
     const functionEdit = await functionModel.findById(id);
     if (!functionEdit)
       throw new BusinessException(500, "Function does not exist!");

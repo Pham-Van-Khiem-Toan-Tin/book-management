@@ -42,12 +42,12 @@ module.exports.common = catchAsyncError(async (req, res, next) => {
 
 module.exports.viewBookcase = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  if (!id) throw new BusinessException(500, "Invalid data");
+  if (!id) throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   let bookcase = await bookcaseModel
     .findById(id)
     .select("_id code name description library createdAt")
     .populate("library", "_id name");
-  if (!bookcase) throw new BusinessException(500, "Bookcase does not exist!");
+  if (!bookcase) throw new BusinessException(500, "Tủ sách không tồn tại!");
   res.status(200).json({
     bookcase: bookcase,
   });
@@ -56,13 +56,13 @@ module.exports.viewBookcase = catchAsyncError(async (req, res, next) => {
 module.exports.addBookcase = catchAsyncError(async (req, res, next) => {
   const { id, name, description, libraryId } = req.body;
   if (!id || !name || !description || !libraryId)
-    throw new BusinessException(500, "Invalid data");
+    throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   const existsLibrary = await libraryModel.exists({ _id: libraryId });
   if (!existsLibrary)
-    throw new BusinessException(500, "Library does not exist!");
+    throw new BusinessException(500, "Cơ sở không tồn tại!");
   const exists = await bookcaseModel.exists({ name: name, library: libraryId });
   if (exists)
-    throw new BusinessException(500, "The bookcase that already exists!");
+    throw new BusinessException(500, "Tủ sách đã tồn tại!");
   await bookcaseModel.create({
     code: id,
     name: name,
@@ -71,7 +71,7 @@ module.exports.addBookcase = catchAsyncError(async (req, res, next) => {
   });
   res.status(200).json({
     success: true,
-    message: "Bookcase added successfully!",
+    message: "Thêm mới tủ sách thành công!",
   });
 });
 
@@ -85,12 +85,12 @@ module.exports.editBookcase = catchAsyncError(async (req, res, next) => {
     !libraryId ||
     !code ||
     id !== _id  )
-    throw new BusinessException(500, "Invalid data");
+    throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   const existsLibrary = await libraryModel.exists({ _id: libraryId });
   if (!existsLibrary)
-    throw new BusinessException(500, "Library does not exist!");
+    throw new BusinessException(500, "Cơ sở không tồn tại!");
   let bookcase = await bookcaseModel.findById(id);
-  if (!bookcase) throw new BusinessException(500, "Bookcase does not exist!");
+  if (!bookcase) throw new BusinessException(500, "Tủ sách không tồn tại!");
   bookcase.name = name;
   bookcase.description = description;
   bookcase.library = libraryId;
@@ -98,18 +98,18 @@ module.exports.editBookcase = catchAsyncError(async (req, res, next) => {
   await bookcase.save();
   res.status(200).json({
     success: true,
-    message: "Bookcase updated successfully!",
+    message: "Cập nhật tủ sách thành công!",
   });
 });
 
 module.exports.deleteBookcase = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  if (!id) throw new BusinessException(500, "Invalid data");
+  if (!id) throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   let bookDelete = await bookcaseModel.findByIdAndDelete(id);
   if (!bookDelete)
-    throw new BusinessException(500, "The bookcase does not exist!");
+    throw new BusinessException(500, "Tủ sách không tồn tại!");
   res.status(200).json({
     success: true,
-    message: "Bookcase deleted successfully!",
+    message: "Xoá tủ sách thành công!",
   });
 });

@@ -8,7 +8,7 @@ import {
   createCategory,
   deleteCategory,
   editCategory,
-} from "../../actions/category.action";
+} from "../actions/category.action";
 
 interface CategoryState {
   success: boolean;

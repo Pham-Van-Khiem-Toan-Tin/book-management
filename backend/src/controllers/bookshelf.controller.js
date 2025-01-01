@@ -38,7 +38,7 @@ module.exports.search = catchAsyncError(async (req, res, next) => {
 
 module.exports.viewBookshelf = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  if (!id) throw new BusinessException(500, "Invalid data");
+  if (!id) throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   let bookshelf = await bookshelfModel
     .findById(id)
     .select("_id name code description books bookcase createdAt")
@@ -52,7 +52,7 @@ module.exports.viewBookshelf = catchAsyncError(async (req, res, next) => {
     })
     .populate("books.book", "_id title image")
     .populate("category", "_id name");
-  if (!bookshelf) throw new BusinessException(500, "Bookshelf does not exist!");
+  if (!bookshelf) throw new BusinessException(500, "Giá sách không tồn tại!");
   res.status(200).json({
     bookshelf: bookshelf,
   });
@@ -86,7 +86,7 @@ module.exports.addBookshelf = catchAsyncError(async (req, res, next) => {
   });
   res.status(200).json({
     success: true,
-    message: "Bookshelf added successfully!",
+    message: "Thêm mới giá sách thành công!",
   });
 });
 
@@ -94,13 +94,13 @@ module.exports.updateBookshelf = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
   const { code, name, description, bookcaseId } = req.body;
   if (!id || !name || !description || !bookcaseId)
-    throw new BusinessException(500, "Invalid data");
+    throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   const exists = await bookshelfModel.exists({
     code: code,
     bookcase: bookcaseId,
   });
   if (exists)
-    throw new BusinessException(500, "The bookshelf that already exists!");
+    throw new BusinessException(500, "Giá sách đã tồn tại!");
   await bookshelfModel.findByIdAndUpdate(id, {
     code: code,
     name: name,
@@ -109,19 +109,19 @@ module.exports.updateBookshelf = catchAsyncError(async (req, res, next) => {
   });
   res.status(200).json({
     success: true,
-    message: "Bookshelf updated successfully!",
+    message: "Cập nhật giá sách thành công!",
   });
 });
 
 module.exports.deleteBookshelf = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  if (!id) throw new BusinessException(500, "Invalid data");
+  if (!id) throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   let bookshelf = await bookshelfModel.findById(id);
-  if (!bookshelf) throw new BusinessException(500, "Bookshelf does not exist!");
+  if (!bookshelf) throw new BusinessException(500, "Giá sách không tồn tại!");
   await bookshelfModel.findByIdAndDelete(id);
   res.status(200).json({
     success: true,
-    message: "Bookshelf deleted successfully!",
+    message: "Xoá giá sách thành công!",
   });
 });
 
@@ -130,7 +130,7 @@ module.exports.addBookToBookshelf = catchAsyncError(async (req, res, next) => {
   const {bookshelfId, books} = req.body;
   if (!id || id != bookshelfId) throw new BusinessException(500, "Dữ liệu không hợp lệ");
   let bookshelf = await bookshelfModel.findById(id);
-  if (!bookshelf) throw new BusinessException(500, "Bookshelf does not exist!");
+  if (!bookshelf) throw new BusinessException(500, "Giá sách không tồn tại!");
   bookshelf.books = [];
   books.forEach(element => {
     bookshelf.books.push({

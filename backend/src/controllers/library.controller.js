@@ -38,11 +38,11 @@ module.exports.allCommon = catchAsyncError(async (req, res, next) => {
 
 module.exports.viewLibrary = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  if (!id) throw new BusinessException(500, "Invalid data");
+  if (!id) throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   let library = await libraryModel
     .find({ _id: id})
     .select("_id name description location createdAt");
-  if (!library) throw new BusinessException(500, "Library does not exist!");
+  if (!library) throw new BusinessException(500, "Cơ sở không tồn tại!");
   res.status(200).json({
     library: library,
   });
@@ -51,10 +51,10 @@ module.exports.viewLibrary = catchAsyncError(async (req, res, next) => {
 module.exports.addLibrary = catchAsyncError(async (req, res, next) => {
   const { name, description, location } = req.body;
   if (!name || !description || !location)
-    throw new BusinessException(500, "Invalid data");
+    throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   const exists = await libraryModel.exists({ name: name });
   if (exists)
-    throw new BusinessException(500, "The library that already exists!");
+    throw new BusinessException(500, "Cơ sở đã tồn tại!");
   await libraryModel.create({
     name: name,
     description: description,
@@ -62,7 +62,7 @@ module.exports.addLibrary = catchAsyncError(async (req, res, next) => {
   });
   res.status(200).json({
     success: true,
-    message: "Library added successfully!",
+    message: "Cập nhật cơ sở thành công!",
   });
 });
 
@@ -70,9 +70,9 @@ module.exports.editLibrary = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
   const { name, description, location } = req.body;
   if (!id || !name || !description || !location)
-    throw new BusinessException(500, "Invalid data");
+    throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   const exists = await libraryModel.exists({ _id: id });
-  if (!exists) throw new BusinessException(500, "The library does not exist!");
+  if (!exists) throw new BusinessException(500, "Cơ sở không tồn tại!");
   await libraryModel.findByIdAndUpdate(id, {
     name: name,
     description: description,
@@ -80,7 +80,7 @@ module.exports.editLibrary = catchAsyncError(async (req, res, next) => {
   });
   res.status(200).json({
     success: true,
-    message: "Library updated successfully!",
+    message: "Cập nhật cơ sở thành công!",
   });
 });
 

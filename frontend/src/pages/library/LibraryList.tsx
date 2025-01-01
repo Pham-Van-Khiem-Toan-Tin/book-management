@@ -5,7 +5,7 @@ import { allLibrary } from "../../apis/actions/library.action";
 import Select, { SingleValue } from "react-select";
 import { Tooltip } from "bootstrap";
 import { toast } from "react-toastify";
-import { reset, resetError } from "../../apis/slices/library/library.slice";
+import { reset, resetError } from "../../apis/slices/library.slice";
 import Loading from "../../common/loading/Loading";
 import moment from "moment";
 import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine, RiInformation2Line, RiPencilLine } from "react-icons/ri";

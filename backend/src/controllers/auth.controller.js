@@ -6,7 +6,7 @@ const userModel = require("../models/user.model");
 
 module.exports.renewToken = catchAsyncError(async (req, res, next) => {
   const { rft: refreshToken } = req.cookies;
-  if (!refreshToken) throw new BusinessException(401, "Invalid login session!");
+  if (!refreshToken) throw new BusinessException(401, "Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại.");
   try {
     const decode = await jwt.verify(
       refreshToken,
@@ -16,7 +16,7 @@ module.exports.renewToken = catchAsyncError(async (req, res, next) => {
     if (!user) {
       throw new BusinessException(
         500,
-        "Request could not be processed. Please try again later."
+        "Yêu cầu không thể được xử lý. Vui lòng thử lại sau."
       );
     }
     user = await user.populate({
@@ -61,14 +61,14 @@ module.exports.renewToken = catchAsyncError(async (req, res, next) => {
     if (error?.name == "TokenExpiredError") {
       throw new BusinessException(
         420,
-        "Your session has expired. Please log in again."
+        "Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại."
       );
     } else {
       console.log(error);
 
       throw new BusinessException(
         500,
-        "Request could not be processed. Please try again later."
+        "Yêu cầu không thể được xử lý. Vui lòng thử lại sau."
       );
     }
   }
@@ -80,7 +80,7 @@ module.exports.baseProfile = catchAsyncError(async (req, res, next) => {
   if (!user) throw new BusinessException(500, "Invalid user");
   user = await user.populate({
     path: "role",
-    select: "_id functions",
+    select: "_id order functions",
     populate: {
       path: "functions",
       select: "_id subFunctions",
@@ -106,6 +106,7 @@ module.exports.baseProfile = catchAsyncError(async (req, res, next) => {
     name: user.name,
     library: user.library,
     roles: authorities,
+    order: user.role.order,
     avatar: user.avatar
   })
 });

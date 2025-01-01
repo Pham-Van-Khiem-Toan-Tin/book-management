@@ -2,7 +2,8 @@ const baseUrl: string = import.meta.env.VITE_REACT_APP_API_URL;
 
 export const BORROW_ENDPOINT = {
     ALL: `${baseUrl}/admin/borrows/all`,
-    CREATE: `${baseUrl}/admin/borrows/create`,
+    CREATE_ONLINE: `${baseUrl}/admin/borrows/create/online`,
+    CREATE_OFFLINE: `${baseUrl}/admin/borrows/create/offline`,
     VIEW: `${baseUrl}/admin/borrows/view`,
     EDIT: `${baseUrl}/admin/borrows/edit`,
     DELETE: `${baseUrl}/admin/borrows/delete`,

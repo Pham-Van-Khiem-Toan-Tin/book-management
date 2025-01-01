@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { createBookshelf } from "../../apis/actions/bookshelf.action";
-import { reset, resetError } from "../../apis/slices/bookshelf/bookshelf.slice";
+import { reset, resetError } from "../../apis/slices/bookshelf.slice";
 import { allCommonBookcase } from "../../apis/actions/bookcase.action";
 import { selectStyleAsync } from "../../configs/select.config";
 import { subCategory } from "../../apis/actions/category.action";

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allBorrow, Borrow } from "../actions/borrow.action";
+import { allBorrow, Borrow, createBorrowOffline } from "../actions/borrow.action";
 
 interface BorrowState {
   success: boolean;
@@ -55,6 +55,19 @@ const borrowSlice = createSlice({
       state.pagination = action.payload.pagination;
     });
     builder.addCase(allBorrow.rejected, (state, action) => {
+      state.loading = false;
+      state.error = true;
+      state.message = action.payload as string;
+    });
+    builder.addCase(createBorrowOffline.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(createBorrowOffline.fulfilled, (state, action) => {
+      state.loading = false;
+      state.success = action.payload.success;
+      state.message = action.payload.message;
+    });
+    builder.addCase(createBorrowOffline.rejected, (state, action) => {
       state.loading = false;
       state.error = true;
       state.message = action.payload as string;

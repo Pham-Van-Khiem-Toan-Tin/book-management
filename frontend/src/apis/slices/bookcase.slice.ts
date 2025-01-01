@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allBookcase, Bookcase, createBookcase, deleteBookcase, editBookcase, Library, viewBookcase } from "../../actions/bookcase.action"
+import { allBookcase, Bookcase, createBookcase, deleteBookcase, editBookcase, viewBookcase } from "../actions/bookcase.action"
 
 
 interface BookcaseState {

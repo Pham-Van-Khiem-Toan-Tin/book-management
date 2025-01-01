@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks"
 import { allCategory, Category, deleteCategory } from "../../apis/actions/category.action";
 import { toast } from "react-toastify";
-import { reset, resetError } from "../../apis/slices/category/category.slice";
+import { reset, resetError } from "../../apis/slices/category.slice";
 import Loading from "../../common/loading/Loading";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import moment from "moment";

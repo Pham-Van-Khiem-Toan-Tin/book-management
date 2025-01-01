@@ -5,11 +5,7 @@ import Logo from "../../assets/images/login/Logo.png";
 import { useEffect } from 'react';
 import { Collapse } from 'bootstrap';
 import { NavLink, useLocation } from "react-router";
-interface ChildrenMenu {
-    href: string;
-    name: string;
-    role: string;
-}
+
 const Sidebar = () => {
     const functions = JSON.parse(localStorage.getItem("fn") ?? "[]");
     const location = useLocation();

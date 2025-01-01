@@ -122,6 +122,7 @@ export interface BookOfLibrary {
   bookId: string;
   bookTitle: string;
   quantity: number;
+  type: string;
 }
 interface AllBookOfLibrary {
   books: Array<BookOfLibrary>;

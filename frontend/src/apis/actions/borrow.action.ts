@@ -12,10 +12,20 @@ export interface Borrow {
       url: string;
     };
   };
+  code: string;
   borrower: {
+    user: {
+      _id: string;
+      name: string
+    }
+    email: string;
+    phone: string;
+  };
+  library: {
     _id: string;
     name: string;
   };
+  quantity: number;
   type: string;
   borrow_date: string;
   return_date: string;
@@ -54,3 +64,35 @@ export const allBorrow = createAsyncThunk<AllBorrow, BorrowSearch>(
     }
   }
 );
+interface BorrowCreateForm {
+  userId: string;
+  email: string;
+  phone: string;
+  books: Array<{
+    id: string;
+    code: string;
+    quantity: number;
+    returnDate: Date;
+    bookshelf: string;
+    library: string;
+  }>;
+}
+interface BorrowResponse {
+  success: boolean;
+  message: string;
+}
+export const createBorrowOffline = createAsyncThunk<
+  BorrowResponse,
+  BorrowCreateForm
+>("borrow/create-offline", async (data, { rejectWithValue }) => {
+  try {
+    const authApi = useAuthAxios();
+    const response = await authApi.post(BORROW_ENDPOINT.CREATE_OFFLINE, data);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      return rejectWithValue(error.response.data);
+    }
+    return rejectWithValue("Error fetching borrowed books");
+  }
+});

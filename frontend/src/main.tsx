@@ -42,6 +42,8 @@ import { BorrowList } from './pages/borrow/BorrowList.tsx';
 import ProtectRouter from './common/protect-router/ProtectRouter.tsx';
 import BorrowCreate from './pages/borrow/BorrowCreate.tsx';
 import BookshelfAddBook from './pages/bookshelf/BookshelfAddBook.tsx';
+import Error403 from './pages/error/error403.tsx';
+import LoginFail from './pages/login/LoginFail.tsx';
 
 const router = createBrowserRouter([
   {
@@ -364,8 +366,16 @@ const router = createBrowserRouter([
     element: <Login />
   },
   {
+    path: "/login-fail/:message",
+    element: <LoginFail />
+  },
+  {
     path: "/login-success",
     element: <LoginSuccess />
+  },
+  {
+    path: "/403",
+    element: <Error403 />
   }
 ])
 

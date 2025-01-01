@@ -15,6 +15,7 @@ const borrowSchema = new mongoose.Schema(
     quantity: {
       type: Number,
       required: true,
+      min: 1,
       default: 1,
     },
     library: {
@@ -63,6 +64,7 @@ const borrowSchema = new mongoose.Schema(
       type: String,
       enum: ["pending", "approved", "rejected"],
       default: "pending",
+      required: true,
     },
     reason: { type: String },
     shipping: {

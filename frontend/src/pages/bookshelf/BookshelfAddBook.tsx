@@ -10,7 +10,7 @@ import { useNavigate, useParams } from 'react-router';
 import { addBookToBookshelf, viewBookshelf } from '../../apis/actions/bookshelf.action';
 import Loading from '../../common/loading/Loading';
 import { toast } from 'react-toastify';
-import { reset, resetError } from '../../apis/slices/bookshelf/bookshelf.slice';
+import { reset, resetError } from '../../apis/slices/bookshelf.slice';
 import _ from "lodash";
 
 

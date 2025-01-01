@@ -99,13 +99,60 @@ body.modal-open {
 .table-container .table-responsive-container table tbody tr td input {
   padding: 0.2rem 0.6rem;
   font-size: 0.8rem;
+  max-width: 150px;
+}
+.table-container .table-responsive-container table thead tr td .react-datepicker-wrapper .react-datepicker__calendar-icon,
+.table-container .table-responsive-container table tbody tr td .react-datepicker-wrapper .react-datepicker__calendar-icon {
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+.table-container .table-responsive-container table thead tr td .react-datepicker-wrapper button,
+.table-container .table-responsive-container table tbody tr td .react-datepicker-wrapper button {
+  font-size: 0.8rem;
+  min-width: 150px;
+  padding: 0.2rem 0.6rem;
+  padding-left: 2rem;
+  border: 1px solid #ececec;
+  text-align: start;
 }
 .table-container .table-responsive-container table thead tr td .status-error,
 .table-container .table-responsive-container table thead tr td .status-active,
+.table-container .table-responsive-container table thead tr td .status-pending,
+.table-container .table-responsive-container table thead tr td .status-shipping,
+.table-container .table-responsive-container table thead tr td .status-borrowed,
 .table-container .table-responsive-container table tbody tr td .status-error,
-.table-container .table-responsive-container table tbody tr td .status-active {
+.table-container .table-responsive-container table tbody tr td .status-active,
+.table-container .table-responsive-container table tbody tr td .status-pending,
+.table-container .table-responsive-container table tbody tr td .status-shipping,
+.table-container .table-responsive-container table tbody tr td .status-borrowed {
   font-size: 0.8rem;
   font-weight: 500;
+  max-width: 100px;
+}
+.table-container .table-responsive-container table thead tr td .status-pending,
+.table-container .table-responsive-container table tbody tr td .status-pending {
+  background-color: #f8e5c5;
+}
+.table-container .table-responsive-container table thead tr td .status-pending span,
+.table-container .table-responsive-container table tbody tr td .status-pending span {
+  color: #f39c12;
+}
+.table-container .table-responsive-container table thead tr td .status-borrowed,
+.table-container .table-responsive-container table tbody tr td .status-borrowed {
+  background-color: #c5c6f8;
+}
+.table-container .table-responsive-container table thead tr td .status-borrowed span,
+.table-container .table-responsive-container table tbody tr td .status-borrowed span {
+  color: #2636c4;
+}
+.table-container .table-responsive-container table thead tr td .status-shipping,
+.table-container .table-responsive-container table tbody tr td .status-shipping {
+  background-color: #c5f8d1;
+}
+.table-container .table-responsive-container table thead tr td .status-shipping span,
+.table-container .table-responsive-container table tbody tr td .status-shipping span {
+  color: #2c742f;
 }
 .table-container .table-responsive-container table thead tr td .status-error,
 .table-container .table-responsive-container table tbody tr td .status-error {
@@ -201,7 +248,8 @@ body.modal-open {
   font-size: 0.8rem;
   margin-bottom: 0.4rem;
 }
-.box-input .label-file, .box-input .img-preview {
+.box-input .label-file,
+.box-input .img-preview {
   font-size: 1rem;
   font-weight: 300;
   display: flex;
@@ -215,16 +263,19 @@ body.modal-open {
   background-color: #ffffff;
   width: 100%;
 }
-.box-input .label-file .icon, .box-input .img-preview .icon {
+.box-input .label-file .icon,
+.box-input .img-preview .icon {
   font-size: 1.2rem;
 }
-.box-input .label-file .image-preview, .box-input .img-preview .image-preview {
+.box-input .label-file .image-preview,
+.box-input .img-preview .image-preview {
   width: 100px;
   height: 150px;
   -o-object-fit: cover;
      object-fit: cover;
 }
-.box-input .label-file .btn-file, .box-input .img-preview .btn-file {
+.box-input .label-file .btn-file,
+.box-input .img-preview .btn-file {
   display: flex;
   align-items: center;
   padding: 0.6rem 1rem;

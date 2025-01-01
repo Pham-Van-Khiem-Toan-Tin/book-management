@@ -137,6 +137,9 @@ module.exports.allBookOfLibrary = catchAsyncError(async (req, res, next) => {
               },
             },
           },
+          {
+            "books.quantity": { $gt: 0 },
+          }
         ],
       },
     },
@@ -149,6 +152,7 @@ module.exports.allBookOfLibrary = catchAsyncError(async (req, res, next) => {
         image: "$bookDetails.image.url",
         bookTitle: "$bookDetails.title",
         quantity: "$books.quantity",
+        type: "$bookDetails.type",
       },
     },
   ]);
@@ -163,7 +167,7 @@ module.exports.selectBook = catchAsyncError(async (req, res, next) => {
 
   const excludedIds = excluded ? excluded.split(",") : [];
   const regexKeyword = new RegExp(keyword, "i");
-  const categoryObjectId = new ObjectId.createFromHexString(categoryId);
+  const categoryObjectId = ObjectId.createFromHexString(categoryId);
   let list = await bookModel
     .find({
       _id: { $nin: excludedIds },

@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks"
 import { useEffect, useState } from "react";
 import { allCategory, categoryDetail, editCategory } from "../../apis/actions/category.action";
 import { toast } from "react-toastify";
-import { reset, resetError } from "../../apis/slices/category/category.slice";
+import { reset, resetError } from "../../apis/slices/category.slice";
 import Loading from "../../common/loading/Loading";
 import Select, { StylesConfig } from "react-select";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";

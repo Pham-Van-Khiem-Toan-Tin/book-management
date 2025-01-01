@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginSuccess } from "../../actions/auth.action";
+import { loginSuccess } from "../actions/auth.action";
 
 interface TokenState {
   success: boolean;

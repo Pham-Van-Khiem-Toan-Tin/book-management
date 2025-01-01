@@ -11,7 +11,7 @@ import ModalBs from "../../common/modal/Modal";
 import { CiWarning } from "react-icons/ci";
 import { selectStyle, optionRecord, Option } from "../../configs/select.config";
 import { allBookshelf, Bookshelf, deleteBookshelf } from "../../apis/actions/bookshelf.action";
-import { reset, resetError } from "../../apis/slices/bookshelf/bookshelf.slice";
+import { reset, resetError } from "../../apis/slices/bookshelf.slice";
 
 const BookshelfList = () => {
     const [searchParam] = useSearchParams();

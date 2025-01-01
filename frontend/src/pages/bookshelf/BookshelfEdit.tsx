@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import Loading from "../../common/loading/Loading";
 import Select from "react-select";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { reset, resetError } from "../../apis/slices/bookshelf/bookshelf.slice";
+import { reset, resetError } from "../../apis/slices/bookshelf.slice";
 import { allCommonBookcase } from "../../apis/actions/bookcase.action";
 import { editBookshelf, viewBookshelf } from "../../apis/actions/bookshelf.action";
 import { selectStyleAsync } from "../../configs/select.config";

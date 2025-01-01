@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
+.error-page-403 {
+  width: 100%;
+  height: 100vh;
+}
+.error-page-403 * {
+  position: relative;
+  font-family: "Press Start 2P", cursive;
+}
+.error-page-403 .error-page-403-container {
+  padding: 1rem;
+  background: black;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  color: #54fe55;
+  text-shadow: 0px 0px 10px;
+  font-size: 6rem;
+  flex-direction: column;
+}
+.error-page-403 .error-page-403-container .txt {
+  font-size: 1.8rem;
+}
+.error-page-403 .blink {
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  49% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}/*# sourceMappingURL=error-403.css.map */

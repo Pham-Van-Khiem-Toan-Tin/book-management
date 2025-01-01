@@ -25,6 +25,10 @@ const useAuthAxios = () => {
       console.log(error);
       
       const originalRequest = error.config;
+      if (error.response.status == 403) {
+          window.location.href = "/403";
+          return Promise.reject(new AxiosError("Session expired"));
+      }
       if (error.response.status == 498 && !originalRequest._retry) {
         originalRequest._retry = true;
 

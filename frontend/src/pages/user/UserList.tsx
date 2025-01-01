@@ -8,15 +8,16 @@ import Loading from "../../common/loading/Loading";
 import moment from "moment";
 import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine, RiInformation2Line, RiKey2Line, RiLock2Line, RiPencilLine } from "react-icons/ri";
 import { selectStyle, optionRecord, Option } from "../../configs/select.config";
-import { reset, resetError } from "../../apis/slices/user/user.slice";
+import { reset, resetError } from "../../apis/slices/user.slice";
 import { allUser, lockUser } from "../../apis/actions/user.action";
 
 const UserList = () => {
+    const functions = JSON.parse(localStorage.getItem("fn") ?? "[]");
     const [searchParam] = useSearchParams();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { loading, users, pagination, error, success, message } = useAppSelector((state) => state.user);
-    const { sub } = useAppSelector((state) => state.auth);
+    const { sub, order } = useAppSelector((state) => state.auth);
     const [keyword, setKeyword] = useState(searchParam.get("keyword") ?? undefined);
     const index = optionRecord.findIndex((option) => option.value === (searchParam.get("view") ? parseInt(searchParam.get("view")!) : 10));
     useEffect(() => {
@@ -130,18 +131,25 @@ const UserList = () => {
                                                                 <RiInformation2Line />
                                                             </div>
                                                         </Link>
-                                                        {sub != item._id && (
+                                                        {sub != item._id && (order > item.role.order) && (
                                                             <>
-                                                                <Link className="btn-icon" to={`/users/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
-                                                                    <div className="icon">
-                                                                        <RiPencilLine />
-                                                                    </div>
-                                                                </Link>
-                                                                <button onClick={() => handleLockUser(item._id, !item.lock)} className="btn-icon" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title={item.lock ? "Unlock" : "Lock"}>
-                                                                    <div className="icon">
-                                                                        {!item.lock ? (<RiLock2Line />) : (<RiKey2Line />)}
-                                                                    </div>
-                                                                </button>
+                                                                {functions.includes("EDIT_USER") && (
+                                                                    <Link className="btn-icon" to={`/users/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
+                                                                        <div className="icon">
+                                                                            <RiPencilLine />
+                                                                        </div>
+                                                                    </Link>
+                                                                )}
+                                                                {
+                                                                    item.role._id !== "ADMIN" && (
+                                                                        <button onClick={() => handleLockUser(item._id, !item.lock)} className="btn-icon" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title={item.lock ? "Unlock" : "Lock"}>
+                                                                            <div className="icon">
+                                                                                {!item.lock ? (<RiLock2Line />) : (<RiKey2Line />)}
+                                                                            </div>
+                                                                        </button>
+
+                                                                    )
+                                                                }
                                                             </>
                                                         )}
                                                     </div>

@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { AuthorityDetail, editAuthority, viewAuthority } from '../../apis/actions/authorities.action';
 import { toast } from 'react-toastify';
-import { reset, resetError } from '../../apis/slices/authority/authority.slice';
+import { reset, resetError } from '../../apis/slices/authority.slice';
 import './authority.css'
 import Loading from '../../common/loading/Loading';
 import _ from "lodash";

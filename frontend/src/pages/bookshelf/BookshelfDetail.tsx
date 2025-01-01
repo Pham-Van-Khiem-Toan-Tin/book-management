@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import moment from "moment";
 import { toast } from "react-toastify";
 import Loading from "../../common/loading/Loading";
-import { resetError } from "../../apis/slices/bookshelf/bookshelf.slice";
+import { resetError } from "../../apis/slices/bookshelf.slice";
 import { viewBookshelf } from "../../apis/actions/bookshelf.action";
 const BookshelfDetail = () => {
     const dispatch = useAppDispatch();

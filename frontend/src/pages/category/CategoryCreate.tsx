@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { commonCategory, createCategory } from "../../apis/actions/category.action";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { reset, resetError } from "../../apis/slices/category/category.slice";
+import { reset, resetError } from "../../apis/slices/category.slice";
 import { selectStyleAsync } from "../../configs/select.config";
 interface Category {
   name: string,

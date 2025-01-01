@@ -48,30 +48,30 @@ module.exports.categoriesListSelect = catchAsyncError(
 );
 module.exports.viewCategory = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  if (!id) throw new BusinessException(500, "Invalid data");
+  if (!id) throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   let category = await categoryModel
     .findById(id)
     .select("_id name description parent_id createdAt")
     .populate("parent_id", "name");
-  if (!category) throw new BusinessException(500, "Category does not exist!");
+  if (!category) throw new BusinessException(500, "Danh mục không tồn tại!");
   res.status(200).json({
     category: category,
   });
 });
 module.exports.addCategory = catchAsyncError(async (req, res, next) => {
   const { name, parentId, description } = req.body;
-  if (!name || !description) throw new BusinessException(500, "Invalid data");
+  if (!name || !description) throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   const exists = await categoryModel.exists({ name: name });
   if (exists)
     throw new BusinessException(
       500,
-      "The category of book that already exists!"
+      "Danh mục đã tồn tại!"
     );
   const existsParent = await categoryModel.exists({
     _id: parentId,
     parent_id: null,
   });
-  if (parentId && !existsParent) throw new BusinessException(500, "Parent does not exist!");
+  if (parentId && !existsParent) throw new BusinessException(500, "Danh mục cha đã tồn tại!");
   await categoryModel.create({
     name: name,
     parent_id: parentId,
@@ -87,27 +87,27 @@ module.exports.editCategory = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
   const { name, parentId, description } = req.body;
   if (!id || !name || !description)
-    throw new BusinessException(500, "Invalid data");
+    throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   const category = await categoryModel.findById(id);
-  if (!category) throw new BusinessException(500, "Category does not exist!");
+  if (!category) throw new BusinessException(500, "Danh mục không tồn tại!");
   category.name = name;
   category.parent_id = parentId;
   category.description = description;
   await category.save();
   res.status(200).json({
     success: true,
-    message: "Update Category successfully!",
+    message: "Cập nhật danh mục thành công!",
   });
 });
 
 module.exports.deleteCategory = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  if (!id) throw new BusinessException(500, "Invalid data");
+  if (!id) throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   const exists = await categoryModel.exists({ _id: id });
   if (!exists) throw new BusinessException(500, "Book type does not exist!");
   await categoryModel.findByIdAndDelete(id);
   res.status(200).json({
     success: true,
-    message: "Category deleted successfully",
+    message: "Xoá danh mục thành công!",
   });
 });

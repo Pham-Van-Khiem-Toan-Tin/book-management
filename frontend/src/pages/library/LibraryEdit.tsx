@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import Loading from "../../common/loading/Loading";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { editLibrary, viewLibrary } from "../../apis/actions/library.action";
-import { reset, resetError } from "../../apis/slices/library/library.slice";
+import { reset, resetError } from "../../apis/slices/library.slice";
 
 interface Library {
     _id: string,

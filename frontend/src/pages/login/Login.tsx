@@ -4,6 +4,7 @@ import GoogleLogo from "../../assets/images/login/google-button-logo.png";
 import FacebookLogo from "../../assets/images/login/facebook-button-logo.png";
 import Logo from "../../assets/images/login/Logo.png";
 import "./login.css";
+import { Bounce, ToastContainer } from "react-toastify";
 
 
 
@@ -46,6 +47,15 @@ const Login = () => {
                         <Link to="/register" className="ms-1 text-gray fw-semibold">Register</Link>
                     </div>
                 </div>
+                <ToastContainer
+                    position="top-center"
+                    autoClose={500}
+                    hideProgressBar
+                    newestOnTop
+                    rtl={false}
+                    draggable
+                    transition={Bounce}
+                />
             </div>
         )
     }

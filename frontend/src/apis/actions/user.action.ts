@@ -14,6 +14,7 @@ export interface User {
   role: {
     _id: string;
     name: string;
+    order: number;
   };
   lock: boolean;
   createdAt: string;

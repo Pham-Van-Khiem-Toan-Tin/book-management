@@ -11,7 +11,7 @@ import ModalBs from "../../common/modal/Modal";
 import { CiWarning } from "react-icons/ci";
 import { selectStyle, optionRecord, Option } from "../../configs/select.config";
 import { allAuthorities, Authority } from "../../apis/actions/authorities.action";
-import { reset, resetError } from "../../apis/slices/authority/authority.slice";
+import { reset, resetError } from "../../apis/slices/authority.slice";
 const AuthoritiesList = () => {
   const [searchParam] = useSearchParams();
   const dispatch = useAppDispatch();

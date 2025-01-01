@@ -80,22 +80,43 @@ export const BorrowList = () => {
 
     }
   }
-  // const toggleModalDelete = (item: Book) => {
-  //   const modelElement = document.getElementById("modal-bookshop") as HTMLElement;
-  //   const modal = new Modal(modelElement);
-  //   setBookDelete(item);
-  //   modal.toggle();
-  // };
-  // const handleDelete = () => {
-  //   // if (bookDelete) dispatch(deleteCategory(bookDelete?._id))
-  // }
+  const statusContent: {
+    [key: string]: {
+      text: string;
+      classColor: string;
+    }
+  } = {
+    pending: {
+      text: "Đang xử lý",
+      classColor: "status-pending"
+    },
+    borrowed: {
+      text: "Đã mượn",
+      classColor: "status-borrowed"
+    },
+    failed: {
+      text: "Từ chối",
+      classColor: "status-error"
+    },
+    shipping: {
+      text: "Đang giao",
+      classColor: "status-shipping"
+    },
+    returned: {
+      text: "Đã trả",
+      classColor: "status-active"
+    },
+  }
+  const getActiveEdit = (status: string, type: string ) : boolean => {
+    return status === "pending" && type === "online";
+  }
   return (
     <>
       {loading ?
         <Loading /> :
         <div>
           <div className="box-search mb-3">
-            <input type="text" value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="Search by name" />
+            <input type="text" value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="Nhập tên hoặc code để tìm kiếm" />
             <button onClick={handleSearch} className="btn-fill rounded">Tìm kiếm</button>
           </div>
           <div className="box-handle mb-3">
@@ -113,10 +134,13 @@ export const BorrowList = () => {
                   <tr>
                     <th scope="col">STT</th>
                     <th scope="col">Tiêu đề</th>
-                    <th scope="col">Tác giả</th>
-                    <th scope="col">Nhà xuất bản</th>
-                    <th scope="col">Thể loại</th>
-                    <th scope="col">Thời gian tạo</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Người mượn</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Thư viện</th>
+                    <th scope="col">Ngày mượn - trả</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Kiểu đơn</th>
                     <th scope="col">Thao tác</th>
                   </tr>
                 </thead>
@@ -126,10 +150,17 @@ export const BorrowList = () => {
                       <tr key={item._id}>
                         <td className="align-middle">{(pagination.page - 1) * pagination.limit + index + 1}</td>
                         <td className="align-middle">{item.book.title}</td>
-                        <td className="align-middle">{item.borrower.name}</td>
-                        <td className="align-middle">{item.status}</td>
+                        <td className="align-middle">{item.code}</td>
+                        <td className="align-middle">{item.borrower.user.name}</td>
+                        <td className="align-middle">{item.quantity}</td>
+                        <td className="align-middle">{item.library.name}</td>
+                        <td className="align-middle">{`${moment(item.borrow_date).format("DD/MM/yyy")} - ${moment(item.return_date).format("DD/MM/yyyy")}`}</td>
+                        <td className="align-middle">
+                          <div className={`rounded-pill py-1 px-2 d-flex align-items-center justify-content-center ${statusContent[item.status].classColor}`}>
+                            <span >{statusContent[item.status].text}</span>
+                          </div>
+                        </td>
                         <td className="align-middle">{item.type}</td>
-                        <td className="align-middle">{moment(item?.borrow_date).format("DD-MM-YYYY")}</td>
                         <td className="align-middle">
                           <div className="btn-group d-flex gap-2 align-items-center">
                             <Link className="btn-icon" to={`/borrows/view/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="View">
@@ -137,11 +168,13 @@ export const BorrowList = () => {
                                 <RiInformation2Line />
                               </div>
                             </Link>
-                            <Link className="btn-icon" to={`/borrows/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
-                              <div className="icon">
-                                <RiPencilLine />
-                              </div>
-                            </Link>
+                            {getActiveEdit(item.status, item.type) && (
+                              <Link className="btn-icon" to={`/borrows/edit/${item._id}`} data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit">
+                                <div className="icon">
+                                  <RiPencilLine />
+                                </div>
+                              </Link>
+                            )}
                           </div>
                         </td>
                       </tr>
@@ -195,7 +228,7 @@ export const BorrowList = () => {
               </ul>
             </div>
           </div>
-          
+
         </div>
       }
     </>

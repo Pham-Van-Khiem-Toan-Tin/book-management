@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "../../common/loading/Loading";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { reset, resetError } from "../../apis/slices/user/user.slice";
+import { reset, resetError } from "../../apis/slices/user.slice";
 import { editUser, viewUser } from "../../apis/actions/user.action";
 import Select from "react-select";
 import { authorityCommon } from "../../apis/actions/authorities.action";
 import { createSelectStyles, OptionAsync } from "../../configs/select.config";
 import _ from "lodash";
-import { resetError as resetErrorLb } from "../../apis/slices/library/library.slice";
+import { resetError as resetErrorLb } from "../../apis/slices/library.slice";
 import { allCommonLibrary } from "../../apis/actions/library.action";
 
 interface User {

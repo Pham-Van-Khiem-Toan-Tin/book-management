@@ -28,7 +28,8 @@ interface BaseProfileResponse {
   library: string | null;
   name: string;
   roles: Array<string>,
-  avatar: string
+  avatar: string,
+  order: number,
 }
 export const baseProfile = createAsyncThunk<BaseProfileResponse, void>(
   "auth/base",

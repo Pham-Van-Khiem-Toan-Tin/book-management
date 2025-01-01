@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allAuthorities, Authority, AuthorityDetail, editAuthority, viewAuthority } from "../../actions/authorities.action";
+import { allAuthorities, Authority, AuthorityDetail, editAuthority, viewAuthority } from "../actions/authorities.action";
 
 interface AuthorityState {
     success: boolean,

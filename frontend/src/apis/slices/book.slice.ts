@@ -71,6 +71,8 @@ const bookSlice = createSlice({
     });
     builder.addCase(allBookOfLibrary.fulfilled, (state, action) => {
       state.loading = false;
+      console.log(action.payload.books);
+      
       state.bookOfLibrary = action.payload.books;
     });
     builder.addCase(allBookOfLibrary.rejected, (state, action) => {

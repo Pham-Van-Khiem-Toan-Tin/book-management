@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { baseProfile } from "../../actions/auth.action";
+import { baseProfile } from "../actions/auth.action";
 
 
 interface AuthState {
@@ -7,6 +7,7 @@ interface AuthState {
     message: string | null,
     loading: boolean,
     sub: string | null,
+    order: number,
     library: string | null,
     name: string | null,
     roles: Array<string>,
@@ -17,6 +18,7 @@ const initialState: AuthState = {
     success: false as boolean,
     message: null,
     loading: false as boolean,
+    order: 0,
     name: null,
     sub: null,
     library: null,
@@ -37,6 +39,7 @@ const authSlice = createSlice({
             state.name = action.payload.name;
             state.roles = action.payload.roles;
             state.avatar = action.payload.avatar;
+            state.order = action.payload.order;
             state.sub = action.payload.sub;
             state.library = action.payload.library;
         });

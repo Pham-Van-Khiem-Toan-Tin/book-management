@@ -5,10 +5,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { createBookcase } from "../../apis/actions/bookcase.action";
-import { reset, resetError } from "../../apis/slices/bookcase/bookcase.slice";
+import { reset, resetError } from "../../apis/slices/bookcase.slice";
 import { allCommonLibrary } from "../../apis/actions/library.action";
 import { selectStyleAsync } from "../../configs/select.config";
-import { resetError as resetErrorLb } from "../../apis/slices/library/library.slice";
+import { resetError as resetErrorLb } from "../../apis/slices/library.slice";
 interface Bookcase {
   id: string,
   name: string,

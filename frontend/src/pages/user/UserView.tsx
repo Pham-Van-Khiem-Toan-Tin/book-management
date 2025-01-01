@@ -5,7 +5,7 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import Loading from "../../common/loading/Loading";
 import { viewUser } from "../../apis/actions/user.action";
-import { resetError } from "../../apis/slices/user/user.slice";
+import { resetError } from "../../apis/slices/user.slice";
 const UserView = () => {
     const dispatch = useAppDispatch();
     const { user, loading, error, message } = useAppSelector((state) => state.user);

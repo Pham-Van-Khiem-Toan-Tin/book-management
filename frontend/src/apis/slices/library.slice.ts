@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allCommonLibrary, allLibrary, createLibrary, deleteLibrary, editLibrary, Library, LibraryCommon, viewLibrary } from "../../actions/library.action";
+import { allCommonLibrary, allLibrary, createLibrary, editLibrary, Library, LibraryCommon, viewLibrary } from "../actions/library.action";
 
 
 interface LibraryState {

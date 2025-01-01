@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addBookToBookshelf, allBookshelf, Bookshelf, createBookshelf, deleteBookshelf, editBookshelf, viewBookshelf } from "../../actions/bookshelf.action";
-import { allCommonBookcase, CommonBookcase } from "../../actions/bookcase.action";
-import { CategoryCommon, subCategory } from "../../actions/category.action";
+import { addBookToBookshelf, allBookshelf, Bookshelf, createBookshelf, deleteBookshelf, editBookshelf, viewBookshelf } from "../actions/bookshelf.action";
+import { allCommonBookcase, CommonBookcase } from "../actions/bookcase.action";
+import { CategoryCommon, subCategory } from "../actions/category.action";
 
 interface BookshelfState {
     success: boolean,

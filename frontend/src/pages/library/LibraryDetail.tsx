@@ -5,7 +5,7 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import Loading from "../../common/loading/Loading";
 import { viewLibrary } from "../../apis/actions/library.action";
-import { resetError } from "../../apis/slices/library/library.slice";
+import { resetError } from "../../apis/slices/library.slice";
 const LibraryDetail = () => {
     const dispatch = useAppDispatch();
     const { library, loading, error, message } = useAppSelector((state) => state.library);

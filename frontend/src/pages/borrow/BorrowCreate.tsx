@@ -4,10 +4,17 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxhooks";
 import { useDebounceCallback } from "usehooks-ts";
 import { allReader } from "../../apis/actions/user.action";
-import { KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import { allBookOfLibrary } from "../../apis/actions/book.action";
-import { RiDeleteBin5Line } from "react-icons/ri";
-
+import { RiCalendarLine, RiDeleteBin5Line } from "react-icons/ri";
+import { toast } from "react-toastify";
+import { createBorrowOffline } from "../../apis/actions/borrow.action";
+import DatePicker, { registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { vi } from "date-fns/locale";
+import moment from "moment";
+import { reset, resetError } from "../../apis/slices/borrow.slice";
+import { useNavigate } from "react-router";
 interface OptionObject {
   label: string;
   value: {
@@ -25,37 +32,63 @@ interface OptionBookObject {
     code: string;
     maxQuantity: number;
     bookshelf: string;
+    type: string;
   };
   label: string;
 }
 interface BorrowCreate {
-  userId: string;
+  user: {
+    _id: string;
+    name: string;
+    email: string | null;
+    phone: string | null;
+  };
   email: string;
   phone: string;
 }
 interface BookOfBorrow {
   bookId: string;
+  maxQuantity: number;
   quantity: number;
   code: string;
   title: string;
   image: string;
+  type: string;
   bookshelf: string;
+  returnDate: Date | null;
 }
 const BorrowCreate = () => {
-  const [bookKeyword, setBookKeyword] = useState<string | null>(null);
+  registerLocale('vi', vi);
+  const [keyword, setKeyword] = useState<string | null>(null);
   const [bookList, setBookList] = useState<Array<BookOfBorrow>>([]);
+  const [disabled, setDisabled] = useState(false);
   const [selectedValue, setSelectedValue] = useState<OptionBookObject | null>(null);
-
   const selectOptionsString = createSelectStyles<OptionObject>();
   const selectOptionsBook = createSelectStyles<OptionBookObject>();
   const { handleSubmit, setValue, control, formState: { errors } } = useForm<BorrowCreate>();
   const { loading: loadingReader, readers } = useAppSelector((state) => state.user);
   const { loading: loadingBook, bookOfLibrary } = useAppSelector((state) => state.book);
+  const { error, message, success } = useAppSelector((state) => state.borrow);
   const { library } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const handleSearchReader = useDebounceCallback((val: string) => {
     dispatch(allReader(val));
   }, 500);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (success) {
+      toast.success(message);
+      dispatch(reset());
+      setTimeout(() => {
+        navigate("/borrows/all");
+      }, 1500);
+    } else if (error) {
+      toast.error(message);
+      dispatch(resetError());
+      setDisabled(false);
+    }
+  }, [dispatch, success, error, message, navigate]);
+
   const handleSearchBook = useDebounceCallback((val: string) => {
     if (library) dispatch(allBookOfLibrary({
       keyword: val, libraryId: library, bookSelected: bookList.map((item) => ({
@@ -64,7 +97,29 @@ const BorrowCreate = () => {
       }))
     }));
   }, 500);
-
+  const handleInputChange = (
+    bookId: string,
+    code: string,
+    field: keyof BookOfBorrow,
+    value: number | Date | null,
+    maxValue: number | null
+  ) => {
+    setBookList((prevList) =>
+      prevList.map((item) => {
+        if (item.bookId === bookId && item.code === code) {
+          if (maxValue && field === "quantity") {
+            return ({
+              ...item,
+              [field]: Number(value) < maxValue
+                ? Number(value)
+                : maxValue
+            });
+          }
+          return ({ ...item, [field]: value });
+        }
+        return item;
+      }));
+  };
   const handleKeydown = (event: KeyboardEvent<HTMLInputElement>) => {
     const key = event.key;
     const allowedKeys = ["Backspace", "Tab", "ArrowLeft", "ArrowRight", "Delete"];
@@ -72,6 +127,17 @@ const BorrowCreate = () => {
       event.preventDefault();
     }
   };
+  const handleDelete = (bookId: string, code: string) => {
+    if (library) {
+      setBookList((prevList) => prevList.filter((item) => !(item.bookId == bookId && item.code == code)));
+      dispatch(allBookOfLibrary({
+        keyword: keyword, libraryId: library, bookSelected: bookList.filter((item) => item.bookId !== bookId).map((item) => ({
+          bookId: item.bookId,
+          bookshelfId: item.bookshelf
+        }))
+      }));
+    }
+  }
   const handleInputNumber = (e: KeyboardEvent<HTMLInputElement>) => {
     const input = e.currentTarget.value;
     if (
@@ -87,16 +153,54 @@ const BorrowCreate = () => {
       e.preventDefault();
     }
   }
-  const onSubmit: SubmitHandler<BorrowCreate> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<BorrowCreate> = (data): void => {
+    let checkData: boolean = false;
+    if (bookList.length == 0 || !library) {
+      toast.error("Vui lòng chọn sách");
+      return;
+    }
+    let totalComic = 0;
+    let totalTextbook = 0;
+    bookList.forEach((item) => {
+      if (item.type == "comic") {
+        totalComic += 1;
+      } else if (item.type == "novel") {
+        totalTextbook += 1;
+      }
+      if (item.quantity <= item.maxQuantity) {
+        checkData = true;
+      }
+    });
+    if (totalComic > 6 || totalTextbook > 3) {
+      toast.error("Sách truyện tranh và sách giáo trình không được mượn nhiều hơn 1 cuốn");
+      return;
+    }
+    if (!checkData) {
+      toast.error("Số lượng sách mượn không hợp lệ");
+      return;
+    }
+    setDisabled(true);
+    dispatch(createBorrowOffline({
+      userId: data.user._id,
+      email: data.email,
+      phone: data.phone,
+      books: bookList.map((item) => ({
+        id: item.bookId,
+        quantity: item.quantity,
+        library: library,
+        code: item.code,
+        returnDate: new Date(),
+        bookshelf: item.bookshelf
+      }))
+    }));
   }
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="form-create p-2 d-flex flex-column justify-content-between">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="form-create rounded p-2 d-flex flex-column justify-content-between">
       <div>
         <div className="box-input">
           <label htmlFor="borrower">Người mượn: <span className="text-danger">*</span></label>
           <Controller
-            name="userId"
+            name="user"
             control={control}
             rules={{ required: "Vui lòng chọn người mượn" }}
             render={({ field }) => (
@@ -130,7 +234,7 @@ const BorrowCreate = () => {
               />
             )}
           />
-          {errors.userId && <span className="input-error">{errors?.userId?.message}</span>}
+          {errors.user && <span className="input-error">{errors?.user?.message}</span>}
         </div>
         <div className="box-input">
           <label htmlFor="email">Email: <span className="text-danger">*</span></label>
@@ -175,21 +279,23 @@ const BorrowCreate = () => {
               if (action.action == "input-change") {
                 handleSearchBook(val);
               }
-              setBookKeyword(val);
+              setKeyword(val);
             }}
             onChange={(val) => {
               if (val && library) {
                 const newBookList = [...bookList, {
                   bookId: val.value._id,
+                  maxQuantity: val.value.maxQuantity,
                   quantity: 1,
                   code: val.value.code,
                   title: val.value.title,
                   image: val.value.image,
-                  bookshelf: val.value.bookshelf
+                  bookshelf: val.value.bookshelf,
+                  type: val.value.type,
+                  returnDate: new Date()
                 }];
                 setBookList(newBookList);
                 setSelectedValue(null);
-                setBookKeyword(null);
                 dispatch(allBookOfLibrary({
                   keyword: null, libraryId: library, bookSelected: newBookList.map((item) => ({
                     bookId: item.bookId,
@@ -205,7 +311,9 @@ const BorrowCreate = () => {
                 title: item.bookTitle,
                 code: item.code,
                 maxQuantity: item.quantity,
-                bookshelf: item.bookshelfId
+                bookshelf: item.bookshelfId,
+                returnDate: new Date(),
+                type: item.type
               },
               label: `${item.code}: ${item.bookTitle}`
             }))}
@@ -221,14 +329,16 @@ const BorrowCreate = () => {
                     <th scope='col'>Ảnh</th>
                     <th scope="col">Tên sách</th>
                     <th scope="col">Mã sách</th>
+                    <th scope="col">Tồn kho</th>
                     <th scope="col">Số lượng</th>
+                    <th scope="col">Ngày trả</th>
                     <th scope='col'>Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
                   {bookList && bookList.length > 0 ? (
                     bookList.map((item, index) => (
-                      <tr key={item.bookId}>
+                      <tr key={item.code}>
                         <td className="align-middle">
                           {index + 1}
                         </td>
@@ -242,16 +352,37 @@ const BorrowCreate = () => {
                           <input type="text" disabled value={item.code} />
                         </td>
                         <td className="align-middle">
+                          <input type="text" disabled value={item.maxQuantity} />
+                        </td>
+                        <td className="align-middle">
                           <input type="text"
-                            // onChange={(e) =>
-                            //   handleInputChange(item.bookId, "quantity", e.target.value)
-                            // }
+                            onChange={(e) =>
+                              handleInputChange(item.bookId, item.code, "quantity", Number(e.target.value), item.maxQuantity)
+                            }
                             onKeyDown={handleInputNumber}
                             value={item.quantity} />
                         </td>
+                        <td className="align-middle">
+                          <DatePicker
+                            showIcon
+                            toggleCalendarOnIconClick
+                            icon={
+                              <div className="d-flex bg-transparent align-items-center">
+                                <RiCalendarLine />
+                              </div>
+                            }
+                            customInput={<button type="button" className="bg-white rounded">{moment(item.returnDate).format("DD-MM-yyyy")}</button>}
+                            dateFormat="dd-MM-yyyy"
+                            selected={item.returnDate}
+                            placeholderText="Chọn ngày trả"
+                            locale="vi"
+                            minDate={new Date()}
+                            onChange={(date) => handleInputChange(item.bookId, item.code, "returnDate", date, null)}
+                          />
+                        </td>
                         <td className='align-middle'>
-                          <button
-                            // onClick={() => handleDelete(item.bookId)} 
+                          <button type="button"
+                            onClick={() => handleDelete(item.bookId, item.code)}
                             className="btn-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Delete">
                             <div className="icon">
                               <RiDeleteBin5Line />
@@ -262,7 +393,7 @@ const BorrowCreate = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={6}>
+                      <td colSpan={8}>
                         <p className="text-center mb-0">No data</p>
                       </td>
                     </tr>)}
@@ -273,8 +404,8 @@ const BorrowCreate = () => {
         </div>
       </div>
       <div className="btn-group d-flex justify-content-end gap-3">
-        <button type="submit" className="btn-fill px-3 py-2 rounded">Save</button>
-        <button type="submit" className="btn-border px-3 py-2 rounded">Cancel</button>
+        <button disabled={disabled} type="submit" className="btn-fill px-3 py-2 rounded">Save</button>
+        <button className="btn-border px-3 py-2 rounded">Cancel</button>
       </div>
     </form>
   )

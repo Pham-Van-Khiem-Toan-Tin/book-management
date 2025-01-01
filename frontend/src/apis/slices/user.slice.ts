@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allReader, allUser, editUser, lockUser, User, viewUser } from "../../actions/user.action";
-import { authorityCommon, AuthorityCommon } from "../../actions/authorities.action";
+import { allReader, allUser, editUser, lockUser, User, viewUser } from "../actions/user.action";
+import { authorityCommon, AuthorityCommon } from "../actions/authorities.action";
 
 interface Reader {
     _id: string;

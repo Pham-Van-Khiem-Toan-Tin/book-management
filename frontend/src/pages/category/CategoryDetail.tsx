@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { categoryDetail } from "../../apis/actions/category.action";
 import moment from "moment";
 import { toast } from "react-toastify";
-import { resetError } from "../../apis/slices/category/category.slice";
+import { resetError } from "../../apis/slices/category.slice";
 import Loading from "../../common/loading/Loading";
 const CategoryDetail = () => {
     const dispatch = useAppDispatch();

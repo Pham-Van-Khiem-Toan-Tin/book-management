@@ -6,11 +6,11 @@ import Loading from "../../common/loading/Loading";
 import Select from "react-select";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { editBookcase, viewBookcase } from "../../apis/actions/bookcase.action";
-import { reset, resetError } from "../../apis/slices/bookcase/bookcase.slice";
+import { reset, resetError } from "../../apis/slices/bookcase.slice";
 import { allCommonLibrary } from "../../apis/actions/library.action";
 import { selectStyleAsync } from "../../configs/select.config";
 import { subCategory } from "../../apis/actions/category.action";
-import { resetError as resetErrorLb } from "../../apis/slices/library/library.slice";
+import { resetError as resetErrorLb } from "../../apis/slices/library.slice";
 
 interface Bookcase {
     _id: string,
