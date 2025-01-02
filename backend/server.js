@@ -65,8 +65,11 @@ const bookshelfRouter = require("./src/routers/bookshelf.router");
 const userRouter = require("./src/routers/user.router");
 const bookRouter = require("./src/routers/book.router");
 const borrowRouter = require("./src/routers/borrow.router");
+const profileRouter = require("./src/routers/profile.router");
+
 
 app.use("/auth", authRoute);
+app.use("/profile", profileRouter);
 app.use("/admin", authoritiesRouter);
 app.use("/admin/categories", categoryRouter);
 app.use("/admin/libraries", libraryRouter);

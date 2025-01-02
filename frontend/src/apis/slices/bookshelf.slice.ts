@@ -50,6 +50,15 @@ const bookshelfSlice = createSlice({
         reset: (state) => {
             state.message = null;
             state.success = false;
+            state.bookshelf = null;
+            state.bookshelves = [];
+            state.categories = [];
+            state.pagination = {
+                total: 0,
+                page: 1,
+                limit: 10,
+                totalPages: 0,
+            }
         }
     },
     extraReducers: (builder) => {

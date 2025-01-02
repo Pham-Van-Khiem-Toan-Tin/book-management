@@ -1,5 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allBook, allBookOfLibrary, Book, BookOfLibrary, BookSelect, createBook, editBook, selectBook, viewBook } from "../actions/book.action";
+import {
+  allBook,
+  allBookOfLibrary,
+  Book,
+  BookOfLibrary,
+  BookSelect,
+  createBook,
+  editBook,
+  selectBook,
+  viewBook,
+} from "../actions/book.action";
 import { CategoryCommon, subCategory } from "../actions/category.action";
 
 interface BookState {
@@ -51,6 +61,14 @@ const bookSlice = createSlice({
       state.message = null;
       state.success = false;
       state.book = null;
+      state.books = [];
+      state.categories = [];
+      state.pagination = {
+        total: 0,
+        page: 1,
+        limit: 10,
+        totalPages: 0,
+      };
     },
   },
   extraReducers: (builder) => {
@@ -72,7 +90,7 @@ const bookSlice = createSlice({
     builder.addCase(allBookOfLibrary.fulfilled, (state, action) => {
       state.loading = false;
       console.log(action.payload.books);
-      
+
       state.bookOfLibrary = action.payload.books;
     });
     builder.addCase(allBookOfLibrary.rejected, (state, action) => {

@@ -44,6 +44,15 @@ const librarySlice = createSlice({
         reset: (state) => {
             state.message = null;
             state.success = false;
+            state.library = null;
+            state.libraries = [];
+            state.pagination = {
+                total: 0,
+                page: 1,
+                limit: 10,
+                totalPages: 0,
+            };
+            state.librariesSelect = [];
         }
     },
     extraReducers: (builder) => {

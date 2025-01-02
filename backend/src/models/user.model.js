@@ -39,7 +39,16 @@ const userSchema = new mongoose.Schema(
             ref: "libraries"
         },
         avatar: {
-            type: String,
+            type: mongoose.Schema.Types.Mixed,
+            validate: {
+                validator: function (v) {
+                    return (
+                        typeof v === "string" ||
+                        (typeof v === "object" && v !== null && "url" in v && "public_id" in v)
+                    );
+                },
+                message: "Avatar must be either a string or an object with `url` and `public_id` fields.",
+            },
         },
         role: {
             type: String,

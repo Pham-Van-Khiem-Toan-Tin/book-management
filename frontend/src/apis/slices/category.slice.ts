@@ -52,6 +52,14 @@ const categorySlice = createSlice({
     reset: (state) => {
       state.message = null;
       state.success = false;
+      state.category = null;
+      state.categories = [];
+      state.pagination = {
+        total: 0,
+        page: 1,
+        limit: 10,
+        totalPages: 0,
+      };
     },
   },
   extraReducers: (builder) => {

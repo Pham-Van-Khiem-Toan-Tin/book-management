@@ -209,7 +209,7 @@ module.exports.createBorrowOffline = catchAsyncError(async (req, res, next) => {
 });
 
 module.exports.createBorrowOnline = catchAsyncError(async (req, res, next) => {
-  const { userId, email, phone, borrows, returnDate, address } = req.body;
+  const { email, phone, borrows, returnDate, address } = req.body;
   if (!userId || !email || !phone || !borrows || !Array.isArray(borrows))
     throw new BusinessException(500, "Dữ liệu không hợp lệ!");
   const borrowRecords = borrows.map((item) => {
@@ -219,7 +219,7 @@ module.exports.createBorrowOnline = catchAsyncError(async (req, res, next) => {
       quantity: item.quantity,
       library: item.library,
       borrower: {
-        user: userId,
+        user: req.user,
         phone: phone,
         email: email,
       },

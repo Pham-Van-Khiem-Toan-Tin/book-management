@@ -57,6 +57,14 @@ const userSlice = createSlice({
             state.message = null;
             state.success = false;
             state.user = null;
+            state.users = [];
+            state.pagination = {
+                total: 0,
+                page: 1,
+                limit: 10,
+                totalPages: 0,
+            };
+            state.readers = [];
         }
     },
     extraReducers: (builder) => {

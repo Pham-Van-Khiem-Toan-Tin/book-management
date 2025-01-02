@@ -7,7 +7,7 @@ import AvatarDefault from "../../assets/images/user/avatar.png";
 import "./header.css"
 import { RiLogoutBoxLine, RiMailLine, RiNotification2Line, RiUserSettingsLine } from "react-icons/ri";
 import { useAppSelector } from '../../hooks/reduxhooks';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 const Header = () => {
   const { loading, avatar } = useAppSelector((state) => state.auth);
   const ref = useRef(null);
@@ -23,12 +23,11 @@ const Header = () => {
   return (
     <div className='py-2 px-4 header-management'>
       <div className="header-container d-flex align-items-center justify-content-between">
-
-        <div>
-          <input type="text" placeholder='Search' />
+        <div className='d-flex align-items-center mx-auto'>
+          <input type="text" placeholder='Tìm kiếm' />
         </div>
         <div className="btn-group">
-          <Menu menuButton={
+          {/* <Menu menuButton={
             <button className="btn-icon rounded-circle">
               <div className="icon">
                 <RiMailLine />
@@ -63,7 +62,7 @@ const Header = () => {
           }>
             <div className="notification-dropdown p-2">test</div>
 
-          </Menu>
+          </Menu> */}
           <button ref={ref} {...anchorProps} className={`btn-icon rounded-pill btn-dropdown ${menuState.state == "open" ? "btn-icon-rotate" : ""}`}>
             <div className="avatar">
               {loading ? 
@@ -82,10 +81,10 @@ const Header = () => {
             onClose={() => toggle(false)}
           >
             <MenuItem>
-              <div className="d-flex align-items-center gap-2">
+              <Link to="/profile" className="d-flex align-items-center gap-2">
                 <div className="icon"><RiUserSettingsLine /></div>
                 <span>Account Setting</span>
-              </div></MenuItem>
+              </Link></MenuItem>
             <MenuItem>
               <button onClick={logout} className="w-100 bg-transparent d-flex align-items-center gap-2">
                 <div className="icon"><RiLogoutBoxLine /></div>

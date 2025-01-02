@@ -42,8 +42,10 @@ import { BorrowList } from './pages/borrow/BorrowList.tsx';
 import ProtectRouter from './common/protect-router/ProtectRouter.tsx';
 import BorrowCreate from './pages/borrow/BorrowCreate.tsx';
 import BookshelfAddBook from './pages/bookshelf/BookshelfAddBook.tsx';
-import Error403 from './pages/error/error403.tsx';
+import Error403 from './pages/error/Error403.tsx';
 import LoginFail from './pages/login/LoginFail.tsx';
+import ProfileDetail from './pages/profile/ProfileDetail.tsx';
+import ProfileEdit from './pages/profile/ProfileEdit.tsx';
 
 const router = createBrowserRouter([
   {
@@ -59,6 +61,22 @@ const router = createBrowserRouter([
         element: (
           <ProtectRouter>
             <Dashboard />
+          </ProtectRouter>
+        )
+      },
+      {
+        path: "profile",
+        element: (
+          <ProtectRouter>
+            <ProfileDetail />
+          </ProtectRouter>
+        )
+      },
+      {
+        path: "profile/edit",
+        element: (
+          <ProtectRouter>
+            <ProfileEdit />
           </ProtectRouter>
         )
       },

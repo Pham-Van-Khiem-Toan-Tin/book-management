@@ -42,6 +42,8 @@ const authoritySlice = createSlice({
         reset: (state) => {
             state.message = null;
             state.success = false;
+            state.authority = null;
+            state.authorities = [];
         }
     },
     extraReducers: (builder) => {

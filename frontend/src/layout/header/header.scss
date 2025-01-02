@@ -58,6 +58,10 @@
             overflow-y: auto;
             scrollbar-width: thin;
             .szh-menu__item {
+              a {
+                text-decoration: none;
+                color: inherit;
+              }
               .icon {
                 display: flex;
                 align-items: center;

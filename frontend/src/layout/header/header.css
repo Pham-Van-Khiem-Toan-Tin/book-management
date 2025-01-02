@@ -55,6 +55,10 @@
   overflow-y: auto;
   scrollbar-width: thin;
 }
+.header-management .header-container .btn-group .szh-menu-container .szh-menu .szh-menu__item a {
+  text-decoration: none;
+  color: inherit;
+}
 .header-management .header-container .btn-group .szh-menu-container .szh-menu .szh-menu__item .icon {
   display: flex;
   align-items: center;

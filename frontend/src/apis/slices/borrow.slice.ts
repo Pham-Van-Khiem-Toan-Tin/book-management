@@ -43,6 +43,13 @@ const borrowSlice = createSlice({
       state.message = null;
       state.success = false;
       state.borrow = null;
+      state.borrows = [];
+      state.pagination = {
+        total: 0,
+        page: 1,
+        limit: 10,
+        totalPages: 0,
+      };
     },
   },
   extraReducers: (builder) => {

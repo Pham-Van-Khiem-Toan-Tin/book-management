@@ -19,6 +19,8 @@ export const BorrowList = () => {
   const index = optionRecord.findIndex(
     (item) => item.value === parseInt(searchParam.get("view") ?? "10")
   );
+  const fn = JSON.parse(localStorage.getItem("fn") ?? "[]");
+
   useEffect(() => {
     setKeyword(searchParam.get("keyword") ?? undefined)
     dispatch(allBorrow({ keyword: searchParam.get("keyword"), view: parseInt(searchParam.get("view") ?? "10"), page: parseInt(searchParam.get("page") ?? "1") }));
@@ -107,7 +109,7 @@ export const BorrowList = () => {
       classColor: "status-active"
     },
   }
-  const getActiveEdit = (status: string, type: string ) : boolean => {
+  const getActiveEdit = (status: string, type: string): boolean => {
     return status === "pending" && type === "online";
   }
   return (
@@ -120,7 +122,9 @@ export const BorrowList = () => {
             <button onClick={handleSearch} className="btn-fill rounded">Tìm kiếm</button>
           </div>
           <div className="box-handle mb-3">
-            <Link to="/borrows/create" className="btn-fill rounded">Thêm mới</Link>
+            {fn.includes("CREATE_BORROW") && (
+              <Link to="/borrows/create" className="btn-fill rounded">Thêm mới</Link>
+            )}
             <button className="btn-fill rounded">Xuất excel</button>
           </div>
           <div className="table-container rounded border">
@@ -195,7 +199,7 @@ export const BorrowList = () => {
                     <Select
                       styles={selectStyle}
                       onChange={handleChangePerView}
-                      value={optionRecord[index]}
+                      value={optionRecord[index == -1 ? 0 : index]}
                       isDisabled={borrows.length == 0}
                       options={optionRecord} />
                   </div>
