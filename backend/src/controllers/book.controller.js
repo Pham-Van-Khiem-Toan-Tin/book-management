@@ -5,6 +5,7 @@ const BusinessException = require("../utils/error.util");
 const fs = require("fs");
 const mongoose = require("mongoose");
 const bookshelfModel = require("../models/bookshelf.model");
+const borrowModel = require("../models/borrow.model");
 const ObjectId = mongoose.Types.ObjectId;
 
 module.exports.createBook = catchAsyncError(async (req, res, next) => {
@@ -50,6 +51,114 @@ module.exports.createBook = catchAsyncError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Thêm mới sách thành công!",
+  });
+});
+module.exports.topBookBorrowed = catchAsyncError(async (req, res, next) => {
+  let topBooks = await borrowModel.aggregate([
+    {
+      $group: {
+        _id: "$book",
+        total: { $sum: "$quantity" },
+      },
+    },
+    {
+      $sort: { total: -1 },
+    },
+    {
+      $limit: 10,
+    },
+    {
+      $lookup: {
+        from: "books",
+        localField: "_id",
+        foreignField: "_id",
+        as: "bookDetails",
+      },
+    },
+    {
+      $unwind: "$bookDetails",
+    },
+    {
+      $project: {
+        _id: 0,
+        bookId: "$_id",
+        title: "$bookDetails.title",
+      },
+    },
+  ]);
+  if (!topBooks) topBooks = [];
+  res.status(200).json({
+    topBooks: topBooks,
+  });
+});
+module.exports.topCategoriesBorrowed = catchAsyncError(
+  async (req, res, next) => {
+    let topCategories = await borrowModel.aggregate([
+      {
+        $group: {
+          _id: "$book",
+          total: {
+            $sum: "$quantity",
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "books",
+          localField: "_id",
+          foreignField: "_id",
+          as: "bookDetails",
+        },
+      },
+      {
+        $unwind: "$bookDetails",
+      },
+      {
+        $unwind: "$bookDetails.categories",
+      },
+      {
+        $group: {
+          _id: "$bookDetails.categories",
+          totalCate: { $sum: "$total" },
+        },
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "_id",
+          foreignField: "_id",
+          as: "categoryDetails",
+        },
+      },
+      {
+        $unwind: "$categoryDetails",
+      },
+      {
+        $sort: {
+          totalCate: -1,
+        },
+      },
+      {
+        $limit: 10,
+      },
+      {
+        $project: {
+          _id: 1,
+          name: "$categoryDetails.name",
+        },
+      },
+    ]);
+    if (!topCategories) topCategories = [];
+    res.status(200).json({
+      topCategories: topCategories
+    });
+  }
+);
+module.exports.topNewBooks = catchAsyncError(async (req, res, next) => {
+  let topNewBooks = await bookModel.find().sort({ createdAt: -1 }).limit(10);
+  if (!topNewBooks) topNewBooks = [];
+  res.status(200).json({
+    topNewBooks: topNewBooks,
   });
 });
 
@@ -139,7 +248,7 @@ module.exports.allBookOfLibrary = catchAsyncError(async (req, res, next) => {
           },
           {
             "books.quantity": { $gt: 0 },
-          }
+          },
         ],
       },
     },
